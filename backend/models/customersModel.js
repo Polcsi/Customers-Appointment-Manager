@@ -16,6 +16,10 @@ const CustomersSchema = new mongoose.Schema(
       maxlength: 50,
       trim: true,
     },
+    fullname: {
+      type: String,
+      trim: true,
+    },
     town: {
       type: String,
       trim: true,
@@ -42,6 +46,10 @@ const CustomersSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+CustomersSchema.pre("save", function () {
+  this.fullname = `${this.lastname} ${this.firstname}`;
+});
 
 const customersDB = mongoose.model("Customers", CustomersSchema);
 

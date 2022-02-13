@@ -15,8 +15,10 @@ app.use(express.urlencoded({ extended: false }));
 
 // routers
 import customers from "./routes/customers.js";
+import appointment from "./routes/appointment.js";
 
 app.use("/api/v1/customers", customers);
+app.use("/api/v1/appointment", appointment);
 
 import notFound from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
