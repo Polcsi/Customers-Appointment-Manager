@@ -47,15 +47,41 @@ const getAppointment = async (req, res) => {
 };
 
 const getAllAppointment = async (req, res) => {
-  const { sort, sortdesc, date, time } = req.query;
+  const { sort, sortdesc, date, limit, morning, afternoon } = req.query;
 
-  let result = Appointment.find();
+  const queryObject = {};
+  if (date) {
+    queryObject.date = { $regex: date, $options: "i" };
+  }
+  if (morning) {
+    queryObject["time"] = { $lte: "12:00" };
+  }
+  if (afternoon) {
+    queryObject["time"] = { $gt: "12:00" };
+  }
+
+  let result = Appointment.find(queryObject);
 
   if (sort) {
-    result = result.sort(sort);
+    const sortList = sort.split(",").join(" ");
+    result = result.sort(sortList);
   }
   if (sortdesc) {
-    result = result.sort([[`${sortdesc}`, -1]]);
+    const sortObj = {};
+    if (sortdesc.includes("date")) {
+      sortObj.date = -1;
+    }
+    if (sortdesc.includes("time")) {
+      sortObj.time = -1;
+    }
+    if (sortdesc.includes("createdAt")) {
+      sortObj.createdAt = -1;
+    }
+
+    result = result.sort(sortObj);
+  }
+  if (limit) {
+    result.limit(limit);
   }
 
   const appointments = await result;
