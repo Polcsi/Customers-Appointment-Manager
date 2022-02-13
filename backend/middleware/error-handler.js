@@ -20,7 +20,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     customError.statusCode = 400;
   }
   if (err.name === "CastError") {
-    customError.msg = `no customer found with id :  ${err.value}`;
+    customError.msg = `no item found with id :  ${err.value}`;
     customError.statusCode = 404;
   }
 

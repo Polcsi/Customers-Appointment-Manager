@@ -39,7 +39,7 @@ const getAllCustomers = async (req, res) => {
 
 const createCustomer = async (req, res) => {
   const customer = await Customers.create(req.body);
-  res.status(StatusCodes.OK).json({
+  res.status(StatusCodes.CREATED).json({
     status: "success",
     customer,
   });
