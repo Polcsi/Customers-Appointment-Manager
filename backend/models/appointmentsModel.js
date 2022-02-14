@@ -33,6 +33,10 @@ const AppointmentSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    sendReminder: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

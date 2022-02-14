@@ -4,6 +4,8 @@ import "express-async-errors";
 import "colors";
 
 dotenv.config();
+// Protect Routes with authentication
+import { protect } from "./middleware/authentication.js";
 
 // Connect Database
 import connectDB from "./db/connect.js";
@@ -16,9 +18,13 @@ app.use(express.urlencoded({ extended: false }));
 // routers
 import customers from "./routes/customers.js";
 import appointment from "./routes/appointment.js";
+import login from "./routes/login.js";
+import admin from "./routes/administrators.js";
 
-app.use("/api/v1/customers", customers);
-app.use("/api/v1/appointment", appointment);
+app.use("/api/v1/customers", protect, customers);
+app.use("/api/v1/appointment", protect, appointment);
+app.use("/api/v1/login", login);
+app.use("/api/v1/administrators", protect, admin);
 
 import notFound from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
