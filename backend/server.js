@@ -20,11 +20,13 @@ import customers from "./routes/customers.js";
 import appointment from "./routes/appointment.js";
 import login from "./routes/login.js";
 import admin from "./routes/administrators.js";
+import sendEmail from "./routes/sendEmail.js";
 
 app.use("/api/v1/customers", protect, customers);
 app.use("/api/v1/appointment", protect, appointment);
 app.use("/api/v1/login", login);
 app.use("/api/v1/administrators", protect, admin);
+app.use("/api/v1/sendEmail", protect, sendEmail);
 
 import notFound from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
