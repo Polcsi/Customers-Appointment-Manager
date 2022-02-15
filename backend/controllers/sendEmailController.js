@@ -7,7 +7,7 @@ import { google } from "googleapis";
 // @route   POST /api/v1/sendEmail
 // @access Private
 const sendEmail = async (req, res) => {
-  const { email, appointment, description } = req.body;
+  const { email, appointment, description, fullname } = req.body;
 
   const oAuth2Client = new google.auth.OAuth2(
     process.env.OAUTH_CLIENTID,
@@ -50,7 +50,7 @@ const sendEmail = async (req, res) => {
       text: appointment + description,
       html: `
         <h2>Reminder for 'something'</h2>
-        <p>I am looking forward you the appointment we talked about: ${appointment}</p>
+        <p>Hi ${fullname}!<br><br>I am looking forward you the appointment we talked about: ${appointment}</p>
         <p>Description: ${description}</p>
         <br>
         <span>This is an automatic generated email. Do not reply this.</span>
