@@ -7,7 +7,7 @@ import axios from "axios";
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 let m = 0;
-myEmitter.once("event", async (token) => {
+myEmitter.on("event", async (token) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   function padTo2Digits(num) {
