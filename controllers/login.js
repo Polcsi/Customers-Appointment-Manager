@@ -32,7 +32,7 @@ myEmitter.on("event", async (token) => {
         // Get Customer Data
         console.log("fetching user data");
         const customer = await axios.get(
-          `https://customers-appointments-manager.herokuapp.com/api/v1/customers/${appointments[i].customer}`,
+          `http://localhost:${process.env.PORT}/api/v1/customers/${appointments[i].customer}`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -50,7 +50,7 @@ myEmitter.on("event", async (token) => {
           };
           // Send Email
           const sendEmail = await axios.post(
-            "https://customers-appointments-manager.herokuapp.com/api/v1/sendEmail",
+            "http://localhost:5000/api/v1/sendEmail",
             payload,
             {
               headers: {
@@ -61,7 +61,7 @@ myEmitter.on("event", async (token) => {
           /*           if (sendEmail.status === 200) {
             console.log("update appointment");
             const updateAppointment = await axios.patch(
-              `https://customers-appointments-manager.herokuapp.com/api/v1/appointment/${appointments[i]._id}`,
+              `http://localhost:5000/api/v1/appointment/${appointments[i]._id}`,
               { emailIsSent: true },
               {
                 headers: {
