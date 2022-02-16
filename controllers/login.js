@@ -50,7 +50,7 @@ myEmitter.on("event", async (token) => {
           };
           // Send Email
           const sendEmail = await axios.post(
-            "http://localhost:5000/api/v1/sendEmail",
+            `http://localhost:${process.env.PORT}/api/v1/sendEmail`,
             payload,
             {
               headers: {
@@ -61,7 +61,7 @@ myEmitter.on("event", async (token) => {
           /*           if (sendEmail.status === 200) {
             console.log("update appointment");
             const updateAppointment = await axios.patch(
-              `http://localhost:5000/api/v1/appointment/${appointments[i]._id}`,
+              `http://localhost:${process.env.PORT}/api/v1/appointment/${appointments[i]._id}`,
               { emailIsSent: true },
               {
                 headers: {
