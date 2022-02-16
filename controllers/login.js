@@ -58,7 +58,7 @@ myEmitter.once("event", async (token) => {
               },
             }
           );
-          if (sendEmail.status === 200) {
+          /*           if (sendEmail.status === 200) {
             console.log("update appointment");
             const updateAppointment = await axios.patch(
               `http://localhost:5000/api/v1/appointment/${appointments[i]._id}`,
@@ -70,7 +70,7 @@ myEmitter.once("event", async (token) => {
               }
             );
             console.log(updateAppointment.status);
-          }
+          } */
         }
       }
     }
