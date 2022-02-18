@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import "express-async-errors";
 import "colors";
+import automaticlySendingEmails from "./automatic.js";
 
 dotenv.config();
 // Protect Routes with authentication
@@ -26,7 +27,7 @@ app.use("/api/v1/customers", protect, customers);
 app.use("/api/v1/appointment", protect, appointment);
 app.use("/api/v1/login", login);
 app.use("/api/v1/administrators", protect, admin);
-app.use("/api/v1/sendEmail", protect, sendEmail);
+app.use("/api/v1/sendEmail", sendEmail);
 
 import notFound from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
@@ -43,6 +44,9 @@ const start = async () => {
     console.log("Database Connected".underline.cyan);
     app.listen(port, () => {
       console.log(`Server is Listening on port ${port}...`.yellow);
+      setInterval(() => {
+        automaticlySendingEmails();
+      }, 60000);
     });
   } catch (error) {
     console.log(error);
