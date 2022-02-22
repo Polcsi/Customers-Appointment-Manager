@@ -30,7 +30,7 @@ const Navbar = () => {
             <BsFillPersonFill />
           </div>
           <h3 className="greeting">Hi</h3>
-          <h3 className="actual-user">Hurka Cica</h3>
+          <h3 className="actual-user">Pollák Bence</h3>
         </div>
         <div
           className={

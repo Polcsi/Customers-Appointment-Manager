@@ -8,6 +8,7 @@
 html,
 body {
   height: 100vh;
+  background: var(--primary-white);
 }
 body {
   font-family: "Poppins", sans-serif;
@@ -18,9 +19,13 @@ body {
 :root {
   --light-gray-1: #e6eed6;
   --light-gray-2: #dde2c6;
+  --light-gray-3: #b6be9c;
+  --light-gray-4: #f2f2f2;
   --gray-primary: #bbc5aa;
   --orange-primary: #a72608;
   --black-primary: #090c02;
+  --dark-blue: #0e2225;
+  --primary-white: #ffffff;
   --text-color: #fff;
   --transition: all 0.3s linear;
   --spacing: 0.1rem;

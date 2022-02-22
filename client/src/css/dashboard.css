@@ -1,0 +1,149 @@
+.dashboard {
+  width: 92%;
+  margin: 13vh auto auto auto;
+}
+.dashboard .header h1 {
+  font-size: 1.5rem;
+}
+.dashboard .header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.underline {
+  width: 100%;
+  height: 2px;
+  background: #f2f2f2;
+}
+.header .btns {
+  display: flex;
+  gap: 0.4rem;
+}
+.header button {
+  background: var(--light-gray-4);
+  padding: 0.3rem 0.4rem;
+  border-radius: 100%;
+  border: none;
+  font-size: 1.3rem;
+}
+.header button svg {
+  vertical-align: middle;
+}
+.header .add {
+  font-size: 1.5rem;
+}
+.appointments-container {
+  margin-top: 25px;
+}
+.day-section {
+  margin: 1.4rem 0;
+}
+.day-section h2 {
+  margin-bottom: 0.4rem;
+  text-align: left;
+  font-size: 1.2rem;
+  text-transform: capitalize;
+}
+.appointments-container article {
+  display: flex;
+  justify-content: space-between;
+  background: var(--light-gray-4);
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin: 0.6rem 0;
+}
+.appointment-header h1 {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.appointment-header h2 {
+  font-size: 1rem;
+  font-weight: 400;
+}
+.indicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+.indicators svg {
+  font-size: 1.2rem;
+}
+.operation {
+  background: none;
+  border: 1px solid var(--black-primary);
+  border-radius: 5px;
+  padding: 0.2rem 0.2rem;
+}
+.line {
+  height: 1px;
+  width: 20px;
+  background-color: var(--light-gray-3);
+  transform: rotate(90deg);
+}
+.true {
+  color: green;
+}
+.false {
+  color: red;
+}
+/* Add Modal */
+.addAppointment {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-white);
+  padding: 1rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+.modal-header h1 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.modal-header button:nth-child(1) {
+  width: 25px;
+  height: 25px;
+}
+.modal-header button {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--black-primary);
+}
+.modal-inputs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.input {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem 0.4rem;
+  border-bottom: 1px solid var(--light-gray-2);
+}
+.input svg {
+  vertical-align: middle;
+}
+.input:active {
+  background-color: var(--light-gray-4);
+}
+.input-desc:active .desc {
+  background-color: var(--light-gray-4);
+}
+.desc {
+  border: none;
+  outline: none;
+  background-color: var(--primary-white);
+  width: 92%;
+}

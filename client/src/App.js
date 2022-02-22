@@ -12,6 +12,7 @@ import Navbar from "./components/Navbar";
 // Style Sheets
 import "./css/main.css";
 import "./css/nav.css";
+import "./css/dashboard.css";
 
 function App() {
   return (
