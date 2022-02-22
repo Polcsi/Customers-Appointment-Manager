@@ -1,0 +1,172 @@
+.navbar {
+  width: 100%;
+  height: 12vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 1.8rem 1rem 1.2rem 1rem;
+  background: var(--gray-primary);
+  transition: all 0.3s ease;
+}
+.navbar.sticky {
+  padding: 2rem 1rem 1.4rem 1rem !important;
+}
+.navbar .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: clamp(0.1rem, 2.5vw, 6rem);
+  margin-right: clamp(0rem, 2vw, 4rem);
+  max-width: 1700px;
+  width: 100%;
+  margin: auto;
+}
+.nav-header {
+  display: grid;
+  grid-gap: 0 0.5rem;
+  grid-template-areas:
+    "pic greeting"
+    "pic user";
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+}
+.nav-header h3 {
+  font-size: 1rem;
+}
+.nav-header > .profile-picture {
+  grid-area: pic;
+}
+.nav-header > .greeting {
+  grid-area: greeting;
+}
+.nav-header > .actual-user {
+  grid-area: user;
+}
+.profile-picture {
+  background: var(--light-gray-2);
+  border-radius: 100%;
+  padding: 0.4rem;
+}
+.profile-picture svg {
+  font-size: 1.5rem;
+}
+.navbar .menu-list {
+  display: inline-flex;
+  gap: 2rem;
+}
+.menu-list li {
+  list-style: none;
+}
+.menu-list li a,
+.menu-list li button {
+  position: relative;
+  color: var(--text-color);
+  text-decoration: none;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  font-size: clamp(1rem, 1.3vw, 1.6rem);
+  letter-spacing: var(--spacing);
+  display: block;
+  padding: 0.5rem 0rem;
+  transition: var(--transition);
+  /* text-align: center; */
+  font-weight: 500;
+}
+.menu-list li a svg,
+.menu-list li button svg {
+  vertical-align: middle;
+}
+.menu-list li a::before,
+.menu-list li button::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s linear;
+}
+.menu-list li a:hover::before,
+.menu-list li button:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.active-link::before {
+  transform: scaleX(1) !important;
+  transform-origin: left !important;
+}
+.icon {
+  color: #fff;
+  font-size: clamp(1.2rem, 1.4vw, 1.6rem);
+  cursor: pointer;
+  display: none;
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+@media screen and (max-width: 900px) {
+  body.disabledScroll {
+    overflow: hidden !important;
+  }
+  .navbar {
+    padding: 1rem 1rem 1rem 1rem;
+  }
+  .navbar.sticky {
+    padding: 0.8rem 0.9rem 1rem 0.9rem !important;
+  }
+  .menu-list li a:hover::before,
+  .menu-list li button:hover::before {
+    transform: scaleX(0);
+  }
+  .menu-list li:last-child {
+    position: absolute;
+    bottom: 30px;
+  }
+  .icon {
+    display: block;
+  }
+  .icon.hide {
+    display: none;
+  }
+
+  .navbar .menu-list {
+    position: fixed;
+    z-index: 1001;
+    top: 10vh;
+    left: -100%;
+    height: 90%;
+    width: 100%;
+    background: var(--light-gray-2);
+    padding: 0 0 0 60px;
+    display: flex;
+    gap: 0;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 0vh;
+    /* text-align: center; */
+    transition: all 0.3s ease;
+  }
+  .navbar.show .menu-list {
+    left: 0%;
+  }
+  .navbar.show .menu-list li a {
+    margin-left: 0px;
+  }
+  .navbar .menu-list.active {
+    left: 0%;
+  }
+  .navbar .menu-list li {
+    margin-top: 30px;
+  }
+  .navbar .menu-list li a {
+    font-size: 1.2rem;
+  }
+}

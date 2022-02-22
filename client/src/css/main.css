@@ -1,0 +1,27 @@
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100vh;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  display: block;
+  overflow: auto;
+  overscroll-behavior: none;
+}
+:root {
+  --light-gray-1: #e6eed6;
+  --light-gray-2: #dde2c6;
+  --gray-primary: #bbc5aa;
+  --orange-primary: #a72608;
+  --black-primary: #090c02;
+  --text-color: #fff;
+  --transition: all 0.3s linear;
+  --spacing: 0.1rem;
+}
