@@ -1,10 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
+import path from "path";
 import "express-async-errors";
 import "colors";
 import automaticlySendingEmails from "./automatic.js";
 
+const __dirname = path.resolve();
 dotenv.config();
+
 // Protect Routes with authentication
 import { protect } from "./middleware/authentication.js";
 
@@ -28,6 +31,11 @@ app.use("/api/v1/appointment", protect, appointment);
 app.use("/api/v1/login", login);
 app.use("/api/v1/administrators", protect, admin);
 app.use("/api/v1/sendEmail", sendEmail);
+
+app.use(express.static(path.join(__dirname, "client", "build")));
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 import notFound from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";

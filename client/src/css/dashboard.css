@@ -60,6 +60,31 @@
   font-size: 1rem;
   font-weight: 400;
 }
+.person-header {
+  display: grid;
+  grid-template-areas:
+    "img name"
+    "img phone";
+  justify-content: center;
+  align-items: center;
+  grid-gap: 0 0.6rem;
+}
+.img-person svg {
+  font-size: 1.7rem;
+}
+.person-header > .img-person {
+  grid-area: img;
+}
+.person-header > .name-person {
+  grid-area: name;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.person-header > .phone-person {
+  grid-area: phone;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
 .indicators {
   display: flex;
   justify-content: center;

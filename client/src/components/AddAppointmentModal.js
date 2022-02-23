@@ -52,7 +52,11 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
           }}
         >
           <div className="title">SendReminder</div>
-          <input checked={reminderValue} type="checkbox" />
+          <input
+            checked={reminderValue}
+            onChange={() => console.log("change")}
+            type="checkbox"
+          />
         </div>
         <div
           className="input input-desc"
