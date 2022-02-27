@@ -1,15 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import CustomerSelector from "./CustomerSelector";
 // Icons
 import { MdDone, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { GrTextAlignFull } from "react-icons/gr";
 import times from "../assets/times.svg";
 
 const AddAppointmentModal = ({ showModal, setShowModal }) => {
+  const [appointment, setAppointment] = useState({
+    customer: "",
+    name: "Not Selected",
+    date: "",
+    time: "",
+    sendReminder: true,
+    description: "",
+  });
   const [reminderValue, setReminderValue] = useState(true);
-  const desc = React.useRef(null);
+  const [openCustomer, setOpenCustomer] = useState(false);
+  const desc = useRef(null);
+
+  const handleChange = (name, value) => {
+    setAppointment({ ...appointment, [name]: value });
+  };
 
   return (
     <div className="addAppointment">
+      {openCustomer ? (
+        <CustomerSelector
+          setOpenCustomer={setOpenCustomer}
+          handleChange={handleChange}
+        />
+      ) : (
+        ""
+      )}
       <div className="modal-header">
         <button>
           <img
@@ -24,10 +46,10 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
         </button>
       </div>
       <div className="modal-inputs">
-        <div className="input">
+        <div className="input" onClick={() => setOpenCustomer(!openCustomer)}>
           <div className="title">Customer</div>
           <div>
-            <span>Not Selected</span>
+            <span>{appointment.name}</span>
             <MdOutlineKeyboardArrowRight />
           </div>
         </div>
@@ -56,6 +78,7 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
             checked={reminderValue}
             onChange={() => console.log("change")}
             type="checkbox"
+            className="switch"
           />
         </div>
         <div
