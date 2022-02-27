@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar";
 import "./css/main.css";
 import "./css/nav.css";
 import "./css/dashboard.css";
+import "./css/login.css";
 
 function App() {
   return (
