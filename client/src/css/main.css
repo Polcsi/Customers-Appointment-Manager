@@ -26,8 +26,10 @@ body {
   --black-primary: #090c02;
   --black-primary-2: #1a1b17e1;
   --dark-blue: #0e2225;
+  --dark-blue-2: #163b41;
   --primary-white: #ffffff;
   --primary-white-1: #ffffff38;
+  --primary-white-2: #ffffff00;
   --text-color: #fff;
   --transition: all 0.3s linear;
   --spacing: 0.1rem;

@@ -4,7 +4,7 @@ import times from "../assets/times.svg";
 const CustomerSelector = ({ setOpenCustomer, handleChange }) => {
   return (
     <div className="overlay">
-      <div className="customer-container">
+      <div className="overlay-container">
         <button
           className="close-overlay"
           onClick={() => setOpenCustomer(false)}
@@ -18,8 +18,8 @@ const CustomerSelector = ({ setOpenCustomer, handleChange }) => {
           <h3
             onClick={() => {
               handleChange("customer", "123fsd10");
-              setOpenCustomer(false);
               handleChange("name", "Pollák Bence");
+              setOpenCustomer(false);
             }}
           >
             Pollák bence
