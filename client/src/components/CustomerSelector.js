@@ -15,7 +15,7 @@ const CustomerSelector = ({ setOpenCustomer, handleChange }) => {
           <h2>select customer</h2>
         </div>
         <div className="customer-list">
-          <h3
+          <article
             onClick={() => {
               handleChange("customer", "123fsd10");
               handleChange("name", "Pollák Bence");
@@ -23,34 +23,16 @@ const CustomerSelector = ({ setOpenCustomer, handleChange }) => {
             }}
           >
             Pollák bence
-          </h3>
-          <h3
+          </article>
+          <article
             onClick={() => {
               handleChange("customer", "10000sd10");
-              setOpenCustomer(false);
               handleChange("name", "Pollák péter");
+              setOpenCustomer(false);
             }}
           >
             Pollák péter
-          </h3>
-          <h3
-            onClick={() => {
-              handleChange("customer", "123fsd10");
-              setOpenCustomer(false);
-              handleChange("name", "Pollák Bence");
-            }}
-          >
-            Pollák bence
-          </h3>
-          <h3
-            onClick={() => {
-              handleChange("customer", "10000sd10");
-              setOpenCustomer(false);
-              handleChange("name", "Pollák péter");
-            }}
-          >
-            Pollák péter
-          </h3>
+          </article>
         </div>
       </div>
     </div>

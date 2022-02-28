@@ -229,14 +229,14 @@
 .customer-list::-webkit-scrollbar {
   display: none;
 }
-.customer-list h3 {
+.customer-list article {
   cursor: pointer;
   text-transform: capitalize;
   font-size: 1rem;
   font-weight: 400;
   padding: 0.6rem 0.5rem;
 }
-.customer-list h3:nth-child(odd) {
+.customer-list article:nth-child(odd) {
   background: var(--light-gray-4);
 }
 .overlay-footer {

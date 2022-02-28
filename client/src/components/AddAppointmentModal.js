@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import CustomerSelector from "./CustomerSelector";
 import DateSelector from "./DateSelector";
 import TimeSelector from "./TimeSelector";
@@ -24,6 +24,7 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
   const desc = useRef(null);
 
   const handleChange = (name, value) => {
+    console.log(name, value);
     setAppointment({ ...appointment, [name]: value });
   };
 
