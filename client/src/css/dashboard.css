@@ -203,6 +203,10 @@
 .datetime-overlay {
   gap: 2rem;
 }
+.customer-selector {
+  gap: 1rem;
+  height: 320px;
+}
 .overlay-container .header h2 {
   text-transform: capitalize;
   font-weight: 600;
@@ -222,7 +226,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  height: 150px;
+  height: 230px;
   overflow: auto;
   overflow-x: hidden;
 }
@@ -283,6 +287,18 @@
   opacity: 0;
   outline: none;
 }
+.month-slider {
+  height: 120px;
+  top: -95px;
+}
+.year-slider {
+  width: 150px;
+  top: -60px;
+  left: -10%;
+}
+.day-slider {
+  height: 50px;
+}
 .slider-value {
   overflow: hidden;
   line-height: 35px;
@@ -291,8 +307,12 @@
   top: -10px;
   left: 45%;
 }
-.minute-slider-value {
+.minute-slider-value,
+.day-slider-value {
   line-height: 36px;
+}
+.month-slider-value {
+  left: 25%;
 }
 .slider-value div {
   font-size: 1.2rem;
@@ -303,7 +323,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 200px;
+  width: 220px;
   height: 45px;
   border-top: 1px solid var(--gray-primary);
   border-bottom: 1px solid var(--gray-primary);
@@ -312,11 +332,14 @@
   position: absolute;
   bottom: 45px;
   z-index: 4900;
-  width: 200px;
+  width: 240px;
   height: 60px;
   background: linear-gradient(
     to top,
     var(--primary-white),
     var(--primary-white-2)
   );
+}
+.month-slider-value {
+  text-transform: capitalize;
 }

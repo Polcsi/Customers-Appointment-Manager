@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import CustomerSelector from "./CustomerSelector";
 import DateSelector from "./DateSelector";
 import TimeSelector from "./TimeSelector";
+import { monthsArr } from "../data";
 // Icons
 import { MdDone, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { GrTextAlignFull } from "react-icons/gr";
@@ -11,22 +12,25 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
   const today = new Date();
   const [appointment, setAppointment] = useState({
     customer: "",
-    name: "Not Selected",
-    date: "",
+    date: `${today.getFullYear()}-${today.getMonth()}-${today.getDay()}`,
     time: `${today.getHours()}:${today.getMinutes()}`,
     sendReminder: true,
     description: "",
   });
   const [reminderValue, setReminderValue] = useState(true);
+  const [name, setName] = useState("Not Selected");
   const [openCustomer, setOpenCustomer] = useState(false);
   const [openDate, setOpenDate] = useState(false);
   const [openTime, setOpenTime] = useState(false);
   const desc = useRef(null);
 
   const handleChange = (name, value) => {
-    console.log(name, value);
     setAppointment({ ...appointment, [name]: value });
   };
+
+  React.useEffect(() => {
+    document.body.style.overflow = "hidden";
+  }, []);
 
   return (
     <div className="addAppointment">
@@ -34,6 +38,7 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
         <CustomerSelector
           setOpenCustomer={setOpenCustomer}
           handleChange={handleChange}
+          setName={setName}
         />
       ) : (
         ""
@@ -43,6 +48,7 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
           setOpenDate={setOpenDate}
           handleChange={handleChange}
           appointment={appointment}
+          today={today}
         />
       ) : (
         ""
@@ -61,7 +67,10 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
           <img
             src={times}
             alt="times"
-            onClick={() => setShowModal(!showModal)}
+            onClick={() => {
+              document.body.style.overflow = "auto";
+              setShowModal(!showModal);
+            }}
           />
         </button>
         <h1>Add Appointment</h1>
@@ -73,14 +82,18 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
         <div className="input" onClick={() => setOpenCustomer(!openCustomer)}>
           <div className="title">Customer</div>
           <div>
-            <span>{appointment.name}</span>
+            <span>{name}</span>
             <MdOutlineKeyboardArrowRight />
           </div>
         </div>
         <div className="input" onClick={() => setOpenDate(!openDate)}>
           <div className="title">Date</div>
           <div>
-            <span>February 12</span>
+            <span>
+              {`${appointment.date.split("-")[0]} ${
+                monthsArr[parseInt(appointment.date.split("-")[1]) - 1]
+              } ${appointment.date.split("-")[2]}`}
+            </span>
             <MdOutlineKeyboardArrowRight />
           </div>
         </div>
@@ -118,6 +131,7 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
             className="desc"
             type="text"
             placeholder="Description"
+            onChange={(e) => handleChange("description", e.target.value)}
           />
         </div>
       </div>

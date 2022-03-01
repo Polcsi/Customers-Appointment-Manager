@@ -1,10 +1,10 @@
 import React from "react";
 import times from "../assets/times.svg";
 
-const CustomerSelector = ({ setOpenCustomer, handleChange }) => {
+const CustomerSelector = ({ setOpenCustomer, handleChange, setName }) => {
   return (
     <div className="overlay">
-      <div className="overlay-container">
+      <div className="overlay-container customer-selector">
         <button
           className="close-overlay"
           onClick={() => setOpenCustomer(false)}
@@ -18,7 +18,7 @@ const CustomerSelector = ({ setOpenCustomer, handleChange }) => {
           <article
             onClick={() => {
               handleChange("customer", "123fsd10");
-              handleChange("name", "Pollák Bence");
+              setName("Pollák Bence");
               setOpenCustomer(false);
             }}
           >
@@ -27,7 +27,61 @@ const CustomerSelector = ({ setOpenCustomer, handleChange }) => {
           <article
             onClick={() => {
               handleChange("customer", "10000sd10");
-              handleChange("name", "Pollák péter");
+              setName("Pollák Péter");
+              setOpenCustomer(false);
+            }}
+          >
+            Pollák péter
+          </article>
+          <article
+            onClick={() => {
+              handleChange("customer", "123fsd10");
+              setName("Pollák Bence");
+              setOpenCustomer(false);
+            }}
+          >
+            Pollák bence
+          </article>
+          <article
+            onClick={() => {
+              handleChange("customer", "10000sd10");
+              setName("Pollák Péter");
+              setOpenCustomer(false);
+            }}
+          >
+            Pollák péter
+          </article>
+          <article
+            onClick={() => {
+              handleChange("customer", "123fsd10");
+              setName("Pollák Bence");
+              setOpenCustomer(false);
+            }}
+          >
+            Pollák bence
+          </article>
+          <article
+            onClick={() => {
+              handleChange("customer", "10000sd10");
+              setName("Pollák Péter");
+              setOpenCustomer(false);
+            }}
+          >
+            Pollák péter
+          </article>
+          <article
+            onClick={() => {
+              handleChange("customer", "123fsd10");
+              setName("Pollák Bence");
+              setOpenCustomer(false);
+            }}
+          >
+            Pollák bence
+          </article>
+          <article
+            onClick={() => {
+              handleChange("customer", "10000sd10");
+              setName("Pollák Péter");
               setOpenCustomer(false);
             }}
           >
