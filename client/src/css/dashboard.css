@@ -129,6 +129,7 @@
 .modal-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .modal-header h1 {
   font-size: 1.5rem;
@@ -203,6 +204,16 @@
   display: flex;
   flex-direction: column;
 }
+.overlay-input {
+  height: 170px;
+}
+.text-field {
+  width: 100%;
+  padding: 0.3rem 0.2rem;
+  border: none;
+  border-bottom: 1px solid var(--light-gray-2);
+  outline: none;
+}
 .datetime-overlay {
   gap: 2rem;
 }
@@ -274,6 +285,19 @@
   align-items: center;
   width: 100%;
   height: 220px;
+}
+.radio-container {
+  gap: 1rem;
+}
+.input-radio {
+  display: flex;
+  gap: 0.2rem;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize;
+}
+.input-radio input {
+  vertical-align: middle;
 }
 .input-time {
   position: relative;
