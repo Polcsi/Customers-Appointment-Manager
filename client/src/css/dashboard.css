@@ -113,7 +113,7 @@
   color: red;
 }
 /* Add Modal */
-.addAppointment {
+.addModal {
   position: fixed;
   top: 0;
   left: 0;
@@ -156,6 +156,9 @@
   justify-content: space-between;
   padding: 0.7rem 0.4rem;
   border-bottom: 1px solid var(--light-gray-2);
+}
+.input .title {
+  text-transform: capitalize;
 }
 .input span {
   text-transform: capitalize;

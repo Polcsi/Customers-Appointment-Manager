@@ -33,7 +33,7 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
   }, []);
 
   return (
-    <div className="addAppointment">
+    <div className="addModal">
       {openCustomer ? (
         <CustomerSelector
           setOpenCustomer={setOpenCustomer}
