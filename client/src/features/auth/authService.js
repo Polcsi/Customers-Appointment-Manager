@@ -3,19 +3,14 @@ import axios from "axios";
 const API_URL = "api/v1/";
 
 // Register admin
-const register = async (adminData) => {
-  const token = JSON.parse(localStorage.getItem("admin")).token;
-  const response = await axios.post(
-    "http://localhost:5000/api/v1/administrators",
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+const register = async (adminData, token) => {
+  console.log(token);
+  const response = await axios.post(API_URL + "administrators", adminData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-    adminData
-  );
-
+  });
+  console.log(response);
   return response;
 };
 
@@ -31,7 +26,6 @@ const login = async (adminData) => {
 
 // Logout admin
 const logout = () => {
-  console.log("remove");
   localStorage.removeItem("admin");
 };
 

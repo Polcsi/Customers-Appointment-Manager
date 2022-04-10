@@ -26,16 +26,17 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
     }
     if (isSuccess) {
       toast.success("Administrator Created");
+      setOpenModal(!openModal);
     }
     dispatch(reset());
   }, [admin, isError, isLoading, isSuccess, message, dispatch]);
 
   /* React */
   const [adminData, setAdminData] = useState({
-    fullname: "",
     username: "",
-    privilege: "",
+    fullname: "",
     password: "",
+    privilege: "",
   });
   const [placeholders, setPlacehoders] = useState({
     fullname: "No Name",

@@ -13,7 +13,6 @@ const createAdmin = async (req, res) => {
   if (req.admin.privilege !== "owner") {
     throw new UnauthenticatedError("not authorized");
   }
-  console.log(req.body);
   const admin = await Administrators.create({ ...req.body });
   res.status(StatusCodes.CREATED).json({ status: "success", admin });
 };

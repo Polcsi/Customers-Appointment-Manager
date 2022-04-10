@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // Redux Elements
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
 // Icons
 import { BsFillPersonFill, BsPeople } from "react-icons/bs";
@@ -14,10 +14,10 @@ import { RiAdminLine } from "react-icons/ri";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { admin } = useSelector((state) => state.auth);
+  const storage = localStorage.getItem("admin");
+  const admin = storage && JSON.parse(storage);
 
   const onLogout = () => {
-    console.log("logout please");
     dispatch(logout());
     dispatch(reset());
     navigate("/login");
@@ -43,8 +43,7 @@ const Navbar = () => {
           <div className="profile-picture">
             <BsFillPersonFill />
           </div>
-          <h3 className="greeting">Hi</h3>
-          <h3 className="actual-user"></h3>
+          <h3 className="actual-user">{admin && admin.admin.name}</h3>
         </div>
         <div
           className={
