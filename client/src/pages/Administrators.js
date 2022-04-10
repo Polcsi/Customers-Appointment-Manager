@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import RegisterAdminModal from "../components/RegisterAdminModal";
+import PersonItem from "../components/PersonItem";
 // Icons
 import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
@@ -25,7 +26,9 @@ const Administrators = () => {
         </div>
       </div>
       <div className="underline"></div>
-      <div className="appointments-container"></div>
+      <div className="appointments-container">
+        <PersonItem id="1" fullname="Pollák Bence" detail="admin" />
+      </div>
     </div>
   );
 };

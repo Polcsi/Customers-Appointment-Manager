@@ -64,7 +64,7 @@
   display: grid;
   grid-template-areas:
     "img name"
-    "img phone";
+    "img detail";
   justify-content: center;
   align-items: center;
   grid-gap: 0 0.6rem;
@@ -80,10 +80,11 @@
   font-size: 1.2rem;
   font-weight: 600;
 }
-.person-header > .phone-person {
-  grid-area: phone;
+.person-header > .detail-person {
+  grid-area: detail;
   font-size: 0.8rem;
   font-weight: 400;
+  text-transform: capitalize;
 }
 .indicators {
   display: flex;
@@ -124,12 +125,13 @@
   padding: 1rem 0.7rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 0.6rem;
 }
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 2.4rem;
 }
 .modal-header h1 {
   font-size: 1.5rem;
@@ -159,9 +161,6 @@
   border-bottom: 1px solid var(--light-gray-2);
 }
 .input .title {
-  text-transform: capitalize;
-}
-.input span {
   text-transform: capitalize;
 }
 .input svg {

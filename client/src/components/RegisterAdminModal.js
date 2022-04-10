@@ -1,10 +1,37 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import times from "../assets/times.svg";
 import { MdDone, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import InputModal from "./InputModal";
+import Spinner from "./Spinner";
+// Redux Elements
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { register, reset } from "../features/auth/authSlice";
 
 const RegisterAdminModal = ({ openModal, setOpenModal }) => {
-  const [admin, setAdmin] = useState({
+  /* Redux Things */
+  const dispatch = useDispatch();
+  const { admin, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  /* Submit Data */
+  const registerAdmin = () => {
+    dispatch(register(adminData));
+  };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess) {
+      toast.success("Administrator Created");
+    }
+    dispatch(reset());
+  }, [admin, isError, isLoading, isSuccess, message, dispatch]);
+
+  /* React */
+  const [adminData, setAdminData] = useState({
     fullname: "",
     username: "",
     privilege: "",
@@ -12,8 +39,8 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
   });
   const [placeholders, setPlacehoders] = useState({
     fullname: "No Name",
-    username: "No username",
-    privilege: "not selected",
+    username: "No Username",
+    privilege: "Not Selected",
     password: "•••••••••••",
   });
   const [openFullname, setOpenFullName] = useState(false);
@@ -22,7 +49,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
   const [openPrivilege, setOpenPrivilege] = useState(false);
 
   const handleChange = (name, value) => {
-    setAdmin({ ...admin, [name]: value });
+    setAdminData({ ...adminData, [name]: value });
   };
   const changePlaceholder = (name, value) => {
     if (name === "password") {
@@ -45,12 +72,13 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
 
   return (
     <div className="addModal">
+      {isLoading && <Spinner />}
       {openFullname ? (
         <InputModal
           type={"fullname"}
           close={setOpenFullName}
           handleChange={handleChange}
-          placeholderValue={placeholders.fullname}
+          placeholderValue={adminData.fullname}
           changePlaceholder={changePlaceholder}
         />
       ) : (
@@ -61,7 +89,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
           type={"username"}
           close={setOpenUsername}
           handleChange={handleChange}
-          placeholderValue={placeholders.username}
+          placeholderValue={adminData.username}
           changePlaceholder={changePlaceholder}
         />
       ) : (
@@ -72,7 +100,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
           type={"password"}
           close={setOpenPassword}
           handleChange={handleChange}
-          placeholderValue={admin.password}
+          placeholderValue={adminData.password}
           changePlaceholder={changePlaceholder}
         />
       ) : (
@@ -90,7 +118,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
         ""
       )}
       <div className="modal-header">
-        <button>
+        <button type="button">
           <img
             src={times}
             alt="times"
@@ -101,7 +129,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
           />
         </button>
         <h1>Add Administrator</h1>
-        <button>
+        <button type="button" onClick={() => registerAdmin()}>
           <MdDone />
         </button>
       </div>

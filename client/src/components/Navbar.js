@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+// Redux Elements
+import { useSelector, useDispatch } from "react-redux";
+import { logout, reset } from "../features/auth/authSlice";
 // Icons
 import { BsFillPersonFill, BsPeople } from "react-icons/bs";
 import { BiMenuAltRight } from "react-icons/bi";
@@ -9,6 +12,17 @@ import { AiOutlineFieldTime, AiOutlineHome } from "react-icons/ai";
 import { RiAdminLine } from "react-icons/ri";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { admin } = useSelector((state) => state.auth);
+
+  const onLogout = () => {
+    console.log("logout please");
+    dispatch(logout());
+    dispatch(reset());
+    navigate("/login");
+  };
+
   const [showLinks, setShowLinks] = useState(false);
 
   const handlingNavClasses = () => {
@@ -30,7 +44,7 @@ const Navbar = () => {
             <BsFillPersonFill />
           </div>
           <h3 className="greeting">Hi</h3>
-          <h3 className="actual-user">Pollák Bence</h3>
+          <h3 className="actual-user"></h3>
         </div>
         <div
           className={
@@ -82,7 +96,13 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <button className="nav-link" onClick={() => setShowLinks(false)}>
+            <button
+              className="nav-link"
+              onClick={() => {
+                onLogout();
+                setShowLinks(false);
+              }}
+            >
               <MdOutlineLogout /> Logout
             </button>
           </li>

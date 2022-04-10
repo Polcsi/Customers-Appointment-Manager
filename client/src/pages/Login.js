@@ -1,7 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
+// Redux Elements
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { login, reset } from "../features/auth/authSlice";
 
 const Login = () => {
-  const [admin, setAdmin] = useState({
+  const [adminValue, setAdminValue] = useState({
     username: `${localStorage["username"]}`,
     password: `${localStorage["password"]}`,
   });
@@ -9,18 +15,32 @@ const Login = () => {
   const passwordRef = useRef(null);
   const checkboxRef = useRef(null);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { admin, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess || admin) {
+      navigate("/");
+    }
+    dispatch(reset());
+  }, [admin, isError, isLoading, isSuccess, message, navigate, dispatch]);
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
 
-    setAdmin({ ...admin, [name]: value });
+    setAdminValue({ ...adminValue, [name]: value });
     saveData();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    setAdmin({ username: "", password: "" });
+    dispatch(login(adminValue));
   };
 
   const saveData = () => {
@@ -49,6 +69,7 @@ const Login = () => {
 
   return (
     <div className="login-page">
+      {isLoading && <Spinner />}
       <div className="login-container">
         <div className="header">
           <h1>Sign in</h1>
@@ -61,7 +82,7 @@ const Login = () => {
               required
               autoComplete="off"
               name="username"
-              value={admin.username}
+              value={adminValue.username}
               onChange={handleChange}
               ref={usernameRef}
             />
@@ -74,7 +95,7 @@ const Login = () => {
               required
               autoComplete="off"
               name="password"
-              value={admin.password}
+              value={adminValue.password}
               onChange={handleChange}
               ref={passwordRef}
             />
