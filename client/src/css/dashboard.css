@@ -34,6 +34,7 @@
 }
 .appointments-container {
   margin-top: 25px;
+  display: grid;
 }
 .day-section {
   margin: 1.4rem 0;
@@ -50,7 +51,7 @@
   background: var(--light-gray-4);
   padding: 0.5rem;
   border-radius: 5px;
-  margin: 0.6rem 0;
+  margin: 0.26rem 0;
 }
 .appointment-header h1 {
   font-size: 1.4rem;

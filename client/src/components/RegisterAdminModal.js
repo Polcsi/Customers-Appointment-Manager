@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import times from "../assets/times.svg";
 import { MdDone, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import InputModal from "./InputModal";
@@ -6,14 +6,18 @@ import Spinner from "./Spinner";
 // Redux Elements
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { register, reset } from "../features/auth/authSlice";
+import { register, reset } from "../features/administrators/adminSlice";
 
 const RegisterAdminModal = ({ openModal, setOpenModal }) => {
   /* Redux Things */
   const dispatch = useDispatch();
-  const { admin, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.admin
   );
+
+  const close = useCallback(() => {
+    setOpenModal(!openModal);
+  }, [openModal, setOpenModal]);
 
   /* Submit Data */
   const registerAdmin = () => {
@@ -26,10 +30,10 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
     }
     if (isSuccess) {
       toast.success("Administrator Created");
-      setOpenModal(!openModal);
+      close();
     }
     dispatch(reset());
-  }, [admin, isError, isLoading, isSuccess, message, dispatch]);
+  }, [isError, close, isLoading, isSuccess, message, dispatch]);
 
   /* React */
   const [adminData, setAdminData] = useState({
@@ -73,7 +77,6 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
 
   return (
     <div className="addModal">
-      {isLoading && <Spinner />}
       {openFullname ? (
         <InputModal
           type={"fullname"}
@@ -125,7 +128,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
             alt="times"
             onClick={() => {
               document.body.style.overflow = "auto";
-              setOpenModal(!openModal);
+              close();
             }}
           />
         </button>
@@ -134,6 +137,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
           <MdDone />
         </button>
       </div>
+      {isLoading && <Spinner />}
       <div className="modal-inputs">
         <div className="input" onClick={() => setOpenFullName(true)}>
           <div className="title">full name</div>

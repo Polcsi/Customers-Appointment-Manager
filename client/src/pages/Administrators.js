@@ -1,12 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RegisterAdminModal from "../components/RegisterAdminModal";
 import PersonItem from "../components/PersonItem";
+import Spinner from "../components/Spinner";
+import { useNavigate } from "react-router-dom";
+// Redux Elements
+import { useSelector, useDispatch } from "react-redux";
+import { getAdmins, reset } from "../features/administrators/adminSlice";
 // Icons
 import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
 
 const Administrators = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { admins, isLoading, isError, message } = useSelector(
+    (state) => state.admin
+  );
+  const { admin } = useSelector((state) => state.auth);
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
+    if (!admin) {
+      navigate("/login");
+    }
+    dispatch(getAdmins());
+    return () => {
+      dispatch(reset());
+    };
+  }, [admin, navigate, isError, message, dispatch]);
+
   return (
     <div className="dashboard">
       {openModal ? (
@@ -27,7 +52,14 @@ const Administrators = () => {
       </div>
       <div className="underline"></div>
       <div className="appointments-container">
-        <PersonItem id="1" fullname="Pollák Bence" detail="admin" />
+        {isLoading && <Spinner />}
+
+        {admins.map((admin) => {
+          const { _id, fullname, privilege } = admin;
+          return (
+            <PersonItem key={_id} fullname={fullname} detail={privilege} />
+          );
+        })}
       </div>
     </div>
   );

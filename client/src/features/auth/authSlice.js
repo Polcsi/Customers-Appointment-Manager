@@ -12,26 +12,6 @@ const initialState = {
   message: "",
 };
 
-// Register admin
-export const register = createAsyncThunk(
-  "auth/register",
-  async (admin, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.admin.token;
-      return await authService.register(admin, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      console.log(error);
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
 // Login admin
 export const login = createAsyncThunk("auth/login", async (admin, thunkAPI) => {
   try {
@@ -63,19 +43,6 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(register.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.admin = action.payload;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
       .addCase(login.pending, (state) => {
         state.isLoading = true;
       })

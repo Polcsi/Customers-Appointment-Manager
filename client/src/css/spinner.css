@@ -4,6 +4,7 @@
   height: 40px;
   border-radius: 50%;
   align-self: center;
+  place-self: center;
 }
 .spinner::before,
 .spinner::after {
