@@ -387,9 +387,14 @@
 
 .admin-profile-container {
   position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 .admin-profile-close {
   position: absolute;
+  z-index: 1000;
   top: 20px;
   right: 30px;
   background: none;
@@ -403,4 +408,94 @@
   color: white;
   font-size: 1.5rem;
   font-weight: 100;
+}
+.admin-profile-container .container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: absolute;
+  width: 100%;
+  margin: auto;
+  bottom: 40px;
+}
+.profile-image {
+  position: absolute;
+  top: -105px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  width: 150px;
+  border-radius: 100%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  margin: auto;
+}
+.profile-image img {
+  width: 100%;
+}
+.admin-details {
+  position: relative;
+  height: 150px;
+  width: 95%;
+  margin: auto;
+  background-color: white;
+  border-radius: 5px;
+  padding: 3.3rem 0.6rem 0.6rem 1rem;
+}
+.admin-details h1 {
+  color: black;
+  font-size: 1.4rem;
+  font-weight: 400;
+  text-transform: capitalize;
+}
+.admin-details h1 span {
+  font-size: 0.9rem;
+  text-transform: lowercase;
+  font-style: italic;
+}
+.admin-details h2 {
+  font-size: 1rem;
+  color: var(--black-primary-3);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.admin-profile-container .container .top-border-item {
+  background-color: black;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 5px 5px 0px 0px;
+  width: 100%;
+  height: 5px;
+}
+.admin-profile-operations {
+  height: auto;
+  width: 95%;
+  margin: auto;
+  background-color: white;
+  border-radius: 5px;
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+.admin-profile-operations button {
+  width: 140px;
+  height: 34px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: none;
+  color: var(--text-color);
+  border-radius: 15px;
+  transition: all ease 0.1s;
+}
+.admin-profile-edit-btn {
+  background: var(--edit-color);
+}
+.admin-profile-delete-btn {
+  background: var(--delete-color);
+}
+.admin-profile-operations button:active {
+  transform: scale(0.92);
 }
