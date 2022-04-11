@@ -57,7 +57,12 @@ const Administrators = () => {
         {admins.map((admin) => {
           const { _id, fullname, privilege } = admin;
           return (
-            <PersonItem key={_id} fullname={fullname} detail={privilege} />
+            <PersonItem
+              key={_id}
+              fullname={fullname}
+              detail={privilege}
+              {...admin}
+            />
           );
         })}
       </div>

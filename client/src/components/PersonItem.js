@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsFillPersonFill } from "react-icons/bs";
 import { FiEdit2 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
+import DeleteAdministrator from "./DeleteAdministrator";
 
-const PersonItem = ({ id, fullname, detail }) => {
+const PersonItem = ({ _id, fullname, detail }) => {
+  const [open, setOpen] = useState(false);
+
   return (
     <article>
+      {open && (
+        <DeleteAdministrator id={_id} fullname={fullname} open={open} setOpen={setOpen}/>
+      )}
       <div className="person-header">
         <div className="img-person">
           <BsFillPersonFill />
@@ -18,7 +24,7 @@ const PersonItem = ({ id, fullname, detail }) => {
         <button className="edit operation">
           <FiEdit2 />
         </button>
-        <button className="delete operation">
+        <button className="delete operation" onClick={() => setOpen(!open)}>
           <MdDeleteOutline />
         </button>
       </div>
