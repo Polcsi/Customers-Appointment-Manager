@@ -25,7 +25,7 @@ export const register = createAsyncThunk(
 
 // Get Admins
 export const getAdmins = createAsyncThunk(
-  "admin/getAll",
+  "admin/getAdmins",
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.admin.token;
@@ -38,6 +38,20 @@ export const getAdmins = createAsyncThunk(
         error.message ||
         error.toString();
       console.log(error);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Get Admin
+export const getAdmin = createAsyncThunk(
+  "admin/getAdmin",
+  async (adminData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.admin.token;
+      return await adminService.getAdmin(adminData, token);
+    } catch (error) {
+      const message = error.response.data;
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -56,6 +70,8 @@ export const deleteAdmin = createAsyncThunk(
     }
   }
 );
+
+// Update Admin
 
 export const adminSlice = createSlice({
   name: "admin",

@@ -5,7 +5,8 @@ import { MdDeleteOutline } from "react-icons/md";
 import DeleteAdministrator from "./DeleteAdministrator";
 import AdminInfo from "./AdminInfo";
 
-const PersonItem = ({ _id, fullname, username, detail, privilege }) => {
+const PersonItem = ({ admin, detail }) => {
+  const { _id, fullname, privilege } = admin;
   const deleteBtnRef = useRef(null);
   const editBtnRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -31,9 +32,7 @@ const PersonItem = ({ _id, fullname, username, detail, privilege }) => {
         <AdminInfo
           opened={openedAdminInfo}
           setOpened={setOpenedAdminInfo}
-          fullname={fullname}
-          username={username}
-          privilege={privilege}
+          {...admin}
         />
       )}
       {open && (

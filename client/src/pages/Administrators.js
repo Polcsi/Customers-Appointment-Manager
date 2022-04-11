@@ -63,7 +63,7 @@ const Administrators = () => {
               key={_id}
               fullname={fullname}
               detail={privilege}
-              {...admin}
+              admin={admin}
             />
           );
         })}

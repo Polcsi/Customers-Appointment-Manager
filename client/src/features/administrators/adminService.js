@@ -22,6 +22,20 @@ const getAdmins = async (token) => {
   return response.data.admins;
 };
 
+// Get Admin
+const getAdmin = async (adminId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(
+    `${API_URL}administrators/${adminId}`,
+    config
+  );
+  return response.data;
+};
+
 // Delete Admin
 const deleteAdmin = async (adminId, token) => {
   const response = await axios.delete(`${API_URL}administrators/${adminId}`, {
@@ -32,9 +46,12 @@ const deleteAdmin = async (adminId, token) => {
   return response.data;
 };
 
+// Update Admin
+
 const adminService = {
   register,
   getAdmins,
+  getAdmin,
   deleteAdmin,
 };
 
