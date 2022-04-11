@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { deleteAdmin, reset } from "../features/administrators/adminSlice";
 
-const DeleteAdministrator = ({ open, setOpen, id, fullname }) => {
+const DeleteAdministrator = ({ open, setOpen, id, privilege, fullname }) => {
+  const dispatch = useDispatch();
+
+  const removeAdmin = () => {
+    dispatch(deleteAdmin(id));
+    setOpen(!open);
+  };
+
+  useEffect(() => {
+    return (_) => {
+      dispatch(reset());
+    };
+  });
+
   return (
     <>
       <section className="overlay">
         <div className="overlay-container overlay-operation">
-          <div className="header">
-            <h2>Are you sure to delete {fullname}?</h2>
+          <div className="header header-smaller">
+            <h2>
+              Delete {privilege} {fullname}
+            </h2>
           </div>
           <div className="overlay-footer">
             <button
@@ -16,7 +33,11 @@ const DeleteAdministrator = ({ open, setOpen, id, fullname }) => {
             >
               cancel
             </button>
-            <button type="button" className="btn-overlay">
+            <button
+              type="button"
+              className="btn-overlay btn-red-text"
+              onClick={() => removeAdmin()}
+            >
               delete
             </button>
           </div>

@@ -3,6 +3,7 @@ import RegisterAdminModal from "../components/RegisterAdminModal";
 import PersonItem from "../components/PersonItem";
 import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 // Redux Elements
 import { useSelector, useDispatch } from "react-redux";
 import { getAdmins, reset } from "../features/administrators/adminSlice";
@@ -22,6 +23,7 @@ const Administrators = () => {
   useEffect(() => {
     if (isError) {
       console.log(message);
+      toast.error(message);
     }
     if (!admin) {
       navigate("/login");

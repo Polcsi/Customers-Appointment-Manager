@@ -4,13 +4,13 @@ import { FiEdit2 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import DeleteAdministrator from "./DeleteAdministrator";
 
-const PersonItem = ({ _id, fullname, detail }) => {
+const PersonItem = ({ _id, fullname, detail, privilege }) => {
   const [open, setOpen] = useState(false);
 
   return (
     <article>
       {open && (
-        <DeleteAdministrator id={_id} fullname={fullname} open={open} setOpen={setOpen}/>
+        <DeleteAdministrator id={_id} fullname={fullname} privilege={privilege} open={open} setOpen={setOpen}/>
       )}
       <div className="person-header">
         <div className="img-person">

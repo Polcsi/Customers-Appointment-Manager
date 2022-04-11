@@ -31,6 +31,7 @@ body {
   --primary-white: #ffffff;
   --primary-white-1: #ffffff38;
   --primary-white-2: #ffffff00;
+  --delete-color: rgb(228, 60, 60);
   --text-color: #fff;
   --transition: all 0.3s linear;
   --spacing: 0.1rem;

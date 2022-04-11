@@ -22,9 +22,20 @@ const getAdmins = async (token) => {
   return response.data.admins;
 };
 
+// Delete Admin
+const deleteAdmin = async (adminId, token) => {
+  const response = await axios.delete(`${API_URL}administrators/${adminId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 const adminService = {
   register,
   getAdmins,
+  deleteAdmin,
 };
 
 export default adminService;

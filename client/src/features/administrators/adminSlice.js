@@ -9,7 +9,7 @@ const initialState = {
   message: "",
 };
 
-// Register admin
+// Register Admin
 export const register = createAsyncThunk(
   "admin/register",
   async (adminData, thunkAPI) => {
@@ -38,6 +38,20 @@ export const getAdmins = createAsyncThunk(
         error.message ||
         error.toString();
       console.log(error);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Delete Admin
+export const deleteAdmin = createAsyncThunk(
+  "admin/delete",
+  async (adminData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.admin.token;
+      return await adminService.deleteAdmin(adminData, token);
+    } catch (error) {
+      const message = error.response.data.msg;
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -77,6 +91,20 @@ export const adminSlice = createSlice({
       })
       .addCase(getAdmins.rejected, (state, action) => {
         state.isLoading = true;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deleteAdmin.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteAdmin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.admins = state.admins.filter(
+          (admin) => admin._id !== action.payload.admin._id
+        );
+      })
+      .addCase(deleteAdmin.rejected, (state, action) => {
+        state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       });

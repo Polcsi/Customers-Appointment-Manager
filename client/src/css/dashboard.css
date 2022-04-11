@@ -80,6 +80,7 @@
   grid-area: name;
   font-size: 1.2rem;
   font-weight: 600;
+  text-transform: capitalize;
 }
 .person-header > .detail-person {
   grid-area: detail;
@@ -205,7 +206,7 @@
   flex-direction: column;
 }
 .overlay-operation {
-  height: 155px;
+  height: auto;
 }
 .overlay-input {
   height: 170px;
@@ -228,6 +229,13 @@
   text-transform: capitalize;
   font-weight: 600;
   font-size: 1.35rem;
+}
+.overlay-container .header-smaller h2 {
+  font-size: 1.1rem;
+}
+.btn-red-text {
+  color: var(--delete-color) !important;
+  font-weight: 600 !important;
 }
 .close-overlay {
   position: absolute;
@@ -275,7 +283,7 @@
   font-size: 1rem;
   font-weight: 500;
   text-transform: uppercase;
-  color: var(--dark-blue-2);
+  color: var(--dark-blue);
   width: 200px;
   transition: all ease 0.1s;
 }

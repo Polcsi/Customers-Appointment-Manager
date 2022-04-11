@@ -25,9 +25,6 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
   };
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
     if (isSuccess) {
       toast.success("Administrator Created");
       close();

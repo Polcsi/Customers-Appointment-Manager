@@ -29,9 +29,6 @@ const getAllAdmins = async (req, res) => {
 // @route   GET /api/v1/administrators/:id
 // @access Private
 const getAdmin = async (req, res) => {
-  if (req.admin.privilege !== "owner") {
-    throw new UnauthenticatedError("not authorized");
-  }
   const {
     params: { id: adminId },
   } = req;
@@ -46,7 +43,7 @@ const getAdmin = async (req, res) => {
 // @route   DELETE /api/v1/administrators/:id
 // @access Private
 const deleteAdmin = async (req, res) => {
-  if (req.admin.privilege !== "owner") {
+  if (req.admin.privilege !== "owner" && req.admin.privilege !== "admin") {
     throw new UnauthenticatedError("not authorized");
   }
   const {
@@ -56,14 +53,16 @@ const deleteAdmin = async (req, res) => {
     throw new BadRequestError("not authorized to delete yourself");
   }
   const admin = await Administrators.findOneAndDelete({ _id: adminId });
-  res.status(StatusCodes.OK).json({ status: "success", admin });
+  res
+    .status(StatusCodes.OK)
+    .json({ status: "admin successfully deleted", admin });
 };
 
 // @desc    Update Admin
 // @route   PATCH /api/v1/administrators/:id
 // @access Private
 const updateAdmin = async (req, res) => {
-  if (req.admin.privilege !== "owner") {
+  if (req.admin.privilege !== "owner" && req.admin.privilege !== "admin") {
     throw new UnauthenticatedError("not authorized");
   }
   const {
