@@ -233,6 +233,9 @@
 .overlay-container .header-smaller h2 {
   font-size: 1.1rem;
 }
+.overlay-container .header-smaller h2 span {
+  font-weight: 500;
+}
 .btn-red-text {
   color: var(--delete-color) !important;
   font-weight: 600 !important;
@@ -380,4 +383,24 @@
 }
 .month-slider-value {
   text-transform: capitalize;
+}
+
+.admin-profile-container {
+  position: relative;
+}
+.admin-profile-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background: none;
+  border: none;
+  outline: none;
+  width: auto;
+  height: auto;
+}
+.admin-profile-close svg {
+  background-color: transparent;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 100;
 }

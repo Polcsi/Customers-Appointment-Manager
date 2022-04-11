@@ -22,7 +22,8 @@ const DeleteAdministrator = ({ open, setOpen, id, privilege, fullname }) => {
         <div className="overlay-container overlay-operation">
           <div className="header header-smaller">
             <h2>
-              Delete {privilege} {fullname}
+              Delete {privilege}
+              <span> {fullname}</span>
             </h2>
           </div>
           <div className="overlay-footer">
