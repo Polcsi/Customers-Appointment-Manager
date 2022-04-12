@@ -4,13 +4,15 @@ import { FiEdit2 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import DeleteAdministrator from "./DeleteAdministrator";
 import AdminInfo from "./AdminInfo";
+import UpdateAdministrator from "./UpdateAdministrator";
 
-const PersonItem = ({ admin, detail }) => {
+const Admin = ({ admin, detail }) => {
   const { _id, fullname, privilege } = admin;
   const deleteBtnRef = useRef(null);
   const editBtnRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [openedAdminInfo, setOpenedAdminInfo] = useState(false);
+  const [openedUpdateModal, setOpenedUpdateModal] = useState(false);
 
   const openAdminInfo = (e) => {
     if (
@@ -28,6 +30,13 @@ const PersonItem = ({ admin, detail }) => {
 
   return (
     <>
+      {openedUpdateModal && (
+        <UpdateAdministrator
+          openModal={openedUpdateModal}
+          setOpenModal={setOpenedUpdateModal}
+          {...admin}
+        />
+      )}
       {openedAdminInfo && (
         <AdminInfo
           opened={openedAdminInfo}
@@ -54,10 +63,16 @@ const PersonItem = ({ admin, detail }) => {
         </div>
         <div className="indicators">
           <div className="line"></div>
-          <button ref={editBtnRef} className="edit operation">
+          <button
+            type="button"
+            ref={editBtnRef}
+            className="edit operation"
+            onClick={() => setOpenedUpdateModal(!openedUpdateModal)}
+          >
             <FiEdit2 />
           </button>
           <button
+            type="button"
             ref={deleteBtnRef}
             className="delete operation"
             onClick={() => setOpen(!open)}
@@ -70,4 +85,4 @@ const PersonItem = ({ admin, detail }) => {
   );
 };
 
-export default PersonItem;
+export default Admin;

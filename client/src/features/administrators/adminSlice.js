@@ -6,6 +6,8 @@ const initialState = {
   singleAdmin: null,
   isError: false,
   isSuccess: false,
+  isSuccessUpdate: false,
+  isLoadingGetAll: false,
   isLoading: false,
   message: "",
 };
@@ -73,6 +75,18 @@ export const deleteAdmin = createAsyncThunk(
 );
 
 // Update Admin
+export const update = createAsyncThunk(
+  "admin/update",
+  async (adminData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.admin.token;
+      return await adminService.update(adminData, token);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const adminSlice = createSlice({
   name: "admin",
@@ -80,9 +94,16 @@ export const adminSlice = createSlice({
   reducers: {
     reset: (state) => {
       state.isSuccess = false;
+      state.isSuccessUpdate = false;
+      state.isLoadingGetAll = false;
       state.isError = false;
       state.isLoading = false;
       state.singleAdmin = null;
+    },
+    resetWithoutAdmin: (state) => {
+      state.isSuccess = false;
+      state.isError = false;
+      state.isLoading = false;
     },
   },
   extraReducers: (builder) => {
@@ -101,20 +122,19 @@ export const adminSlice = createSlice({
         state.message = action.payload;
       })
       .addCase(getAdmins.pending, (state) => {
-        state.isLoading = true;
+        state.isLoadingGetAll = true;
       })
       .addCase(getAdmins.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.isLoadingGetAll = false;
         state.admins = action.payload;
       })
       .addCase(getAdmins.rejected, (state, action) => {
-        state.isLoading = true;
+        state.isLoadingGetAll = true;
         state.isError = true;
         state.message = action.payload;
       })
       .addCase(getAdmin.pending, (state) => {
         state.isLoading = true;
-        state.singleAdmin = { admin: null };
       })
       .addCase(getAdmin.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -139,9 +159,28 @@ export const adminSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(update.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(update.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccessUpdate = true;
+        state.admins = state.admins.map((admin) => {
+          if (admin._id === action.payload.admin._id) {
+            return { ...action.payload.admin };
+          }
+          return admin;
+        });
+      })
+      .addCase(update.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccessUpdate = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
 
-export const { reset } = adminSlice.actions;
+export const { reset, resetWithoutAdmin } = adminSlice.actions;
 export default adminSlice.reducer;

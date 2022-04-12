@@ -4,12 +4,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAdmin, reset } from "../features/administrators/adminSlice";
 import Spinner from "./Spinner";
 import DeleteAdministrator from "./DeleteAdministrator";
+import UpdateAdministrator from "./UpdateAdministrator";
 
 const AdminInfo = ({ opened, setOpened, _id }) => {
   const { singleAdmin, isSuccess } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
   const overlayRef = useRef(null);
   const [askForDelete, setAskForDelete] = useState(false);
+  const [askForUpdate, setAskForUpdate] = useState(false);
 
   const close = (e) => {
     if (e.target === overlayRef.current) {
@@ -34,9 +36,19 @@ const AdminInfo = ({ opened, setOpened, _id }) => {
   if (isSuccess) {
     const { fullname, username, privilege, createdAt, updatedAt } =
       singleAdmin.admin;
+
     return (
       <>
         <div className="overlay" onClick={(e) => close(e)}>
+          {askForUpdate && (
+            <UpdateAdministrator
+              {...singleAdmin.admin}
+              openModal={askForUpdate}
+              setOpenModal={setAskForUpdate}
+              openedOverlay={opened}
+              setOpenedOverlay={setOpened}
+            />
+          )}
           {askForDelete && (
             <DeleteAdministrator
               id={_id}
@@ -72,7 +84,11 @@ const AdminInfo = ({ opened, setOpened, _id }) => {
                 </div>
               </div>
               <div className="admin-profile-operations">
-                <button type="button" className="admin-profile-edit-btn">
+                <button
+                  type="button"
+                  className="admin-profile-edit-btn"
+                  onClick={() => setAskForUpdate(!askForUpdate)}
+                >
                   edit
                 </button>
                 <button

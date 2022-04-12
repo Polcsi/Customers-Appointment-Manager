@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RegisterAdminModal from "../components/RegisterAdminModal";
-import PersonItem from "../components/PersonItem";
+import Admin from "../components/Admin";
 import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -14,9 +14,8 @@ import { FiFilter } from "react-icons/fi";
 const Administrators = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { admins, singleAdmin, isLoading, isError, message } = useSelector(
-    (state) => state.admin
-  );
+  const { admins, singleAdmin, isLoadingGetAll, isError, message } =
+    useSelector((state) => state.admin);
   const { admin } = useSelector((state) => state.auth);
   const [openModal, setOpenModal] = useState(false);
 
@@ -54,7 +53,7 @@ const Administrators = () => {
       </div>
       <div className="underline"></div>
       <div className="appointments-container">
-        {isLoading && singleAdmin === null ? (
+        {isLoadingGetAll && singleAdmin === null ? (
           <Spinner color="white" top={0} />
         ) : (
           ""
@@ -63,7 +62,7 @@ const Administrators = () => {
         {admins.map((admin) => {
           const { _id, fullname, privilege } = admin;
           return (
-            <PersonItem
+            <Admin
               key={_id}
               fullname={fullname}
               detail={privilege}

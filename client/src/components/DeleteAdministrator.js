@@ -24,7 +24,7 @@ const DeleteAdministrator = ({ open, setOpen, id, privilege, fullname }) => {
           <div className="overlay-footer">
             <button
               type="button"
-              className="btn-overlay"
+              className="btn-overlay btn-blue-text"
               onClick={() => setOpen(!open)}
             >
               cancel

@@ -47,12 +47,25 @@ const deleteAdmin = async (adminId, token) => {
 };
 
 // Update Admin
+const update = async (adminData, token) => {
+  const response = await axios.patch(
+    `${API_URL}administrators/${adminData.id}`,
+    adminData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
 
 const adminService = {
   register,
   getAdmins,
   getAdmin,
   deleteAdmin,
+  update,
 };
 
 export default adminService;
