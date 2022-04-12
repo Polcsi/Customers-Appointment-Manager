@@ -21,7 +21,9 @@ const createAdmin = async (req, res) => {
 // @route   GET /api/v1/administrators
 // @access Private
 const getAllAdmins = async (req, res) => {
-  const admins = await Administrators.find();
+  const admins = await Administrators.find().select(
+    "-password -createdAt -updatedAt"
+  );
   res.status(StatusCodes.OK).json({ admins, total: admins.length });
 };
 

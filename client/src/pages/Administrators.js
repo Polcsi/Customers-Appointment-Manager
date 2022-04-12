@@ -14,7 +14,7 @@ import { FiFilter } from "react-icons/fi";
 const Administrators = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { admins, isLoading, isError, message } = useSelector(
+  const { admins, singleAdmin, isLoading, isError, message } = useSelector(
     (state) => state.admin
   );
   const { admin } = useSelector((state) => state.auth);
@@ -54,7 +54,11 @@ const Administrators = () => {
       </div>
       <div className="underline"></div>
       <div className="appointments-container">
-        {isLoading && <Spinner />}
+        {isLoading && singleAdmin === null ? (
+          <Spinner color="white" top={0} />
+        ) : (
+          ""
+        )}
 
         {admins.map((admin) => {
           const { _id, fullname, privilege } = admin;

@@ -21,10 +21,15 @@
 .spinner::after {
   width: 80%;
   height: 80%;
-  background-color: white;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.spinner-white::after {
+  background-color: white !important;
+}
+.spinner-black::after {
+  background-color: var(--black-primary) !important;
 }
 @keyframes spin {
   to {

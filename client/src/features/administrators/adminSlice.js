@@ -3,6 +3,7 @@ import adminService from "./adminService";
 
 const initialState = {
   admins: [],
+  singleAdmin: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -81,6 +82,7 @@ export const adminSlice = createSlice({
       state.isSuccess = false;
       state.isError = false;
       state.isLoading = false;
+      state.singleAdmin = null;
     },
   },
   extraReducers: (builder) => {
@@ -106,6 +108,20 @@ export const adminSlice = createSlice({
         state.admins = action.payload;
       })
       .addCase(getAdmins.rejected, (state, action) => {
+        state.isLoading = true;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getAdmin.pending, (state) => {
+        state.isLoading = true;
+        state.singleAdmin = { admin: null };
+      })
+      .addCase(getAdmin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.singleAdmin = action.payload;
+      })
+      .addCase(getAdmin.rejected, (state, action) => {
         state.isLoading = true;
         state.isError = true;
         state.message = action.payload;

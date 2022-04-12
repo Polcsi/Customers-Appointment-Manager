@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteAdmin, reset } from "../features/administrators/adminSlice";
 
@@ -7,14 +7,9 @@ const DeleteAdministrator = ({ open, setOpen, id, privilege, fullname }) => {
 
   const removeAdmin = () => {
     dispatch(deleteAdmin(id));
+    dispatch(reset());
     setOpen(!open);
   };
-
-  useEffect(() => {
-    return (_) => {
-      dispatch(reset());
-    };
-  });
 
   return (
     <>

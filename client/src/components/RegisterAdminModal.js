@@ -134,7 +134,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
           <MdDone />
         </button>
       </div>
-      {isLoading && <Spinner />}
+      {isLoading && <Spinner color="white" top={0} />}
       <div className="modal-inputs">
         <div className="input" onClick={() => setOpenFullName(true)}>
           <div className="title">full name</div>
