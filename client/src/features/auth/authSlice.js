@@ -13,17 +13,17 @@ const initialState = {
 };
 
 // Login admin
-export const login = createAsyncThunk("auth/login", async (admin, thunkAPI) => {
-  try {
-    return await authService.login(admin);
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+export const login = createAsyncThunk(
+  "auth/login",
+  async (adminData, thunkAPI) => {
+    try {
+      return await authService.login(adminData);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
   }
-});
+);
 
 // Logout Admin
 export const logout = createAsyncThunk("auth/logout", async () => {
@@ -47,8 +47,7 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
-        console.log(action.payload.data);
-        state.admin = action.payload.data.admin;
+        state.admin = action.payload.admin;
         state.isLoading = false;
         state.isSuccess = true;
         state.admin = action.payload;

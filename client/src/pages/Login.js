@@ -8,8 +8,8 @@ import { login, reset } from "../features/auth/authSlice";
 
 const Login = () => {
   const [adminValue, setAdminValue] = useState({
-    username: `${localStorage["username"]}`,
-    password: `${localStorage["password"]}`,
+    username: `${localStorage.getItem("username") || ""}`,
+    password: `${localStorage.getItem("password") || ""}`,
   });
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
@@ -64,7 +64,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    checkboxRef.current.checked = JSON.parse(localStorage["checkbox"]);
+    checkboxRef.current.checked = JSON.parse(localStorage.getItem("checkbox"));
   });
 
   return (
