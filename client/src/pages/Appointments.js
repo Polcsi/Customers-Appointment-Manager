@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AppointmentItem from "../components/AppointmentItem";
 import AddAppointmentModal from "../components/AddAppointmentModal";
+// Redux
+import { useSelector } from "react-redux";
 // Icons
 import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
 
 const Appointments = () => {
   const [showModal, setShowModal] = useState(false);
+
+  const navigate = useNavigate();
+  const { admin } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!admin) {
+      navigate("/login");
+    }
+  }, [admin, navigate]);
 
   return (
     <div className="dashboard">

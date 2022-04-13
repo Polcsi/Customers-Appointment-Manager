@@ -73,11 +73,11 @@ const AdminInfo = ({ opened, setOpened, _id }) => {
                   <div className="admin-information-ui-line"></div>
                 </div>
                 <div className="date-informations">
-                  <div className="added">
+                  <div className="date-flex-information added">
                     <h3>Added</h3>
                     <p>{createdAt}</p>
                   </div>
-                  <div className="last-update">
+                  <div className="date-flex-information last-update">
                     <h3>modified</h3>
                     <p>{updatedAt}</p>
                   </div>

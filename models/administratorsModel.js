@@ -6,19 +6,19 @@ const AdministratorsSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, "Please provide username"],
+      required: [true, "Please Provide Username"],
       unique: true,
       minlength: 3,
       maxlength: 20,
     },
     fullname: {
       type: String,
-      required: [true, "please provide name"],
+      required: [true, "Please Provide Name"],
       trim: true,
     },
     password: {
       type: String,
-      required: [true, "please provide password"],
+      required: [true, "Please Provide Password"],
       minlength: 5,
     },
     privilege: {
@@ -27,7 +27,7 @@ const AdministratorsSchema = new mongoose.Schema(
         values: ["owner", "admin", "member"],
         message: "{VALUE} is not supported",
       },
-      required: [true, "please provide privilege"],
+      required: [true, "Please Provide Privilege"],
     },
     profilPicture: {
       type: String,

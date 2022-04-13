@@ -437,15 +437,30 @@
 }
 .admin-details {
   position: relative;
-  height: 260px;
+  height: auto;
   width: 95%;
   margin: auto;
   background-color: white;
   border-radius: 5px;
-  padding: 3.3rem 0.6rem 0.6rem 1rem;
+  padding: 3.5rem 0.6rem 1.3rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 1.3rem;
+}
+.basic-information {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.date-flex-information {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.date-informations {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 .admin-details h1 {
   color: black;

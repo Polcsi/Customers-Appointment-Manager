@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 // Redux Elements
 import { useSelector, useDispatch } from "react-redux";
-import { getAdmins, reset } from "../features/administrators/adminSlice";
+import {
+  getAdmins,
+  reset,
+  resetAdmins,
+} from "../features/administrators/adminSlice";
 // Icons
 import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
@@ -22,7 +26,14 @@ const Administrators = () => {
   useEffect(() => {
     if (isError) {
       console.log(message);
-      toast.error(message);
+      if (message.includes(",")) {
+        let messages = message.split(",");
+        messages.forEach((element) => {
+          toast.error(element);
+        });
+      } else {
+        toast.error(message);
+      }
     }
     if (!admin) {
       navigate("/login");
@@ -30,6 +41,7 @@ const Administrators = () => {
     dispatch(getAdmins());
     return () => {
       dispatch(reset());
+      dispatch(resetAdmins());
     };
   }, [admin, navigate, isError, message, dispatch]);
 

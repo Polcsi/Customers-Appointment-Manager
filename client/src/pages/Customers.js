@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+//Redux
+import { useSelector } from "react-redux";
 // Icons
 import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
 
 const Customers = () => {
+  const navigate = useNavigate();
+  const { admin } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!admin) {
+      navigate("/login");
+    }
+  }, [admin, navigate]);
+
   return (
     <div className="dashboard">
       <div className="header">

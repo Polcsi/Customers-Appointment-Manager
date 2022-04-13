@@ -69,7 +69,7 @@ const Login = () => {
 
   return (
     <div className="login-page">
-      {isLoading && <Spinner />}
+      {isLoading && <Spinner color="white" top={30} position="absolute" />}
       <div className="login-container">
         <div className="header">
           <h1>Sign in</h1>
