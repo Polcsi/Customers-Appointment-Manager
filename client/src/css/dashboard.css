@@ -1,6 +1,38 @@
+.pull-to-refresh-container {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  transition: all ease 0.2s;
+}
+.pull-to-refresh-container svg {
+  font-size: 1.6rem;
+  vertical-align: middle;
+}
+.pull-to-refresh-container .refresh-arrow {
+  transition: all ease-in-out 0.3s;
+}
+.loading span {
+  font-size: 2rem;
+  animation: animateLoading 1s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 100ms);
+}
+@keyframes animateLoading {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
+  }
+}
 .dashboard {
   width: 92%;
   margin: 87px auto auto auto;
+  transition: all ease 0.2s;
 }
 .dashboard .header h1 {
   font-size: 1.5rem;
