@@ -1,7 +1,14 @@
 import Customers from "../models/customersModel.js";
 import { StatusCodes } from "http-status-codes";
-import { BadRequestError, NotFoundError } from "../errors/index.js";
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthenticatedError,
+} from "../errors/index.js";
 
+// @desc    Get Customers
+// @route   GET /api/v1/customers
+// @access Private
 const getAllCustomers = async (req, res) => {
   const { town, fullname, sort, sortdesc, limit, page } = req.query;
   const queryObject = {};
@@ -13,7 +20,9 @@ const getAllCustomers = async (req, res) => {
     queryObject.fullname = { $regex: fullname, $options: "i" };
   }
 
-  let result = Customers.find(queryObject);
+  let result = Customers.find(queryObject).select(
+    "-town -email -createdAt -updatedAt -firstname -lastname -email -__v"
+  );
 
   if (sort) {
     result = result.sort(sort);
@@ -32,12 +41,16 @@ const getAllCustomers = async (req, res) => {
   }
 
   const customers = await result;
-  res
-    .status(StatusCodes.OK)
-    .json({ status: "success", customers, total: customers.length });
+  res.status(StatusCodes.OK).json({ customers, total: customers.length });
 };
 
+// @desc    Create Customer
+// @route   POST /api/v1/customers
+// @access Private
 const createCustomer = async (req, res) => {
+  if (req.admin.privilege !== "owner" && req.admin.privilege !== "admin") {
+    throw new UnauthenticatedError("not authorized");
+  }
   const customer = await Customers.create(req.body);
   res.status(StatusCodes.CREATED).json({
     status: "success",
@@ -45,6 +58,9 @@ const createCustomer = async (req, res) => {
   });
 };
 
+// @desc    Get Customer
+// @route   GET /api/v1/customers/:id
+// @access Private
 const getCustomer = async (req, res) => {
   const {
     params: { id: customerId },
@@ -56,7 +72,13 @@ const getCustomer = async (req, res) => {
   res.status(StatusCodes.OK).json({ status: "success", customer });
 };
 
+// @desc    Update Customer
+// @route   PATCH /api/v1/customers/:id
+// @access Private
 const updateCustomer = async (req, res) => {
+  if (req.admin.privilege !== "owner" && req.admin.privilege !== "admin") {
+    throw new UnauthenticatedError("not authorized");
+  }
   const {
     body: { firstname, lastname, town, email, phone },
     params: { id: customerId },
@@ -100,7 +122,13 @@ const updateCustomer = async (req, res) => {
   res.status(StatusCodes.OK).json({ status: "success", customer });
 };
 
+// @desc    Delete Customer
+// @route   DELETE /api/v1/customers/:id
+// @access Private
 const deleteCustomer = async (req, res) => {
+  if (req.admin.privilege !== "owner" && req.admin.privilege !== "admin") {
+    throw new UnauthenticatedError("not authorized");
+  }
   const {
     params: { id: customerId },
   } = req;

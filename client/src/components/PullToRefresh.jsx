@@ -84,7 +84,16 @@ const PullToRefresh = ({ page, updatedArray = null, resetArray = null }) => {
       document.removeEventListener("touchmove", swipe, false);
       document.removeEventListener("touchend", swipeEnd, false);
     };
-  }, [setIsRefresh, isRefresh, setIsRefreshing, isRefreshing]);
+  }, [
+    setIsRefresh,
+    isRefresh,
+    setIsRefreshing,
+    isRefreshing,
+    page,
+    dispatch,
+    resetArray,
+    updatedArray,
+  ]);
 
   return (
     <div ref={refReshContainerRef} className="pull-to-refresh-container">

@@ -1,7 +1,9 @@
 import React, { useState, useRef } from "react";
+// icons
 import { BsFillPersonFill } from "react-icons/bs";
 import { FiEdit2 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
+// components
 import DeleteAdministrator from "./DeleteAdministrator";
 import AdminInfo from "./AdminInfo";
 import UpdateAdministrator from "./UpdateAdministrator";
