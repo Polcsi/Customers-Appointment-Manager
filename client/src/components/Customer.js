@@ -4,10 +4,12 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { FiEdit2 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 // components
+import DeleteCustomer from "./DeleteCustomer";
 
 const Customer = ({ fullname, phone, _id }) => {
   const deleteBtnRef = useRef(null);
   const editBtnRef = useRef(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const openCustomerInfo = (e) => {
     if (
@@ -25,6 +27,14 @@ const Customer = ({ fullname, phone, _id }) => {
 
   return (
     <>
+      {openDeleteModal && (
+        <DeleteCustomer
+          open={openCustomerInfo}
+          setOpen={setOpenDeleteModal}
+          fullname={fullname}
+          id={_id}
+        />
+      )}
       <article onClick={(e) => openCustomerInfo(e)}>
         <div className="person-header">
           <div className="img-person">
@@ -47,7 +57,7 @@ const Customer = ({ fullname, phone, _id }) => {
             type="button"
             ref={deleteBtnRef}
             className="delete operation"
-            /* onClick={() => setOpen(!open)} */
+            onClick={() => setOpenDeleteModal(!openDeleteModal)}
           >
             <MdDeleteOutline />
           </button>

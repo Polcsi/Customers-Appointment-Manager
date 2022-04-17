@@ -13,6 +13,11 @@ const initialState = {
   isSuccessAdd: false,
   isLoadingAdd: false,
   messageAdd: "",
+  // Delete Customer States
+  isErrorDelete: false,
+  isSuccessDelete: false,
+  isLoadingDelete: false,
+  messageDelete: false,
 };
 
 // Get Customers
@@ -42,6 +47,20 @@ export const addCustomer = createAsyncThunk(
   }
 );
 
+// Delete Customer
+export const deleteCustomer = createAsyncThunk(
+  "customer/deleteCustomer",
+  async (customerId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.admin.token;
+      return await customerService.deleteCustomer(customerId, token);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const customerSlice = createSlice({
   name: "customer",
   initialState,
@@ -61,6 +80,12 @@ export const customerSlice = createSlice({
       state.isErrorAdd = false;
       state.messageAdd = "";
     },
+    resetDelete: (state) => {
+      state.isLoadingDelete = false;
+      state.isErrorDelete = false;
+      state.isSuccessDelete = false;
+      state.messageDelete = "";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -77,7 +102,7 @@ export const customerSlice = createSlice({
         state.isError = true;
         state.message = action.payload.msg;
       })
-      .addCase(addCustomer.pending, (state, action) => {
+      .addCase(addCustomer.pending, (state) => {
         state.isLoadingAdd = true;
       })
       .addCase(addCustomer.fulfilled, (state, action) => {
@@ -88,9 +113,25 @@ export const customerSlice = createSlice({
       .addCase(addCustomer.rejected, (state, action) => {
         state.isErrorAdd = true;
         state.messageAdd = action.payload;
+      })
+      .addCase(deleteCustomer.pending, (state) => {
+        state.isLoadingDelete = true;
+      })
+      .addCase(deleteCustomer.fulfilled, (state, action) => {
+        state.isLoadingDelete = false;
+        state.isSuccessDelete = true;
+        state.allCustomers = state.allCustomers.filter(
+          (customer) => customer._id !== action.payload.customer._id
+        );
+      })
+      .addCase(deleteCustomer.rejected, (state, action) => {
+        state.isLoadingDelete = false;
+        state.isErrorDelete = true;
+        state.messageDelete = action.payload;
       });
   },
 });
 
-export const { resetCustomers, reset, resetAdd } = customerSlice.actions;
+export const { resetCustomers, reset, resetAdd, resetDelete } =
+  customerSlice.actions;
 export default customerSlice.reducer;

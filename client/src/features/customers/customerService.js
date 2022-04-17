@@ -24,9 +24,21 @@ const addCustomer = async (customerData, token) => {
   return response.data;
 };
 
+// Delete Customer
+const deleteCustomer = async (customerId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.delete(`${API_URL}/${customerId}`, config);
+  return response.data;
+};
+
 const customerService = {
   getAllCustomer,
   addCustomer,
+  deleteCustomer,
 };
 
 export default customerService;

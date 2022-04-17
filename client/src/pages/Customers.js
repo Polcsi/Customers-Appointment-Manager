@@ -12,6 +12,7 @@ import {
   getCustomers,
   resetCustomers,
   reset,
+  resetDelete,
 } from "../features/customers/customerSlice";
 // Icons
 import { IoIosAdd } from "react-icons/io";
@@ -21,11 +22,34 @@ const Customers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { admin } = useSelector((state) => state.auth);
-  const { allCustomers, isLoading, isError, isSuccesss, message } = useSelector(
-    (state) => state.customer
-  );
+  const {
+    allCustomers,
+    isLoading,
+    isError,
+    message,
+    isSuccessDelete,
+    isLoadingDelete,
+    isErrorDelete,
+    messageDelete,
+  } = useSelector((state) => state.customer);
   const page = useRef(null);
   const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
+
+  useEffect(() => {
+    if (isSuccessDelete) {
+      toast.success("Customer Deleted");
+    }
+    if (isErrorDelete) {
+      toast.error(messageDelete);
+    }
+    dispatch(resetDelete());
+  }, [
+    isSuccessDelete,
+    isLoadingDelete,
+    isErrorDelete,
+    messageDelete,
+    dispatch,
+  ]);
 
   useEffect(() => {
     if (!admin) {
