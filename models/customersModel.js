@@ -39,7 +39,7 @@ const CustomersSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please Provide Phone Number"],
       match: [
-        /^\+36\s[0-9]{2}\s[0-9]{3}\s[0-9]{3}$/,
+        /^\+36\s[0-9]{2}\s[0-9]{3}\s[0-9]{4}$/,
         "Please Provide Valid Hungarian Phone Number",
       ],
     },

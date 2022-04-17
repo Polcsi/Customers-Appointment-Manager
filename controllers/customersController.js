@@ -53,7 +53,6 @@ const createCustomer = async (req, res) => {
   }
   const customer = await Customers.create(req.body);
   res.status(StatusCodes.CREATED).json({
-    status: "success",
     customer,
   });
 };

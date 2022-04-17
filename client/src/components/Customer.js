@@ -6,9 +6,26 @@ import { MdDeleteOutline } from "react-icons/md";
 // components
 
 const Customer = ({ fullname, phone, _id }) => {
+  const deleteBtnRef = useRef(null);
+  const editBtnRef = useRef(null);
+
+  const openCustomerInfo = (e) => {
+    if (
+      e.target !== editBtnRef.current &&
+      e.target !== editBtnRef.current.childNodes[0] &&
+      e.target !== editBtnRef.current.childNodes[0].childNodes[0] &&
+      e.target !== deleteBtnRef.current &&
+      e.target !== deleteBtnRef.current.childNodes[0] &&
+      e.target !== deleteBtnRef.current.childNodes[0].childNodes[0] &&
+      e.target !== deleteBtnRef.current.childNodes[0].childNodes[1]
+    ) {
+      console.log("open customer info");
+    }
+  };
+
   return (
     <>
-      <article>
+      <article onClick={(e) => openCustomerInfo(e)}>
         <div className="person-header">
           <div className="img-person">
             <BsFillPersonFill />
@@ -20,7 +37,7 @@ const Customer = ({ fullname, phone, _id }) => {
           <div className="line"></div>
           <button
             type="button"
-            /* ref={editBtnRef} */
+            ref={editBtnRef}
             className="edit operation"
             /* onClick={() => setOpenedUpdateModal(!openedUpdateModal)} */
           >
@@ -28,7 +45,7 @@ const Customer = ({ fullname, phone, _id }) => {
           </button>
           <button
             type="button"
-            /* ref={deleteBtnRef} */
+            ref={deleteBtnRef}
             className="delete operation"
             /* onClick={() => setOpen(!open)} */
           >

@@ -13,8 +13,20 @@ const getAllCustomer = async (token) => {
   return response.data.customers;
 };
 
+// Add Customer
+const addCustomer = async (customerData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.post(API_URL, customerData, config);
+  return response.data;
+};
+
 const customerService = {
   getAllCustomer,
+  addCustomer,
 };
 
 export default customerService;

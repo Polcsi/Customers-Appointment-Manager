@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import PullToRefresh from "../components/PullToRefresh";
 import Spinner from "../components/Spinner";
 import Customer from "../components/Customer";
+import AddCustomer from "../components/AddCustomer";
 //Redux
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -24,6 +25,7 @@ const Customers = () => {
     (state) => state.customer
   );
   const page = useRef(null);
+  const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
 
   useEffect(() => {
     if (!admin) {
@@ -44,6 +46,12 @@ const Customers = () => {
 
   return (
     <>
+      {openAddCustomerModal && (
+        <AddCustomer
+          openModal={openAddCustomerModal}
+          setOpenModal={setOpenAddCustomerModal}
+        />
+      )}
       <PullToRefresh
         page={page}
         updatedArray={getCustomers}
@@ -56,7 +64,10 @@ const Customers = () => {
             <button className="filter">
               <FiFilter />
             </button>
-            <button className="add">
+            <button
+              className="add"
+              onClick={() => setOpenAddCustomerModal(!openAddCustomerModal)}
+            >
               <IoIosAdd />
             </button>
           </div>
