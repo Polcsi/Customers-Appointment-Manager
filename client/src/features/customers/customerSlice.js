@@ -18,6 +18,11 @@ const initialState = {
   isSuccessDelete: false,
   isLoadingDelete: false,
   messageDelete: false,
+  // Get Customer States
+  isLoadingGet: false,
+  isSuccessGet: false,
+  isErrorGet: false,
+  messageGet: "",
 };
 
 // Get Customers
@@ -27,6 +32,20 @@ export const getCustomers = createAsyncThunk(
     try {
       const token = thunkAPI.getState().auth.admin.token;
       return await customerService.getAllCustomer(token);
+    } catch (error) {
+      const message = error.response.data;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Get Customer
+export const getSingleCustomer = createAsyncThunk(
+  "customer/getCustomer",
+  async (adminId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.admin.token;
+      return await customerService.getSingleCustomer(adminId, token);
     } catch (error) {
       const message = error.response.data;
       return thunkAPI.rejectWithValue(message);
@@ -86,6 +105,13 @@ export const customerSlice = createSlice({
       state.isSuccessDelete = false;
       state.messageDelete = "";
     },
+    resetGet: (state) => {
+      state.isLoadingGet = false;
+      state.isErrorGet = false;
+      state.isSuccessGet = false;
+      state.messageGet = "";
+      state.singleCustomer = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -101,6 +127,19 @@ export const customerSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload.msg;
+      })
+      .addCase(getSingleCustomer.pending, (state) => {
+        state.isLoadingGet = true;
+      })
+      .addCase(getSingleCustomer.fulfilled, (state, action) => {
+        state.isLoadingGet = false;
+        state.isSuccessGet = true;
+        state.singleCustomer = action.payload.customer;
+      })
+      .addCase(getSingleCustomer.rejected, (state, action) => {
+        state.isErrorGet = true;
+        state.isLoadingGet = false;
+        state.messageGet = action.payload.msg;
       })
       .addCase(addCustomer.pending, (state) => {
         state.isLoadingAdd = true;
@@ -132,6 +171,6 @@ export const customerSlice = createSlice({
   },
 });
 
-export const { resetCustomers, reset, resetAdd, resetDelete } =
+export const { resetCustomers, reset, resetAdd, resetDelete, resetGet } =
   customerSlice.actions;
 export default customerSlice.reducer;

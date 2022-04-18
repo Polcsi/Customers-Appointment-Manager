@@ -36,7 +36,7 @@ const PullToRefresh = ({ page, updatedArray = null, resetArray = null }) => {
           setIsRefreshing(false);
         }, 1000);
         refreshTextRef.current.textContent = "Refreshing";
-        console.log("%cUPDATE", "color: yellow;");
+        //console.log("%cUPDATE", "color: yellow;");
         updatedArray && dispatch(updatedArray());
         resetArray && dispatch(resetArray());
         pCurrent = { x: 0, y: 0 };
@@ -79,7 +79,7 @@ const PullToRefresh = ({ page, updatedArray = null, resetArray = null }) => {
     document.addEventListener("touchmove", swipe, false);
     document.addEventListener("touchend", swipeEnd, false);
     return (_) => {
-      console.log("%c CLEAR pull to refresh component", "color: cyan;");
+      //console.log("%c CLEAR pull to refresh component", "color: cyan;");
       document.removeEventListener("touchstart", swipeStart, false);
       document.removeEventListener("touchmove", swipe, false);
       document.removeEventListener("touchend", swipeEnd, false);

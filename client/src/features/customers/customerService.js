@@ -13,6 +13,17 @@ const getAllCustomer = async (token) => {
   return response.data.customers;
 };
 
+// Get Customer
+const getSingleCustomer = async (customerId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(`${API_URL}/${customerId}`, config);
+  return response.data;
+};
+
 // Add Customer
 const addCustomer = async (customerData, token) => {
   const config = {
@@ -37,6 +48,7 @@ const deleteCustomer = async (customerId, token) => {
 
 const customerService = {
   getAllCustomer,
+  getSingleCustomer,
   addCustomer,
   deleteCustomer,
 };

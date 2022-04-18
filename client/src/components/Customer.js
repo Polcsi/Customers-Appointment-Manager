@@ -5,11 +5,13 @@ import { FiEdit2 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 // components
 import DeleteCustomer from "./DeleteCustomer";
+import CustomerInfo from "./CustomerInfo";
 
 const Customer = ({ fullname, phone, _id }) => {
   const deleteBtnRef = useRef(null);
   const editBtnRef = useRef(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openCustomerInfoModal, setOpenCustomerInfoModal] = useState(false);
 
   const openCustomerInfo = (e) => {
     if (
@@ -21,12 +23,19 @@ const Customer = ({ fullname, phone, _id }) => {
       e.target !== deleteBtnRef.current.childNodes[0].childNodes[0] &&
       e.target !== deleteBtnRef.current.childNodes[0].childNodes[1]
     ) {
-      console.log("open customer info");
+      setOpenCustomerInfoModal(!openCustomerInfoModal);
     }
   };
 
   return (
     <>
+      {openCustomerInfoModal && (
+        <CustomerInfo
+          id={_id}
+          open={openCustomerInfoModal}
+          setOpen={setOpenCustomerInfoModal}
+        />
+      )}
       {openDeleteModal && (
         <DeleteCustomer
           open={openCustomerInfo}
