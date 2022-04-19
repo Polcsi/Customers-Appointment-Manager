@@ -2,11 +2,17 @@ import Appointment from "../models/appointmentsModel.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 
+// @desc    Create Appointment
+// @route   POST /api/v1/appointment
+// @access Private
 const createAppointment = async (req, res) => {
   const appointment = await Appointment.create(req.body);
   res.status(StatusCodes.CREATED).json({ status: "success", appointment });
 };
 
+// @desc    Update Appointment
+// @route   PATCH /api/v1/appointment/:id
+// @access Private
 const updateAppointment = async (req, res) => {
   const {
     params: { id: appointmentId },
@@ -22,6 +28,9 @@ const updateAppointment = async (req, res) => {
   res.status(StatusCodes.OK).json({ status: "success", appointment });
 };
 
+// @desc    Remove Appointment
+// @route   DELETE /api/v1/appointment/:id
+// @access Private
 const deleteAppointment = async (req, res) => {
   const {
     params: { id: appointmentId },
@@ -35,6 +44,9 @@ const deleteAppointment = async (req, res) => {
   res.status(StatusCodes.OK).json({ status: "success", appointment });
 };
 
+// @desc    Get Appointment
+// @route   GET /api/v1/appointment/:id
+// @access Private
 const getAppointment = async (req, res) => {
   const {
     params: { id: appointmentId },
@@ -46,6 +58,9 @@ const getAppointment = async (req, res) => {
   res.status(StatusCodes.OK).json({ status: "success", appointment });
 };
 
+// @desc    Get All Appointment
+// @route   GET /api/v1/appointment
+// @access Private
 const getAllAppointment = async (req, res) => {
   const { sort, sortdesc, date, limit, morning, afternoon } = req.query;
 
