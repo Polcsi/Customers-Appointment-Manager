@@ -46,11 +46,27 @@ const deleteCustomer = async (customerId, token) => {
   return response.data;
 };
 
+// Update Customer
+const updateCustomer = async (customerData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.patch(
+    `${API_URL}/${customerData.id}`,
+    customerData,
+    config
+  );
+  return response.data;
+};
+
 const customerService = {
   getAllCustomer,
   getSingleCustomer,
   addCustomer,
   deleteCustomer,
+  updateCustomer,
 };
 
 export default customerService;

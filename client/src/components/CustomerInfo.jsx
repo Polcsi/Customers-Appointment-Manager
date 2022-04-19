@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 import defaultProfilePicture from "../assets/profile-default.svg";
 // components
 import Spinner from "./Spinner";
 import DeleteCustomer from "./DeleteCustomer";
+import UpdateCustomer from "./UpdateCustomer";
 // icons
 import { RiSmartphoneLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
@@ -11,14 +13,16 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getSingleCustomer,
   resetGet,
+  resetSingleCustomer,
 } from "../features/customers/customerSlice";
-import { toast } from "react-toastify";
 
 const CustomerInfo = ({ open, setOpen, id }) => {
   const [askForDelete, setAskForDelete] = useState(false);
+  const [askForUpdate, setAskForUpdate] = useState(false);
   const overlayRef = useRef(null);
-  const { singleCustomer, isLoadingGet, isErrorGet, isSuccessGet, messageGet } =
-    useSelector((state) => state.customer);
+  const { singleCustomer, isErrorGet, isSuccessGet, messageGet } = useSelector(
+    (state) => state.customer
+  );
   const dispatch = useDispatch();
   const close = (e) => {
     if (e.target === overlayRef.current) {
@@ -33,6 +37,7 @@ const CustomerInfo = ({ open, setOpen, id }) => {
     dispatch(getSingleCustomer(id));
     return (_) => {
       dispatch(resetGet());
+      dispatch(resetSingleCustomer());
     };
   }, [dispatch, id, isErrorGet, messageGet]);
 
@@ -65,6 +70,15 @@ const CustomerInfo = ({ open, setOpen, id }) => {
               fullname={fullname}
               open={askForDelete}
               setOpen={setAskForDelete}
+            />
+          )}
+          {askForUpdate && (
+            <UpdateCustomer
+              id={id}
+              openModal={askForUpdate}
+              setOpenModal={setAskForUpdate}
+              openedOverLay={open}
+              setOpenedOverlay={setOpen}
             />
           )}
           <div ref={overlayRef} className="admin-profile-container">
@@ -100,7 +114,11 @@ const CustomerInfo = ({ open, setOpen, id }) => {
                 </div>
               </div>
               <div className="admin-profile-operations">
-                <button type="button" className="admin-profile-edit-btn">
+                <button
+                  type="button"
+                  className="admin-profile-edit-btn"
+                  onClick={() => setAskForUpdate(!askForUpdate)}
+                >
                   edit
                 </button>
                 <button

@@ -5,12 +5,14 @@ import { FiEdit2 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 // components
 import DeleteCustomer from "./DeleteCustomer";
+import UpdateCustomer from "./UpdateCustomer";
 import CustomerInfo from "./CustomerInfo";
 
 const Customer = ({ fullname, phone, _id }) => {
   const deleteBtnRef = useRef(null);
   const editBtnRef = useRef(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [openCustomerInfoModal, setOpenCustomerInfoModal] = useState(false);
 
   const openCustomerInfo = (e) => {
@@ -44,6 +46,13 @@ const Customer = ({ fullname, phone, _id }) => {
           id={_id}
         />
       )}
+      {openUpdateModal && (
+        <UpdateCustomer
+          id={_id}
+          openModal={openUpdateModal}
+          setOpenModal={setOpenUpdateModal}
+        />
+      )}
       <article onClick={(e) => openCustomerInfo(e)}>
         <div className="person-header">
           <div className="img-person">
@@ -58,7 +67,7 @@ const Customer = ({ fullname, phone, _id }) => {
             type="button"
             ref={editBtnRef}
             className="edit operation"
-            /* onClick={() => setOpenedUpdateModal(!openedUpdateModal)} */
+            onClick={() => setOpenUpdateModal(!openUpdateModal)}
           >
             <FiEdit2 />
           </button>

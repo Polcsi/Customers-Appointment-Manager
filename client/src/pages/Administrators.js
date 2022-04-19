@@ -11,7 +11,6 @@ import {
   getAdmins,
   reset,
   resetAdmins,
-  resetWithoutAdmin,
 } from "../features/administrators/adminSlice";
 // Icons
 import { IoIosAdd } from "react-icons/io";

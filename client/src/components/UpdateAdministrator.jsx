@@ -71,7 +71,7 @@ const UpdateAdministrator = ({
     useSelector((state) => state.admin);
 
   const close = useCallback(() => {
-    if (openedOverlay !== null || setOpenedOverlay !== null) {
+    if (openedOverlay || setOpenedOverlay) {
       setOpenedOverlay(!openedOverlay);
     }
     setOpenModal(!openModal);

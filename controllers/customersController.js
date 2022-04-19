@@ -84,16 +84,16 @@ const updateCustomer = async (req, res) => {
   } = req;
   let errors = [];
   if (firstname === "") {
-    errors = [...errors, "firstname"];
+    errors = [...errors, "Firstname"];
   }
   if (lastname === "") {
-    errors = [...errors, "lastname"];
+    errors = [...errors, "Lastname"];
   }
   if (email === "") {
-    errors = [...errors, "email"];
+    errors = [...errors, "Email"];
   }
   if (phone === "") {
-    errors === [...errors, "phone"];
+    errors === [...errors, "Phone"];
   }
   if (errors.length > 0) {
     const fields = errors
@@ -101,7 +101,7 @@ const updateCustomer = async (req, res) => {
         return item;
       })
       .join(", ");
-    throw new BadRequestError(`${fields} fields cannot be empty`);
+    throw new BadRequestError(`${fields} Fields Cannot Be Empty`);
   }
   const customer = await Customers.findOneAndUpdate(
     { _id: customerId },

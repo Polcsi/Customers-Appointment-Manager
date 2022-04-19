@@ -23,6 +23,11 @@ const initialState = {
   isSuccessGet: false,
   isErrorGet: false,
   messageGet: "",
+  // Update Customer States
+  isLoadingUpdate: false,
+  isSuccessUpdate: false,
+  isErrorUpdate: false,
+  messageUpdate: false,
 };
 
 // Get Customers
@@ -80,6 +85,20 @@ export const deleteCustomer = createAsyncThunk(
   }
 );
 
+// Update Customer
+export const updateCustomer = createAsyncThunk(
+  "customer/updateCustomer",
+  async (customerData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.admin.token;
+      return await customerService.updateCustomer(customerData, token);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const customerSlice = createSlice({
   name: "customer",
   initialState,
@@ -92,6 +111,9 @@ export const customerSlice = createSlice({
     },
     resetCustomers: (state) => {
       state.allCustomers = [];
+    },
+    resetSingleCustomer: (state) => {
+      state.singleCustomer = null;
     },
     resetAdd: (state) => {
       state.isLoadingAdd = false;
@@ -110,7 +132,12 @@ export const customerSlice = createSlice({
       state.isErrorGet = false;
       state.isSuccessGet = false;
       state.messageGet = "";
-      state.singleCustomer = null;
+    },
+    resetUpdate: (state) => {
+      state.isLoadingUpdate = false;
+      state.isErrorUpdate = false;
+      state.isSuccessUpdate = false;
+      state.messageUpdate = "";
     },
   },
   extraReducers: (builder) => {
@@ -167,10 +194,36 @@ export const customerSlice = createSlice({
         state.isLoadingDelete = false;
         state.isErrorDelete = true;
         state.messageDelete = action.payload;
+      })
+      .addCase(updateCustomer.pending, (state) => {
+        state.isLoadingUpdate = true;
+      })
+      .addCase(updateCustomer.fulfilled, (state, action) => {
+        state.isLoadingUpdate = false;
+        state.isSuccessUpdate = true;
+        state.allCustomers = state.allCustomers.map((customer) => {
+          if (customer._id === action.payload.customer._id) {
+            return { ...action.payload.customer };
+          } else {
+            return customer;
+          }
+        });
+      })
+      .addCase(updateCustomer.rejected, (state, action) => {
+        state.isLoadingUpdate = false;
+        state.isErrorUpdate = true;
+        state.messageUpdate = action.payload;
       });
   },
 });
 
-export const { resetCustomers, reset, resetAdd, resetDelete, resetGet } =
-  customerSlice.actions;
+export const {
+  resetCustomers,
+  resetSingleCustomer,
+  reset,
+  resetAdd,
+  resetDelete,
+  resetGet,
+  resetUpdate,
+} = customerSlice.actions;
 export default customerSlice.reducer;
