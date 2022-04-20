@@ -38,7 +38,7 @@ export const getCustomers = createAsyncThunk(
       const token = thunkAPI.getState().auth.admin.token;
       return await customerService.getAllCustomer(token);
     } catch (error) {
-      const message = error.response.data;
+      const message = error.message ? error.message : error.response.data.msg;
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -52,7 +52,7 @@ export const getSingleCustomer = createAsyncThunk(
       const token = thunkAPI.getState().auth.admin.token;
       return await customerService.getSingleCustomer(adminId, token);
     } catch (error) {
-      const message = error.response.data;
+      const message = error.message ? error.message : error.response.data.msg;
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -153,8 +153,7 @@ export const customerSlice = createSlice({
       .addCase(getCustomers.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        console.log(action.payload);
-        state.message = action.payload.msg;
+        state.message = action.payload;
       })
       .addCase(getSingleCustomer.pending, (state) => {
         state.isLoadingGet = true;

@@ -6,6 +6,7 @@ import PullToRefresh from "../components/PullToRefresh";
 import { checkCookieExists } from "../vaidateSession";
 // Redux
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 // Icons
 import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
@@ -21,6 +22,18 @@ const Dashboard = () => {
     if (!checkCookieExists()) {
       navigate("/login");
     }
+
+    const validateSession = setInterval(() => {
+      console.log("check Dashboard Page");
+      if (!checkCookieExists()) {
+        navigate("/login");
+        toast.error("Your Session Expired");
+      }
+    }, 1000);
+
+    return (_) => {
+      clearInterval(validateSession);
+    };
   }, [navigate]);
 
   return (

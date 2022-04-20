@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getAdminFromCookie } from "../vaidateSession";
 // Redux Elements
 import { useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
@@ -14,8 +15,7 @@ import { RiAdminLine } from "react-icons/ri";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const storage = localStorage.getItem("admin");
-  const admin = storage && JSON.parse(storage);
+  const admin = getAdminFromCookie();
 
   const onLogout = () => {
     dispatch(logout());

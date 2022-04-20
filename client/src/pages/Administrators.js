@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { checkCookieExists } from "../vaidateSession";
 import RegisterAdminModal from "../components/RegisterAdminModal";
 import Admin from "../components/Admin";
 import Spinner from "../components/Spinner";
@@ -39,10 +40,21 @@ const Administrators = () => {
     if (!admin) {
       navigate("/login");
     }
+
+    const validateSession = setInterval(() => {
+      console.log("check Administrator Page");
+      if (!checkCookieExists()) {
+        navigate("/login");
+        toast.error("Your Session Expired");
+      }
+    }, 1000);
+
     dispatch(getAdmins());
+
     return () => {
       dispatch(reset());
       dispatch(resetAdmins());
+      clearInterval(validateSession);
     };
   }, [admin, navigate, isError, message, dispatch]);
 

@@ -17,3 +17,17 @@ export function getAdminFromCookie() {
 
   return adminObject;
 }
+
+export function getTokenFromCookie() {
+  let token;
+  try {
+    let cookieValue = document.cookie
+      .split(";")
+      .find((item) => item.trim().startsWith("admin="));
+    token = JSON.parse(cookieValue.split("=")[1]).token;
+  } catch (error) {
+    token = null;
+  }
+
+  return token;
+}

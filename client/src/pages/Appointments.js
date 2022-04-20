@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import { checkCookieExists } from "../vaidateSession";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import AppointmentItem from "../components/AppointmentItem";
 import AddAppointmentModal from "../components/AddAppointmentModal";
@@ -20,6 +22,18 @@ const Appointments = () => {
     if (!admin) {
       navigate("/login");
     }
+
+    const validateSession = setInterval(() => {
+      console.log("check Appointment Page");
+      if (!checkCookieExists()) {
+        navigate("/login");
+        toast.error("Your Session Expired");
+      }
+    }, 1000);
+
+    return (_) => {
+      clearInterval(validateSession);
+    };
   }, [admin, navigate]);
 
   return (

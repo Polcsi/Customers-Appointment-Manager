@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { checkCookieExists, getAdminFromCookie } from "../vaidateSession";
+import { checkCookieExists } from "../vaidateSession";
 // components
 import PullToRefresh from "../components/PullToRefresh";
 import Spinner from "../components/Spinner";
@@ -53,21 +53,27 @@ const Customers = () => {
   ]);
 
   useEffect(() => {
-    console.log(checkCookieExists());
-    console.log(getAdminFromCookie());
     if (!checkCookieExists()) {
       navigate("/login");
     }
     if (isError) {
-      console.log(message);
       toast.error(message);
     }
+
+    const validateSession = setInterval(() => {
+      console.log("check Customer Page");
+      if (!checkCookieExists()) {
+        navigate("/login");
+        toast.error("Your Session Expired");
+      }
+    }, 1000);
 
     dispatch(getCustomers());
 
     return (_) => {
       dispatch(reset());
       dispatch(resetCustomers());
+      clearInterval(validateSession);
     };
   }, [navigate, dispatch, isError, message]);
 
