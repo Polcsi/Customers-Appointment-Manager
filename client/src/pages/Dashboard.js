@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AppointmentItem from "../components/AppointmentItem";
 import AddAppointmentModal from "../components/AddAppointmentModal";
 import PullToRefresh from "../components/PullToRefresh";
+import { checkCookieExists } from "../vaidateSession";
 // Redux
 import { useSelector } from "react-redux";
 // Icons
@@ -17,10 +18,10 @@ const Dashboard = () => {
   const { admin } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (!admin) {
+    if (!checkCookieExists()) {
       navigate("/login");
     }
-  }, [admin, navigate]);
+  }, [navigate]);
 
   return (
     <>

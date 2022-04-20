@@ -5,6 +5,7 @@ import Spinner from "../components/Spinner";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { login, reset } from "../features/auth/authSlice";
+import { checkCookieExists } from "../vaidateSession";
 
 const Login = () => {
   const [adminValue, setAdminValue] = useState({
@@ -25,11 +26,12 @@ const Login = () => {
     if (isError) {
       toast.error(message);
     }
-    if (isSuccess || admin) {
+    if (isSuccess || checkCookieExists()) {
+      toast.success("You Logged In");
       navigate("/");
     }
     dispatch(reset());
-  }, [admin, isError, isLoading, isSuccess, message, navigate, dispatch]);
+  }, [isError, isLoading, isSuccess, message, navigate, dispatch]);
 
   const handleChange = (e) => {
     const name = e.target.name;

@@ -10,11 +10,12 @@ const login = async (adminData) => {
 
     const today = new Date();
     const expiresTommorow = new Date();
-    expiresTommorow.setDate(today.getDate() + 1);
-    console.log(expiresTommorow);
+    //expiresTommorow.setDate(today.getDate() + 1);
+    expiresTommorow.setMinutes(today.getMinutes() + 1);
+    //expiresTommorow.setMinutes(expiresTommorow.getTime() + 60 * 1000);
     document.cookie = `admin=${JSON.stringify(
       response.data
-    )};expires=${expiresTommorow};Secure`;
+    )}; max-age=${60}; Secure; path=/;`;
   }
 
   return response.data;
@@ -25,8 +26,6 @@ const logout = () => {
   localStorage.removeItem("admin");
   document.cookie = `admin=;expires=Thu, 01 Jan 1970 00:00:00 UTC;Secure`;
 };
-
-// Validate Session
 
 const authService = {
   login,

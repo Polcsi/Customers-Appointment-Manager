@@ -1,16 +1,21 @@
 import axios from "axios";
+import { checkCookieExists } from "../../vaidateSession";
 
 const API_URL = "api/v1/customers";
 
 // Get All Customer
 const getAllCustomer = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.get(API_URL, config);
-  return response.data.customers;
+  if (checkCookieExists()) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.get(API_URL, config);
+    return response.data.customers;
+  } else {
+    throw new Error({ msg: "Your Session Expired" });
+  }
 };
 
 // Get Customer

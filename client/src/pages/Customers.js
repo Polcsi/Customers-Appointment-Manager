@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { checkCookieExists, getAdminFromCookie } from "../vaidateSession";
 // components
 import PullToRefresh from "../components/PullToRefresh";
 import Spinner from "../components/Spinner";
@@ -21,7 +22,7 @@ import { FiFilter } from "react-icons/fi";
 const Customers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { admin } = useSelector((state) => state.auth);
+
   const {
     allCustomers,
     isLoading,
@@ -52,7 +53,9 @@ const Customers = () => {
   ]);
 
   useEffect(() => {
-    if (!admin) {
+    console.log(checkCookieExists());
+    console.log(getAdminFromCookie());
+    if (!checkCookieExists()) {
       navigate("/login");
     }
     if (isError) {
@@ -66,7 +69,7 @@ const Customers = () => {
       dispatch(reset());
       dispatch(resetCustomers());
     };
-  }, [admin, navigate, dispatch, isError, message]);
+  }, [navigate, dispatch, isError, message]);
 
   return (
     <>
