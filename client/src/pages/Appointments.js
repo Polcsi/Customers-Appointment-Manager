@@ -2,11 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import { checkCookieExists } from "../vaidateSession";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+// Components
+import Spinner from "../components/Spinner";
 import AppointmentItem from "../components/AppointmentItem";
 import AddAppointmentModal from "../components/AddAppointmentModal";
 import PullToRefresh from "../components/PullToRefresh";
 // Redux
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getAppointments,
+  reset,
+  resetAppointments,
+} from "../features/appointments/appointmentSlice";
 // Icons
 import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
@@ -16,12 +23,37 @@ const Appointments = () => {
   const page = useRef(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { admin } = useSelector((state) => state.auth);
+  const {
+    appointments,
+    isError,
+    isSuccess,
+    isLoading,
+    message,
+    isSuccessDelete,
+    isErrorDelete,
+    messageDelete,
+  } = useSelector((state) => state.appointment);
 
   useEffect(() => {
-    if (!admin) {
+    if (isSuccessDelete) {
+      toast.success("Appointment Deleted");
+    }
+    if (isErrorDelete) {
+      toast.error(messageDelete);
+    }
+  }, [isSuccessDelete, isErrorDelete, messageDelete]);
+
+  useEffect(() => {
+    if (!checkCookieExists()) {
       navigate("/login");
     }
+    if (isError) {
+      toast.error(message);
+    }
+
+    dispatch(getAppointments());
 
     const validateSession = setInterval(() => {
       console.log("check Appointment Page");
@@ -33,44 +65,82 @@ const Appointments = () => {
 
     return (_) => {
       clearInterval(validateSession);
+      dispatch(resetAppointments());
+      dispatch(reset());
     };
-  }, [admin, navigate]);
+  }, [navigate, dispatch, isError, message]);
 
-  return (
-    <>
-      <PullToRefresh page={page} />
-      <div className="dashboard" ref={page}>
-        {showModal ? (
-          <AddAppointmentModal
-            showModal={showModal}
-            setShowModal={setShowModal}
-          />
-        ) : (
-          ""
-        )}
-        <div className="header">
-          <h1>Appointments</h1>
-          <div className="btns">
-            <button className="filter">
-              <FiFilter />
-            </button>
-            <button className="add">
-              <IoIosAdd onClick={() => setShowModal(!showModal)} />
-            </button>
+  if (isSuccess) {
+    return (
+      <>
+        <PullToRefresh
+          page={page}
+          updatedArray={getAppointments}
+          resetArray={resetAppointments}
+        />
+        <div className="dashboard" ref={page}>
+          {showModal ? (
+            <AddAppointmentModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+            />
+          ) : (
+            ""
+          )}
+          <div className="header">
+            <h1>Appointments</h1>
+            <div className="btns">
+              <button className="filter">
+                <FiFilter />
+              </button>
+              <button className="add">
+                <IoIosAdd onClick={() => setShowModal(!showModal)} />
+              </button>
+            </div>
+          </div>
+          <div className="underline"></div>
+          <div className="appointments-container">
+            {isLoading && <Spinner color="white" top={0} position="relative" />}
+            <div className="today day-section">
+              {/* <h2>2022</h2> */}
+              {appointments.map((appointment) => {
+                return (
+                  <AppointmentItem
+                    key={appointment._id}
+                    showDate={true}
+                    {...appointment}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
-        <div className="underline"></div>
-        <div className="appointments-container">
-          <div className="today day-section">
-            <h2>2022</h2>
-            <AppointmentItem showDate={true} />
-            <AppointmentItem showDate={true} />
-            <AppointmentItem showDate={true} />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <PullToRefresh page={page} />
+        <div className="dashboard" ref={page}>
+          <div className="header">
+            <h1>Appointments</h1>
+            <div className="btns">
+              <button className="filter">
+                <FiFilter />
+              </button>
+              <button className="add">
+                <IoIosAdd />
+              </button>
+            </div>
+          </div>
+          <div className="underline"></div>
+          <div className="appointments-container">
+            {isLoading && <Spinner color="white" top={0} position="relative" />}
           </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 };
 
 export default Appointments;

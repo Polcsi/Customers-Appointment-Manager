@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
+import { getAdminFromCookie } from "../../vaidateSession";
 
 // Get admin from localStorage
-const admin = JSON.parse(localStorage.getItem("admin"));
+const admin = getAdminFromCookie();
 
 const initialState = {
   admin: admin ? admin : null,
