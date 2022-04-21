@@ -51,7 +51,11 @@ const getAppointment = async (req, res) => {
   const {
     params: { id: appointmentId },
   } = req;
-  const appointment = await Appointment.findOne({ _id: appointmentId });
+  const appointment = await Appointment.findOne({
+    _id: appointmentId,
+  })
+    .populate("customer", "-createdAt -updatedAt -__v")
+    .exec();
   if (!appointment) {
     throw new NotFoundError(`no appointment with id ${appointmentId}`);
   }
@@ -75,7 +79,9 @@ const getAllAppointment = async (req, res) => {
     queryObject["time"] = { $gt: "12:00" };
   }
 
-  let result = Appointment.find(queryObject);
+  let result = Appointment.find(queryObject)
+    .populate("customer", "fullname")
+    .exec();
 
   if (sort) {
     const sortList = sort.split(",").join(" ");

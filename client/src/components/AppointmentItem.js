@@ -29,12 +29,13 @@ const AppointmentItem = ({
           id={_id}
           date={date}
           time={time}
+          fullname={customer.fullname}
         />
       )}
       <article>
         <div className="appointment-header">
           <h1 className="time">{showDate ? `${date} - ${time}` : `${time}`}</h1>
-          <h2 className="customer">NAME</h2>
+          <h2 className="customer">{customer.fullname}</h2>
         </div>
         <div className="indicators">
           {emailIsSent ? (

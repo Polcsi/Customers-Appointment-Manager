@@ -5,7 +5,7 @@ import {
   resetAppointmentDelete,
 } from "../features/appointments/appointmentSlice";
 
-const DeleteAppointment = ({ date, time, open, setOpen, id }) => {
+const DeleteAppointment = ({ date, time, open, setOpen, id, fullname }) => {
   const dispatch = useDispatch();
 
   const removeAppointment = () => {
@@ -20,7 +20,7 @@ const DeleteAppointment = ({ date, time, open, setOpen, id }) => {
         <div className="overlay-container overlay-operation">
           <div className="header header-smaller">
             <h2>
-              Delete <span>NAME</span> Appointment at
+              Delete <span>{fullname}</span> Appointment at
               <span>
                 {" "}
                 {date} - {time}
