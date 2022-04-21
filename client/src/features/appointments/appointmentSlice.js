@@ -14,6 +14,11 @@ const initialState = {
   isSuccessDelete: false,
   isLoadingDelete: false,
   messageDelete: "",
+  // Add States
+  isErrorAdd: false,
+  isSuccessAdd: false,
+  isLoadingAdd: false,
+  messageAdd: "",
 };
 
 // Get Appointments
@@ -44,6 +49,20 @@ export const deleteAppointment = createAsyncThunk(
   }
 );
 
+// Add Appointment
+export const addAppointment = createAsyncThunk(
+  "appointment/add",
+  async (appointmentId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.admin.token;
+      return await appointmentService.addAppointment(appointmentId, token);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const appointmentSlice = createSlice({
   name: "appointment",
   initialState,
@@ -62,6 +81,12 @@ export const appointmentSlice = createSlice({
       state.isSuccessDelete = false;
       state.isErrorDelete = false;
       state.messageDelete = "";
+    },
+    resetAdd: (state) => {
+      state.isErrorAdd = false;
+      state.isLoadingAdd = false;
+      state.isSuccessAdd = false;
+      state.messageAdd = "";
     },
   },
   extraReducers: (builder) => {
@@ -93,10 +118,22 @@ export const appointmentSlice = createSlice({
         state.isLoadingDelete = false;
         state.isErrorDelete = true;
         state.messageDelete = action.payload;
+      })
+      .addCase(addAppointment.pending, (state) => {
+        state.isLoadingAdd = true;
+      })
+      .addCase(addAppointment.fulfilled, (state) => {
+        state.isLoadingAdd = false;
+        state.isSuccessAdd = true;
+      })
+      .addCase(addAppointment.rejected, (state, action) => {
+        state.isLoadingAdd = false;
+        state.isErrorAdd = true;
+        state.messageAdd = action.payload;
       });
   },
 });
 
-export const { reset, resetAppointments, resetAppointmentDelete } =
+export const { reset, resetAppointments, resetAppointmentDelete, resetAdd } =
   appointmentSlice.actions;
 export default appointmentSlice.reducer;

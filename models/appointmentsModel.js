@@ -5,27 +5,26 @@ const AppointmentSchema = new mongoose.Schema(
     customer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Customers",
-      required: [true, "please provide customer"],
+      required: [true, "Please Provide Customer"],
     },
     date: {
       type: String,
-      required: [true, "please provide date"],
+      required: [true, "Please Provide Date"],
       match: [
-        /^[0-9]{4}\-(0[0-9]|1[0-2])\-(((0|1|2)[0-9])|3[0-1])$/,
-        "please provide valid date format",
+        /^[0-9]{4}\-(0[0-9]|1[0-2])\-((((0|1|2)[0-9])|3[0-1]))|([0-9])$/,
+        "Please Provide Valid Date Format",
       ],
     },
     time: {
       type: String,
-      required: [true, "please provide time"],
+      required: [true, "Please Provide Time"],
       match: [
-        /^(((0|1)[0-9])|2[0-3])\:[0-5][0-9]$/,
-        "please provide valid time format",
+        /^(((0|1)[0-9])|2[0-3])\:([0-5][0-9])|([0-9])$/,
+        "Please Provide Valid Time Format",
       ],
     },
     description: {
       type: String,
-      minLength: 10,
       trim: true,
       lowercase: true,
     },

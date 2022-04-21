@@ -1,18 +1,28 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { monthsArr } from "../data";
+import { toast } from "react-toastify";
+// Components
 import CustomerSelector from "./CustomerSelector";
 import DateSelector from "./DateSelector";
 import TimeSelector from "./TimeSelector";
-import { monthsArr } from "../data";
+import Spinner from "./Spinner";
 // Icons
 import { MdDone, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { GrTextAlignFull } from "react-icons/gr";
 import times from "../assets/times.svg";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addAppointment,
+  getAppointments,
+  resetAdd,
+  resetAppointments,
+} from "../features/appointments/appointmentSlice";
 
 const AddAppointmentModal = ({ showModal, setShowModal }) => {
   const today = new Date();
   const [appointment, setAppointment] = useState({
-    customer: "",
-    date: `${today.getFullYear()}-${today.getMonth()}-${today.getDay()}`,
+    date: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`,
     time: `${today.getHours()}:${today.getMinutes()}`,
     sendReminder: true,
     description: "",
@@ -28,8 +38,35 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
     setAppointment({ ...appointment, [name]: value });
   };
 
-  React.useEffect(() => {
+  const dispatch = useDispatch();
+  const { isErrorAdd, isLoadingAdd, isSuccessAdd, messageAdd } = useSelector(
+    (state) => state.appointment
+  );
+
+  const createAppointment = () => {
+    dispatch(addAppointment(appointment));
+  };
+
+  useEffect(() => {
+    if (isErrorAdd) {
+      toast.error(messageAdd);
+    }
+    if (isSuccessAdd) {
+      toast.success("Appointment Added");
+      setShowModal(!showModal);
+    }
+
+    return () => {
+      dispatch(resetAdd());
+      dispatch(resetAppointments());
+      dispatch(getAppointments());
+    };
+  }, [dispatch, isErrorAdd, messageAdd, isSuccessAdd, setShowModal, showModal]);
+
+  useEffect(() => {
     document.body.style.overflow = "hidden";
+
+    return () => (document.body.style.overflow = "auto");
   }, []);
 
   return (
@@ -63,7 +100,7 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
         ""
       )}
       <div className="modal-header">
-        <button>
+        <button type="button">
           <img
             src={times}
             alt="times"
@@ -74,11 +111,12 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
           />
         </button>
         <h1>Add Appointment</h1>
-        <button>
+        <button type="button" onClick={() => createAppointment()}>
           <MdDone />
         </button>
       </div>
       <div className="modal-inputs">
+        {isLoadingAdd && <Spinner color="white" top={0} position="relative" />}
         <div className="input" onClick={() => setOpenCustomer(!openCustomer)}>
           <div className="title">Customer</div>
           <div>
@@ -89,7 +127,7 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
         <div className="input" onClick={() => setOpenDate(!openDate)}>
           <div className="title">Date</div>
           <div>
-            <span>
+            <span className="date-without-time">
               {`${appointment.date.split("-")[0]} ${
                 monthsArr[parseInt(appointment.date.split("-")[1]) - 1]
               } ${appointment.date.split("-")[2]}`}

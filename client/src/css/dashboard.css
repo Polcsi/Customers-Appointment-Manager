@@ -587,3 +587,6 @@
   gap: 0.5rem;
   padding-bottom: 0.5rem;
 }
+.date-without-time {
+  text-transform: capitalize;
+}

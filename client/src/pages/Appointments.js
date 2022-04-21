@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getAppointments,
   reset,
+  resetAppointmentDelete,
   resetAppointments,
 } from "../features/appointments/appointmentSlice";
 // Icons
@@ -67,6 +68,7 @@ const Appointments = () => {
       clearInterval(validateSession);
       dispatch(resetAppointments());
       dispatch(reset());
+      dispatch(resetAppointmentDelete());
     };
   }, [navigate, dispatch, isError, message]);
 

@@ -13,6 +13,17 @@ const getAllAppointments = async (token) => {
   return response.data.appointments;
 };
 
+// Add Appointment
+const addAppointment = async (appointmentData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.post(API_URL, appointmentData, config);
+  return response.data;
+};
+
 // Delete Appointment
 const deleteAppointment = async (appointmentId, token) => {
   const config = {
@@ -27,6 +38,7 @@ const deleteAppointment = async (appointmentId, token) => {
 const appointmentService = {
   getAllAppointments,
   deleteAppointment,
+  addAppointment,
 };
 
 export default appointmentService;

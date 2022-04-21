@@ -13,13 +13,13 @@ const AppointmentItem = ({
   date,
   time,
   emailIsSent,
+  sendReminder,
   _id,
   customer,
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const dispatch = useDispatch();
-
   return (
     <>
       {openDeleteModal && (
@@ -38,14 +38,18 @@ const AppointmentItem = ({
           <h2 className="customer">{customer.fullname}</h2>
         </div>
         <div className="indicators">
-          {emailIsSent ? (
-            <div className="emailSent true">
-              <MdDoneOutline />
-            </div>
+          {sendReminder ? (
+            emailIsSent ? (
+              <div className="emailSent true">
+                <MdDoneOutline />
+              </div>
+            ) : (
+              <div className="emailSent false">
+                <FaRegTimesCircle />
+              </div>
+            )
           ) : (
-            <div className="emailSent false">
-              <FaRegTimesCircle />
-            </div>
+            ""
           )}
           <div className="line"></div>
           <button className="edit operation">
