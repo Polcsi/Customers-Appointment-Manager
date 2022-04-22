@@ -22,8 +22,16 @@ import {
 const AddAppointmentModal = ({ showModal, setShowModal }) => {
   const today = new Date();
   const [appointment, setAppointment] = useState({
-    date: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`,
-    time: `${today.getHours()}:${today.getMinutes()}`,
+    date: `${today.getFullYear()}-${
+      today.getMonth() + 1 < 10
+        ? `0${today.getMonth() + 1}`
+        : today.getMonth() + 1
+    }-${today.getDate() < 10 ? `0${today.getDate()}` : today.getDate()}`,
+    time: `${
+      today.getHours() < 10 ? `0${today.getHours()}` : today.getHours()
+    }:${
+      today.getMinutes() < 10 ? `0${today.getMinutes()}` : today.getMinutes()
+    }`,
     sendReminder: true,
     description: "",
   });

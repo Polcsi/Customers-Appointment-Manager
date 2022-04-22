@@ -24,7 +24,12 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
   };
 
   const saveTime = () => {
-    handleChange("time", `${hour}:${minute}`);
+    handleChange(
+      "time",
+      `${parseInt(hour) < 10 ? `0${parseInt(hour)}` : parseInt(hour)}:${
+        parseInt(minute) < 10 ? `0${parseInt(minute)}` : parseInt(minute)
+      }`
+    );
     setOpenTime(false);
   };
 

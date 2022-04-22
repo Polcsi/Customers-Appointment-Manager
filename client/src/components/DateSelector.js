@@ -40,8 +40,10 @@ const DateSelector = ({ setOpenDate, handleChange, appointment, today }) => {
     handleChange(
       "date",
       `${parseInt(today.getFullYear()) + parseInt(year)}-${
-        parseInt(month) + 1
-      }-${day}`
+        parseInt(month) + 1 < 10
+          ? `0${parseInt(month) + 1}`
+          : parseInt(month) + 1
+      }-${day < 10 ? `0${day}` : day}`
     );
     setOpenDate(false);
   };
