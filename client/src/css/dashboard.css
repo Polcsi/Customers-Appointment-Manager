@@ -33,6 +33,9 @@
   width: 92%;
   margin: 87px auto auto auto;
   transition: all ease 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 .dashboard .header h1 {
   font-size: 1.5rem;
@@ -65,7 +68,6 @@
   font-size: 1.5rem;
 }
 .appointments-container {
-  margin-top: 25px;
   display: grid;
 }
 .day-section {
@@ -589,4 +591,29 @@
 }
 .date-without-time {
   text-transform: capitalize;
+}
+
+/* Filter */
+.filter-container {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-btns {
+  font-size: 0.85rem;
+  border: 1px solid black;
+  border-radius: 25px;
+  padding: 0.38rem 0.7rem;
+  text-transform: capitalize;
+  transition: all ease 0.2s;
+}
+.filter-btns.active {
+  background: black;
+  color: var(--text-color);
+}
+.filter-btns.inactive {
+  background: var(--text-color);
+  color: black;
+}
+.filter-btns:active {
+  transform: scale(0.92);
 }

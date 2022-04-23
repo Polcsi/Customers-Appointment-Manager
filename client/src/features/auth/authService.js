@@ -8,7 +8,10 @@ const login = async (adminData) => {
   if (response.data) {
     document.cookie = `admin=${JSON.stringify(
       response.data
-    )}; max-age=${86400}; Secure; path=/;`;
+    )}; max-age=${86400}; path=/;`;
+    /* document.cookie = `admin=${JSON.stringify(
+      response.data
+    )}; max-age=${86400}; Secure; path=/;`; */
   }
 
   return response.data;

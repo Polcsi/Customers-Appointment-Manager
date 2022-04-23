@@ -9,7 +9,7 @@ const getAllCustomer = async (token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(API_URL, config);
+  const response = await axios.get(`${API_URL}?sort=fullname`, config);
   return response.data.customers;
 };
 

@@ -106,6 +106,14 @@ const Customers = () => {
           </div>
         </div>
         <div className="underline"></div>
+        <div className="filter-container">
+          <button type="button" className="filter-btns active">
+            A-z fullname
+          </button>
+          <button type="button" className="filter-btns inactive">
+            Z-a fullname
+          </button>
+        </div>
         <div className="appointments-container">
           {isLoading ? (
             <Spinner color="white" top={0} position="relative" />
