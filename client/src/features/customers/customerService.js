@@ -4,13 +4,17 @@ const API_URL = "api/v1/customers";
 
 // Get All Customer
 const getAllCustomer = async (queryObject, token) => {
+  let queryString = "";
+  Object.entries(queryObject).forEach(
+    ([key, value]) => (queryString += `${key}=${value}&`)
+  );
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
   const response = await axios.get(
-    `${API_URL}?${queryObject.join("&")}`,
+    `${API_URL}?${queryString.substring(0, queryString.length - 1)}`,
     config
   );
   return response.data.customers;

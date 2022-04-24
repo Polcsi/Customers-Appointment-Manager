@@ -35,9 +35,10 @@ const Customers = () => {
   } = useSelector((state) => state.customer);
   const page = useRef(null);
   const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
-  const [queryObject, setQueryObject] = useState(["sort=fullname"]);
+  const [queryObject, setQueryObject] = useState({ sort: "fullname" });
   const [active, setActive] = useState("sort");
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const searchBarRef = useRef(null);
 
   useEffect(() => {
     if (isSuccessDelete) {
@@ -98,11 +99,30 @@ const Customers = () => {
           <h1>Customers</h1>
           <div className="btns">
             <div className="operation-btn-container search">
-              {showSearchBar && <input type="text" />}
+              <input
+                ref={searchBarRef}
+                className="search-bar"
+                type="text"
+                placeholder="Name"
+                onChange={(e) => {
+                  setQueryObject({
+                    ...queryObject,
+                    fullname: `${e.target.value}`,
+                  });
+                }}
+              />
               <button
                 className="filter"
                 type="button"
-                onClick={() => setShowSearchBar(!showSearchBar)}
+                onClick={() => {
+                  if (!showSearchBar) {
+                    searchBarRef.current.focus();
+                    searchBarRef.current.style.width = "160px";
+                  } else {
+                    searchBarRef.current.style.width = "0px";
+                  }
+                  setShowSearchBar(!showSearchBar);
+                }}
               >
                 <AiOutlineSearch />
               </button>
@@ -126,7 +146,8 @@ const Customers = () => {
               active === "sort" ? "active" : "inactive"
             }`}
             onClick={() => {
-              setQueryObject(["sort=fullname"]);
+              delete queryObject.sortdesc;
+              setQueryObject({ ...queryObject, sort: "fullname" });
               setActive("sort");
             }}
           >
@@ -138,7 +159,8 @@ const Customers = () => {
               active === "desort" ? "active" : "inactive"
             }`}
             onClick={() => {
-              setQueryObject(["sortdesc=fullname"]);
+              delete queryObject.sort;
+              setQueryObject({ ...queryObject, sortdesc: "fullname" });
               setActive("desort");
             }}
           >
@@ -151,9 +173,13 @@ const Customers = () => {
           ) : (
             ""
           )}
-          {allCustomers.map((customer, index) => {
-            return <Customer key={index} {...customer} />;
-          })}
+          {allCustomers.length > 0 ? (
+            allCustomers.map((customer, index) => {
+              return <Customer key={index} {...customer} />;
+            })
+          ) : (
+            <div>Not Found</div>
+          )}
         </div>
       </div>
     </>
