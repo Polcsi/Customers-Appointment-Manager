@@ -3,13 +3,16 @@ import axios from "axios";
 const API_URL = "api/v1/customers";
 
 // Get All Customer
-const getAllCustomer = async (token) => {
+const getAllCustomer = async (queryObject, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(`${API_URL}?sort=fullname`, config);
+  const response = await axios.get(
+    `${API_URL}?${queryObject.join("&")}`,
+    config
+  );
   return response.data.customers;
 };
 

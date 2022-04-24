@@ -33,10 +33,10 @@ const initialState = {
 // Get Customers
 export const getCustomers = createAsyncThunk(
   "customer/getCustomers",
-  async (_, thunkAPI) => {
+  async (queryObject, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.admin.token;
-      return await customerService.getAllCustomer(token);
+      return await customerService.getAllCustomer(queryObject, token);
     } catch (error) {
       const message = error.message ? error.message : error.response.data.msg;
       return thunkAPI.rejectWithValue(message);

@@ -17,7 +17,7 @@ import {
 } from "../features/customers/customerSlice";
 // Icons
 import { IoIosAdd } from "react-icons/io";
-import { FiFilter } from "react-icons/fi";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const Customers = () => {
   const navigate = useNavigate();
@@ -35,6 +35,9 @@ const Customers = () => {
   } = useSelector((state) => state.customer);
   const page = useRef(null);
   const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
+  const [queryObject, setQueryObject] = useState(["sort=fullname"]);
+  const [active, setActive] = useState("sort");
+  const [showSearchBar, setShowSearchBar] = useState(false);
 
   useEffect(() => {
     if (isSuccessDelete) {
@@ -68,14 +71,14 @@ const Customers = () => {
       }
     }, 1000);
 
-    dispatch(getCustomers());
+    dispatch(getCustomers(queryObject));
 
     return (_) => {
       dispatch(reset());
       dispatch(resetCustomers());
       clearInterval(validateSession);
     };
-  }, [navigate, dispatch, isError, message]);
+  }, [navigate, dispatch, isError, message, queryObject]);
 
   return (
     <>
@@ -94,23 +97,51 @@ const Customers = () => {
         <div className="header">
           <h1>Customers</h1>
           <div className="btns">
-            <button className="filter">
-              <FiFilter />
-            </button>
-            <button
-              className="add"
-              onClick={() => setOpenAddCustomerModal(!openAddCustomerModal)}
-            >
-              <IoIosAdd />
-            </button>
+            <div className="operation-btn-container search">
+              {showSearchBar && <input type="text" />}
+              <button
+                className="filter"
+                type="button"
+                onClick={() => setShowSearchBar(!showSearchBar)}
+              >
+                <AiOutlineSearch />
+              </button>
+            </div>
+            <div className="operation-btn-container">
+              <button
+                className="add"
+                type="button"
+                onClick={() => setOpenAddCustomerModal(!openAddCustomerModal)}
+              >
+                <IoIosAdd />
+              </button>
+            </div>
           </div>
         </div>
         <div className="underline"></div>
         <div className="filter-container">
-          <button type="button" className="filter-btns active">
+          <button
+            type="button"
+            className={`filter-btns ${
+              active === "sort" ? "active" : "inactive"
+            }`}
+            onClick={() => {
+              setQueryObject(["sort=fullname"]);
+              setActive("sort");
+            }}
+          >
             A-z fullname
           </button>
-          <button type="button" className="filter-btns inactive">
+          <button
+            type="button"
+            className={`filter-btns ${
+              active === "desort" ? "active" : "inactive"
+            }`}
+            onClick={() => {
+              setQueryObject(["sortdesc=fullname"]);
+              setActive("desort");
+            }}
+          >
             Z-a fullname
           </button>
         </div>

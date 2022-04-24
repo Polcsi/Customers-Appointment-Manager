@@ -211,7 +211,7 @@ const UpdateCustomer = ({
                 }}
               />
             </button>
-            <h1>Add Administrator</h1>
+            <h1>Update Customer</h1>
             <button type="button" onClick={() => updatingCustomer()}>
               <MdDone />
             </button>
