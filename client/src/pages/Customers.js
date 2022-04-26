@@ -117,9 +117,9 @@ const Customers = () => {
                 onClick={() => {
                   if (!showSearchBar) {
                     searchBarRef.current.focus();
-                    searchBarRef.current.style.width = "160px";
+                    searchBarRef.current.style.width = "400%";
                   } else {
-                    searchBarRef.current.style.width = "0px";
+                    searchBarRef.current.style.width = "0%";
                   }
                   setShowSearchBar(!showSearchBar);
                 }}
@@ -177,8 +177,12 @@ const Customers = () => {
             allCustomers.map((customer, index) => {
               return <Customer key={index} {...customer} />;
             })
+          ) : queryObject.fullname ? (
+            <div className="nf">
+              <p>not found customers</p>
+            </div>
           ) : (
-            <div>Not Found</div>
+            ""
           )}
         </div>
       </div>

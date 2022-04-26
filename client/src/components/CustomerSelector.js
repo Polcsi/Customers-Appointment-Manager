@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Spinner from "./Spinner";
 // icons
 import times from "../assets/times.svg";
+import { AiOutlineSearch } from "react-icons/ai";
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -17,30 +18,36 @@ const CustomerSelector = ({ setOpenCustomer, handleChange, setName }) => {
   const { allCustomers, isSucccess, isLoading, isError } = useSelector(
     (state) => state.customer
   );
+  const [queryObject, setQueryObject] = useState({ sort: "fullname" });
 
   useEffect(() => {
     if (isError) {
       toast.error("Failed To Get Customers");
     }
-    dispatch(getCustomers());
+    dispatch(getCustomers(queryObject));
 
     return () => {
       dispatch(reset());
       dispatch(resetCustomers());
     };
-  }, [dispatch, isSucccess, isError]);
+  }, [dispatch, isSucccess, isError, queryObject]);
 
   return (
     <div className="overlay">
       <div className="overlay-container customer-selector">
-        <button
-          className="close-overlay"
-          onClick={() => setOpenCustomer(false)}
-        >
-          <img src={times} alt="close" />
-        </button>
-        <div className="header">
+        <div className="header header-customer-selector">
           <h2>select customer</h2>
+          <section className="customer-selector-operation-container">
+            <section className="search-field-select">
+              <AiOutlineSearch />
+            </section>
+            <button
+              className="close-overlay close-overlay-customer-selector"
+              onClick={() => setOpenCustomer(false)}
+            >
+              <img src={times} alt="close" />
+            </button>
+          </section>
         </div>
         <div className="customer-list">
           {isLoading ? (

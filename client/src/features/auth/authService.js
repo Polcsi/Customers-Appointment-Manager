@@ -11,6 +11,9 @@ const login = async (adminData) => {
     )}; max-age=${86400}; path=/;`;
     /* document.cookie = `admin=${JSON.stringify(
       response.data
+    )}; max-age=${86400}; HttpOnly; path=/;`; */
+    /* document.cookie = `admin=${JSON.stringify(
+      response.data
     )}; max-age=${86400}; Secure; path=/;`; */
   }
 
