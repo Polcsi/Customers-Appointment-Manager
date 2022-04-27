@@ -22,7 +22,7 @@ const CustomerSelector = ({ setOpenCustomer, handleChange, setName }) => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Failed To Get Customers");
+      toast.error("Something Went Wrong");
     }
     dispatch(getCustomers(queryObject));
 
