@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // componenets
 import Spinner from "./Spinner";
 // icons
@@ -19,6 +19,8 @@ const CustomerSelector = ({ setOpenCustomer, handleChange, setName }) => {
     (state) => state.customer
   );
   const [queryObject, setQueryObject] = useState({ sort: "fullname" });
+  const [openSearchBar, setOpenSearchBar] = useState(false);
+  const searchBarRef = useRef(null);
 
   useEffect(() => {
     if (isError) {
@@ -36,10 +38,34 @@ const CustomerSelector = ({ setOpenCustomer, handleChange, setName }) => {
     <div className="overlay">
       <div className="overlay-container customer-selector">
         <div className="header header-customer-selector">
-          <h2>select customer</h2>
+          {openSearchBar ? <h2>select</h2> : <h2>select customer</h2>}
           <section className="customer-selector-operation-container">
             <section className="search-field-select">
-              <AiOutlineSearch />
+              <input
+                type="text"
+                placeholder="Type name..."
+                className="searchbar-customer-selector"
+                ref={searchBarRef}
+                onChange={(e) =>
+                  setQueryObject({
+                    ...queryObject,
+                    fullname: `${e.target.value}`,
+                  })
+                }
+              />
+              <AiOutlineSearch
+                onClick={() => {
+                  if (!openSearchBar) {
+                    searchBarRef.current.style.right = "1.76rem";
+                    searchBarRef.current.focus();
+                    searchBarRef.current.style.width = "550%";
+                  } else {
+                    searchBarRef.current.style.width = "0%";
+                    searchBarRef.current.style.right = "0";
+                  }
+                  setOpenSearchBar(!openSearchBar);
+                }}
+              />
             </section>
             <button
               className="close-overlay close-overlay-customer-selector"

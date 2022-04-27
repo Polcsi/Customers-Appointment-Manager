@@ -5,18 +5,21 @@ const API_URL = "api/v1/customers";
 // Get All Customer
 const getAllCustomer = async (queryObject, token) => {
   let queryString = "";
-  Object.entries(queryObject).forEach(
-    ([key, value]) => (queryString += `${key}=${value}&`)
-  );
+  if (queryObject) {
+    Object.entries(queryObject).forEach(
+      ([key, value]) => (queryString += `${key}=${value}&`)
+    );
+  }
+  const url =
+    queryString !== ""
+      ? `${API_URL}?${queryString.substring(0, queryString.length - 1)}`
+      : `${API_URL}`;
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(
-    `${API_URL}?${queryString.substring(0, queryString.length - 1)}`,
-    config
-  );
+  const response = await axios.get(url, config);
   return response.data.customers;
 };
 
