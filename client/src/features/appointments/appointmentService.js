@@ -13,7 +13,6 @@ const getAllAppointments = async (queryObject, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  console.log(url);
   const response = await axios.get(url, config);
   return response.data.appointments;
 };

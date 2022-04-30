@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { monthsArr } from "../data";
 import { toast } from "react-toastify";
+import { padTo2Digits } from "../utils";
 // Components
 import CustomerSelector from "./CustomerSelector";
 import DateSelector from "./DateSelector";
@@ -22,16 +23,12 @@ import {
 const AddAppointmentModal = ({ showModal, setShowModal }) => {
   const today = new Date();
   const [appointment, setAppointment] = useState({
-    date: `${today.getFullYear()}-${
-      today.getMonth() + 1 < 10
-        ? `0${today.getMonth() + 1}`
-        : today.getMonth() + 1
-    }-${today.getDate() < 10 ? `0${today.getDate()}` : today.getDate()}`,
-    time: `${
-      today.getHours() < 10 ? `0${today.getHours()}` : today.getHours()
-    }:${
-      today.getMinutes() < 10 ? `0${today.getMinutes()}` : today.getMinutes()
-    }`,
+    date: `${today.getFullYear()}-${padTo2Digits(
+      today.getMonth() + 1
+    )}-${padTo2Digits(today.getDate())}`,
+    time: `${padTo2Digits(today.getHours())}:${padTo2Digits(
+      today.getMinutes()
+    )}`,
     sendReminder: true,
     description: "",
   });

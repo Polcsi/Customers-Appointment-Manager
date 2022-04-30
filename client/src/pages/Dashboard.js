@@ -5,8 +5,13 @@ import AddAppointmentModal from "../components/AddAppointmentModal";
 import PullToRefresh from "../components/PullToRefresh";
 import { checkCookieExists } from "../vaidateSession";
 // Redux
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import {
+  getToday,
+  getTomorrow,
+  getDayAfterTomorrow,
+} from "../features/appointments/appointmentSlice";
 // Icons
 import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
@@ -15,13 +20,23 @@ const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const page = useRef(null);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { admin } = useSelector((state) => state.auth);
+  const {
+    todayAppointments,
+    tomorrowAppointments,
+    dayAfterTomorrowAppointments,
+  } = useSelector((state) => state.appointment);
 
   useEffect(() => {
     if (!checkCookieExists()) {
       navigate("/login");
     }
+
+    dispatch(getToday());
+    dispatch(getTomorrow());
+    dispatch(getDayAfterTomorrow());
 
     const validateSession = setInterval(() => {
       console.log("check Dashboard Page");
@@ -34,7 +49,7 @@ const Dashboard = () => {
     return (_) => {
       clearInterval(validateSession);
     };
-  }, [navigate]);
+  }, [navigate, dispatch]);
 
   return (
     <>
@@ -63,18 +78,39 @@ const Dashboard = () => {
         <div className="appointments-container">
           <div className="today day-section">
             <h2>today</h2>
-            {/* <AppointmentItem showDate={false} />
-            <AppointmentItem showDate={false} />
-            <AppointmentItem showDate={false} /> */}
+            {todayAppointments.map((appointment) => {
+              return (
+                <AppointmentItem
+                  key={appointment._id}
+                  {...appointment}
+                  showDate={false}
+                />
+              );
+            })}
           </div>
           <div className="tomorrow day-section">
             <h2>tomorrow</h2>
-            {/* <AppointmentItem showDate={false} />
-            <AppointmentItem showDate={false} /> */}
+            {tomorrowAppointments.map((appointment) => {
+              return (
+                <AppointmentItem
+                  key={appointment._id}
+                  {...appointment}
+                  showDate={false}
+                />
+              );
+            })}
           </div>
           <div className="dat-after-tomorrow day-section">
             <h2>day after tomorrow</h2>
-            {/* <AppointmentItem showDate={false} /> */}
+            {dayAfterTomorrowAppointments.map((appointment) => {
+              return (
+                <AppointmentItem
+                  key={appointment._id}
+                  {...appointment}
+                  showDate={false}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

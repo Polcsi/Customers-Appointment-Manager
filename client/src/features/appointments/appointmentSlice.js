@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import appointmentService from "./appointmentService";
+import { formatDate } from "../../utils";
 
 const initialState = {
   appointments: [],
@@ -36,6 +37,48 @@ export const getAppointments = createAsyncThunk(
       const message = error.response.data.msg;
       return thunkAPI.rejectWithValue(message);
     }
+  }
+);
+
+// Get Today Appointments
+export const getToday = createAsyncThunk(
+  "appointment/getToday",
+  async (_, thunkAPI) => {
+    const today = new Date();
+    const queryObject = { date: `${formatDate(today)}`, sort: "time" };
+    const token = thunkAPI.getState().auth.admin.token;
+    return await appointmentService.getAllAppointments(queryObject, token);
+  }
+);
+
+// Get Tomorrow Appointments
+export const getTomorrow = createAsyncThunk(
+  "appointment/getTomorrow",
+  async (_, thunkAPI) => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const queryObject = { date: `${formatDate(tomorrow)}`, sort: "time" };
+    const token = thunkAPI.getState().auth.admin.token;
+    return await appointmentService.getAllAppointments(queryObject, token);
+  }
+);
+
+// Get Day After Tomorrow Appointments
+export const getDayAfterTomorrow = createAsyncThunk(
+  "appointment/getDayAfterTomorrow",
+  async (_, thunkAPI) => {
+    const today = new Date();
+    const dayAfterTomorrow = new Date(today);
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+
+    const queryObject = {
+      date: `${formatDate(dayAfterTomorrow)}`,
+      sort: "time",
+    };
+    const token = thunkAPI.getState().auth.admin.token;
+    return await appointmentService.getAllAppointments(queryObject, token);
   }
 );
 
@@ -134,6 +177,15 @@ export const appointmentSlice = createSlice({
         state.isLoadingAdd = false;
         state.isErrorAdd = true;
         state.messageAdd = action.payload;
+      })
+      .addCase(getToday.fulfilled, (state, action) => {
+        state.todayAppointments = action.payload;
+      })
+      .addCase(getTomorrow.fulfilled, (state, action) => {
+        state.tomorrowAppointments = action.payload;
+      })
+      .addCase(getDayAfterTomorrow.fulfilled, (state, action) => {
+        state.dayAfterTomorrowAppointments = action.payload;
       });
   },
 });
