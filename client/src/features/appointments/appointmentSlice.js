@@ -3,6 +3,9 @@ import appointmentService from "./appointmentService";
 
 const initialState = {
   appointments: [],
+  todayAppointments: [],
+  tomorrowAppointments: [],
+  dayAfterTomorrowAppointments: [],
   singleAppointment: null,
   // Get All States
   isError: false,
@@ -26,8 +29,9 @@ export const getAppointments = createAsyncThunk(
   "appointment/getAppointments",
   async (_, thunkAPI) => {
     try {
+      const queryObject = { sort: "time", sortdesc: "date" };
       const token = thunkAPI.getState().auth.admin.token;
-      return await appointmentService.getAllAppointments(token);
+      return await appointmentService.getAllAppointments(queryObject, token);
     } catch (error) {
       const message = error.response.data.msg;
       return thunkAPI.rejectWithValue(message);

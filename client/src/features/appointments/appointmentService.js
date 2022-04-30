@@ -1,15 +1,20 @@
 import axios from "axios";
+import { convertQueryObjectToString } from "../../utils";
 
 const API_URL = "api/v1/appointment";
 
 // Get All Appointment
-const getAllAppointments = async (token) => {
+const getAllAppointments = async (queryObject, token) => {
+  const queryString = convertQueryObjectToString(queryObject);
+
+  const url = queryString !== "" ? `${API_URL}?${queryString}` : `${API_URL}`;
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(API_URL, config);
+  console.log(url);
+  const response = await axios.get(url, config);
   return response.data.appointments;
 };
 

@@ -69,6 +69,7 @@ const getAllAppointment = async (req, res) => {
   const { sort, sortdesc, date, limit, morning, afternoon } = req.query;
 
   const queryObject = {};
+  let sortObject = {};
   if (date) {
     queryObject.date = { $regex: date, $options: "i" };
   }
@@ -79,31 +80,35 @@ const getAllAppointment = async (req, res) => {
     queryObject["time"] = { $gt: "12:00" };
   }
 
-  let result = Appointment.find(queryObject)
-    .populate("customer", "fullname")
-    .exec();
-
   if (sort) {
-    const sortList = sort.split(",").join(" ");
-    result = result.sort(sortList);
+    const sortParams = sort.split(",");
+    sortParams.forEach((item) => {
+      if (item === "date") {
+        sortObject = { [item]: 1, ...sortObject };
+      } else {
+        sortObject = { ...sortObject, [item]: 1 };
+      }
+    });
   }
   if (sortdesc) {
-    const sortObj = {};
-    if (sortdesc.includes("date")) {
-      sortObj.date = -1;
-    }
-    if (sortdesc.includes("time")) {
-      sortObj.time = -1;
-    }
-    if (sortdesc.includes("createdAt")) {
-      sortObj.createdAt = -1;
-    }
+    const sortParams = sortdesc.split(",");
+    sortParams.forEach((item) => {
+      if (item === "date") {
+        sortObject = { [item]: -1, ...sortObject };
+      } else {
+        sortObject = { ...sortObject, [item]: -1 };
+      }
+    });
+  }
 
-    result = result.sort(sortObj);
-  }
-  if (limit) {
-    result.limit(limit);
-  }
+  let result = Appointment.find(queryObject)
+    .populate({
+      path: "customer",
+      select: "fullname",
+    })
+    .sort(sortObject)
+    .limit(limit)
+    .exec();
 
   const appointments = await result;
   res

@@ -1,19 +1,13 @@
 import axios from "axios";
+import { convertQueryObjectToString } from "../../utils";
 
 const API_URL = "api/v1/customers";
 
 // Get All Customer
 const getAllCustomer = async (queryObject, token) => {
-  let queryString = "";
-  if (queryObject) {
-    Object.entries(queryObject).forEach(
-      ([key, value]) => (queryString += `${key}=${value}&`)
-    );
-  }
-  const url =
-    queryString !== ""
-      ? `${API_URL}?${queryString.substring(0, queryString.length - 1)}`
-      : `${API_URL}`;
+  const queryString = convertQueryObjectToString(queryObject);
+
+  const url = queryString !== "" ? `${API_URL}?${queryString}` : `${API_URL}`;
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
