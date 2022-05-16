@@ -13,7 +13,7 @@ import {
   getDayAfterTomorrow,
 } from "../features/appointments/appointmentSlice";
 // Icons
-import { IoIosAdd } from "react-icons/io";
+import { IoIosAdd, IoIosHourglass } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
 
 const Dashboard = () => {
@@ -76,42 +76,58 @@ const Dashboard = () => {
         </div>
         <div className="underline"></div>
         <div className="appointments-container">
-          <div className="today day-section">
-            <h2>today</h2>
-            {todayAppointments.map((appointment) => {
-              return (
-                <AppointmentItem
-                  key={appointment._id}
-                  {...appointment}
-                  showDate={false}
-                />
-              );
-            })}
-          </div>
-          <div className="tomorrow day-section">
-            <h2>tomorrow</h2>
-            {tomorrowAppointments.map((appointment) => {
-              return (
-                <AppointmentItem
-                  key={appointment._id}
-                  {...appointment}
-                  showDate={false}
-                />
-              );
-            })}
-          </div>
-          <div className="dat-after-tomorrow day-section">
-            <h2>day after tomorrow</h2>
-            {dayAfterTomorrowAppointments.map((appointment) => {
-              return (
-                <AppointmentItem
-                  key={appointment._id}
-                  {...appointment}
-                  showDate={false}
-                />
-              );
-            })}
-          </div>
+          {todayAppointments.length !== 0 && (
+            <div className="today day-section">
+              <h2>today</h2>
+              {todayAppointments.map((appointment) => {
+                return (
+                  <AppointmentItem
+                    key={appointment._id}
+                    {...appointment}
+                    showDate={false}
+                  />
+                );
+              })}
+            </div>
+          )}
+          {tomorrowAppointments.length !== 0 && (
+            <div className="tomorrow day-section">
+              <h2>tomorrow</h2>
+              {tomorrowAppointments.map((appointment) => {
+                return (
+                  <AppointmentItem
+                    key={appointment._id}
+                    {...appointment}
+                    showDate={false}
+                  />
+                );
+              })}
+            </div>
+          )}
+          {dayAfterTomorrowAppointments.length !== 0 && (
+            <div className="dat-after-tomorrow day-section">
+              <h2>day after tomorrow</h2>
+              {dayAfterTomorrowAppointments.map((appointment) => {
+                return (
+                  <AppointmentItem
+                    key={appointment._id}
+                    {...appointment}
+                    showDate={false}
+                  />
+                );
+              })}
+            </div>
+          )}
+          {todayAppointments.length === 0 &&
+          tomorrowAppointments.length === 0 &&
+          dayAfterTomorrowAppointments.length === 0 ? (
+            <div className="empty-upcoming">
+              <IoIosHourglass />
+              <p>No Upcomming Appointments</p>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </>

@@ -727,3 +727,33 @@
   transition: all ease 0.2s;
   outline: none;
 }
+.empty-upcoming {
+  width: 100%;
+  height: 65vh;
+  display: flex;
+  gap: 0.8rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.empty-upcoming p {
+  text-align: center;
+  font-size: clamp(0.7rem, 3.7vw, 1rem);
+}
+.empty-upcoming svg {
+  font-size: 2em;
+  transform: rotate(0deg);
+  transition: all ease 0.2s;
+  animation: rotate 4s infinite;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
