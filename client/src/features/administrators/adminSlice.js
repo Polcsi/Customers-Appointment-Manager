@@ -29,10 +29,10 @@ export const register = createAsyncThunk(
 // Get Admins
 export const getAdmins = createAsyncThunk(
   "admin/getAdmins",
-  async (_, thunkAPI) => {
+  async (queryObject, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.admin.token;
-      return await adminService.getAdmins(token);
+      return await adminService.getAdmins(queryObject, token);
     } catch (error) {
       const message =
         (error.response &&

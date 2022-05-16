@@ -21,9 +21,25 @@ const createAdmin = async (req, res) => {
 // @route   GET /api/v1/administrators
 // @access Private
 const getAllAdmins = async (req, res) => {
-  const admins = await Administrators.find().select(
+  const { fullname, sort, sortdesc } = req.query;
+  const queryObject = {};
+
+  if (fullname) {
+    queryObject.fullname = { $regex: fullname, $options: "i" };
+  }
+
+  let result = Administrators.find(queryObject).select(
     "-password -createdAt -updatedAt"
   );
+
+  if (sort) {
+    result = result.sort(sort);
+  }
+  if (sortdesc) {
+    result = result.sort([[`${sortdesc}`, -1]]);
+  }
+
+  const admins = await result;
   res.status(StatusCodes.OK).json({ admins, total: admins.length });
 };
 

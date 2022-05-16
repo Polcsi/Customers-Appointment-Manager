@@ -1,4 +1,5 @@
 import axios from "axios";
+import { convertQueryObjectToString } from "../../utils";
 
 const API_URL = "api/v1/";
 
@@ -13,8 +14,9 @@ const register = async (adminData, token) => {
 };
 
 // Get all admins
-const getAdmins = async (token) => {
-  const response = await axios.get(API_URL + "administrators", {
+const getAdmins = async (queryObject, token) => {
+  const queryString = convertQueryObjectToString(queryObject);
+  const response = await axios.get(`${API_URL}/administrators?${queryString}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

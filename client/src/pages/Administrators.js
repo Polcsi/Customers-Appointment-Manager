@@ -15,7 +15,7 @@ import {
 } from "../features/administrators/adminSlice";
 // Icons
 import { IoIosAdd } from "react-icons/io";
-import { FiFilter } from "react-icons/fi";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const Administrators = () => {
   const dispatch = useDispatch();
@@ -24,6 +24,11 @@ const Administrators = () => {
     useSelector((state) => state.admin);
   const { admin } = useSelector((state) => state.auth);
   const [openModal, setOpenModal] = useState(false);
+
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const searchBarRef = useRef(null);
+  const [queryObject, setQueryObject] = useState({ sort: "fullname" });
+  const [active, setActive] = useState("sort");
 
   useEffect(() => {
     if (isError) {
@@ -49,14 +54,14 @@ const Administrators = () => {
       }
     }, 1000);
 
-    dispatch(getAdmins());
+    dispatch(getAdmins(queryObject));
 
     return () => {
       dispatch(reset());
       dispatch(resetAdmins());
       clearInterval(validateSession);
     };
-  }, [admin, navigate, isError, message, dispatch]);
+  }, [admin, navigate, isError, message, dispatch, queryObject]);
 
   const page = useRef(null);
 
@@ -79,15 +84,69 @@ const Administrators = () => {
         <div className="header">
           <h1>Administrators</h1>
           <div className="btns">
-            <button className="filter">
-              <FiFilter />
-            </button>
+            <div className="operation-btn-container search">
+              <input
+                type="text"
+                className="search-bar"
+                placeholder="Fullname"
+                ref={searchBarRef}
+                onChange={(e) => {
+                  setQueryObject({
+                    ...queryObject,
+                    fullname: `${e.target.value}`,
+                  });
+                }}
+              />
+              <button
+                className="filter"
+                type="button"
+                onClick={() => {
+                  if (!showSearchBar) {
+                    searchBarRef.current.focus();
+                    searchBarRef.current.style.width = "300%";
+                  } else {
+                    searchBarRef.current.style.width = "0%";
+                  }
+                  setShowSearchBar(!showSearchBar);
+                }}
+              >
+                <AiOutlineSearch />
+              </button>
+            </div>
             <button className="add" onClick={() => setOpenModal(!openModal)}>
               <IoIosAdd />
             </button>
           </div>
         </div>
         <div className="underline"></div>
+        <div className="filter-container">
+          <button
+            type="button"
+            className={`filter-btns ${
+              active === "sort" ? "active" : "inactive"
+            }`}
+            onClick={() => {
+              delete queryObject.sortdesc;
+              setQueryObject({ ...queryObject, sort: "fullname" });
+              setActive("sort");
+            }}
+          >
+            A-z fullname
+          </button>
+          <button
+            type="button"
+            className={`filter-btns ${
+              active === "desort" ? "active" : "inactive"
+            }`}
+            onClick={() => {
+              delete queryObject.sort;
+              setQueryObject({ ...queryObject, sortdesc: "fullname" });
+              setActive("desort");
+            }}
+          >
+            Z-a fullname
+          </button>
+        </div>
         <div className="appointments-container">
           {isLoadingGetAll && singleAdmin === null ? (
             <Spinner color="white" top={0} />
