@@ -21,3 +21,12 @@ export function formatDate(date) {
     padTo2Digits(date.getDate()),
   ].join("-");
 }
+
+export function formatFullDate(date) {
+  var options = {
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  };
+  return date.toLocaleDateString("en-US", options);
+}

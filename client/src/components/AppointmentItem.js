@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { formatFullDate } from "../utils";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 // components
@@ -34,7 +35,12 @@ const AppointmentItem = ({
       )}
       <article>
         <div className="appointment-header">
-          <h1 className="time">{showDate ? `${date} - ${time}` : `${time}`}</h1>
+          {showDate ? (
+            <h1 className="time">{formatFullDate(new Date(date))}</h1>
+          ) : (
+            ""
+          )}
+          <h1 className="time">{time}</h1>
           <h2 className="customer">{customer.fullname}</h2>
         </div>
         <div className="indicators">
