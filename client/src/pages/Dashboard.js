@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { checkCookieExists } from "../vaidateSession";
+//components
 import AppointmentItem from "../components/AppointmentItem";
 import AddAppointmentModal from "../components/AddAppointmentModal";
 import PullToRefresh from "../components/PullToRefresh";
-import { checkCookieExists } from "../vaidateSession";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -14,7 +15,6 @@ import {
 } from "../features/appointments/appointmentSlice";
 // Icons
 import { IoIosAdd, IoIosHourglass } from "react-icons/io";
-import { FiFilter } from "react-icons/fi";
 
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -53,12 +53,16 @@ const Dashboard = () => {
 
   return (
     <>
-      <PullToRefresh page={page} />
+      <PullToRefresh
+        page={page}
+        updatedArray={[getToday, getTomorrow, getDayAfterTomorrow]}
+      />
       <div className="dashboard" ref={page}>
         {showModal ? (
           <AddAppointmentModal
             showModal={showModal}
             setShowModal={setShowModal}
+            updatedArray={[getToday, getTomorrow, getDayAfterTomorrow]}
           />
         ) : (
           ""
@@ -66,9 +70,6 @@ const Dashboard = () => {
         <div className="header">
           <h1>Up Comming</h1>
           <div className="btns">
-            <button className="filter">
-              <FiFilter />
-            </button>
             <button className="add">
               <IoIosAdd onClick={() => setShowModal(!showModal)} />
             </button>

@@ -37,8 +37,15 @@ const PullToRefresh = ({ page, updatedArray = null, resetArray = null }) => {
         }, 1000);
         refreshTextRef.current.textContent = "Refreshing";
         //console.log("%cUPDATE", "color: yellow;");
-        updatedArray && dispatch(updatedArray());
-        resetArray && dispatch(resetArray());
+        if (updatedArray.length > 1) {
+          updatedArray.forEach((array) => {
+            dispatch(array());
+          });
+        } else {
+          updatedArray && dispatch(updatedArray());
+          resetArray && dispatch(resetArray());
+        }
+
         pCurrent = { x: 0, y: 0 };
         pStart = { x: 0, y: 0 };
         setIsRefresh(false);

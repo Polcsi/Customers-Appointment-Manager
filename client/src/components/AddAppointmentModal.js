@@ -20,7 +20,11 @@ import {
   resetAppointments,
 } from "../features/appointments/appointmentSlice";
 
-const AddAppointmentModal = ({ showModal, setShowModal }) => {
+const AddAppointmentModal = ({
+  showModal,
+  setShowModal,
+  updatedArray = null,
+}) => {
   const today = new Date();
   const [appointment, setAppointment] = useState({
     date: `${today.getFullYear()}-${padTo2Digits(
@@ -63,10 +67,24 @@ const AddAppointmentModal = ({ showModal, setShowModal }) => {
 
     return () => {
       dispatch(resetAdd());
-      dispatch(resetAppointments());
-      dispatch(getAppointments());
+      if (updatedArray === null) {
+        dispatch(resetAppointments());
+        dispatch(getAppointments());
+      } else {
+        updatedArray.forEach((array) => {
+          dispatch(array());
+        });
+      }
     };
-  }, [dispatch, isErrorAdd, messageAdd, isSuccessAdd, setShowModal, showModal]);
+  }, [
+    dispatch,
+    isErrorAdd,
+    messageAdd,
+    isSuccessAdd,
+    setShowModal,
+    showModal,
+    updatedArray,
+  ]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";

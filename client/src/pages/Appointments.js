@@ -18,9 +18,12 @@ import {
 // Icons
 import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
+import { BsCalendarWeek } from "react-icons/bs";
+import { MdOutlineViewAgenda } from "react-icons/md";
 
 const Appointments = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isChangeView, setIsChangeView] = useState(false);
   const page = useRef(null);
 
   const navigate = useNavigate();
@@ -92,8 +95,11 @@ const Appointments = () => {
           <div className="header">
             <h1>Appointments</h1>
             <div className="btns">
-              <button className="filter">
-                <FiFilter />
+              <button
+                type="button"
+                onClick={() => setIsChangeView(!isChangeView)}
+              >
+                {isChangeView ? <MdOutlineViewAgenda /> : <BsCalendarWeek />}
               </button>
               <button className="add">
                 <IoIosAdd onClick={() => setShowModal(!showModal)} />
