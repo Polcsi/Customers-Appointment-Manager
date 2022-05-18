@@ -7,6 +7,7 @@ import Spinner from "../components/Spinner";
 import AppointmentItem from "../components/AppointmentItem";
 import AddAppointmentModal from "../components/AddAppointmentModal";
 import PullToRefresh from "../components/PullToRefresh";
+import CalendarView from "../components/CalendarView";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -20,6 +21,8 @@ import { IoIosAdd } from "react-icons/io";
 import { FiFilter } from "react-icons/fi";
 import { BsCalendarWeek } from "react-icons/bs";
 import { MdOutlineViewAgenda } from "react-icons/md";
+// css
+import "../css/calendar.css";
 
 const Appointments = () => {
   const [showModal, setShowModal] = useState(false);
@@ -109,18 +112,21 @@ const Appointments = () => {
           <div className="underline"></div>
           <div className="appointments-container">
             {isLoading && <Spinner color="white" top={0} position="relative" />}
-            <div className="today day-section">
-              {/* <h2>2022</h2> */}
-              {appointments.map((appointment) => {
-                return (
-                  <AppointmentItem
-                    key={appointment._id}
-                    showDate={true}
-                    {...appointment}
-                  />
-                );
-              })}
-            </div>
+            {isChangeView ? (
+              <CalendarView />
+            ) : (
+              <div className="today day-section">
+                {appointments.map((appointment) => {
+                  return (
+                    <AppointmentItem
+                      key={appointment._id}
+                      showDate={true}
+                      {...appointment}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </>
