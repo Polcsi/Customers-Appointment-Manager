@@ -1,17 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
+// icons
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const CalendarView = () => {
+  const currentMonth = useRef(null);
+  const currentFullDateRef = useRef(null);
+  const daysContainerRef = useRef(null);
+
   return (
     <>
       <div className="calendar-container">
         <div className="calendar">
           <div className="month">
-            <i className="fas fa-angle-left prev"></i>
+            <MdKeyboardArrowLeft className="prev" />
             <div className="date">
-              <h1></h1>
-              <p></p>
+              <h1 ref={currentMonth}>Unknown</h1>
+              <p ref={currentFullDateRef}></p>
             </div>
-            <i className="fas fa-angle-right next"></i>
+            <MdKeyboardArrowRight className="next" />
           </div>
           <div className="weekdays">
             <div>Sun</div>
@@ -22,7 +28,7 @@ const CalendarView = () => {
             <div>Fri</div>
             <div>Sat</div>
           </div>
-          <div className="days"></div>
+          <div className="days" ref={daysContainerRef}></div>
         </div>
       </div>
     </>
