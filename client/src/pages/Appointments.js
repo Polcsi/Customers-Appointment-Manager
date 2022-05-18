@@ -18,7 +18,6 @@ import {
 } from "../features/appointments/appointmentSlice";
 // Icons
 import { IoIosAdd } from "react-icons/io";
-import { FiFilter } from "react-icons/fi";
 import { BsCalendarWeek } from "react-icons/bs";
 import { MdOutlineViewAgenda } from "react-icons/md";
 // css
@@ -139,8 +138,11 @@ const Appointments = () => {
           <div className="header">
             <h1>Appointments</h1>
             <div className="btns">
-              <button className="filter">
-                <FiFilter />
+              <button
+                type="button"
+                onClick={() => setIsChangeView(!isChangeView)}
+              >
+                {isChangeView ? <MdOutlineViewAgenda /> : <BsCalendarWeek />}
               </button>
               <button className="add">
                 <IoIosAdd />

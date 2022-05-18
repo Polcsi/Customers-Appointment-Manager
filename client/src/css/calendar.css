@@ -1,3 +1,10 @@
+:root {
+  --calendar-width: 100%;
+  --calendar-height: 52em;
+  --weekdays-padding: 0.4em;
+  --days-margin: 0.3em;
+  --days-padding: 0.2em;
+}
 .calendar-container {
   font-size: 62.5%;
   width: 100%;
@@ -9,8 +16,8 @@
   align-items: center;
 }
 .calendar {
-  width: 45em;
-  height: 52em;
+  width: var(--calendar-width);
+  height: var(--calendar-height);
   background-color: #222227;
   box-shadow: 0 0.5em 3em rgba(0, 0, 0, 0.4);
 }
@@ -25,16 +32,22 @@
   text-align: center;
   text-shadow: 0 0.3em 0.5em rgba(0, 0, 0, 0.5);
 }
-.month svg {
-  font-size: 2.5em;
+.month button {
+  font-size: 3.6em;
+  color: white;
+  background: transparent;
+  border: none;
   cursor: pointer;
+}
+.month button svg {
+  vertical-align: middle;
 }
 .month h1 {
   font-size: 3em;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  margin-bottom: 2em;
+  margin-bottom: 0.4em;
 }
 .month p {
   font-size: 1.6em;
@@ -43,7 +56,7 @@
 .weekdays {
   width: 100%;
   height: 5em;
-  padding: 0 0.4em;
+  padding: 0 var(--weekdays-padding);
   display: flex;
   align-items: center;
 }
@@ -51,7 +64,9 @@
   font-size: 1.5em;
   font-weight: 400;
   letter-spacing: 0.1em;
-  width: calc(44.2em / 7);
+  width: calc(
+    (var(--calendar-width) - (var(--weekdays-padding) * 2)) / 7
+  ); /* 44.2 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,23 +76,28 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 0.2em;
+  padding: var(--days-padding);
 }
 .days div {
   font-size: 1.4em;
   margin: 0.3em;
-  width: calc(40.2em / 7);
-  height: 5em;
+  width: calc(
+    (
+        (var(--calendar-width) - (7 * (var(--days-margin) * 2))) -
+          (var(--days-padding) * 2)
+      ) / 7
+  ); /* 40.4 */
+  height: 3em;
   display: flex;
   justify-content: center;
   align-items: center;
   text-shadow: 0 0.3em 0.5em rgba(0, 0, 0, 0.5);
   transition: all 0.2s ease;
 }
-.days div:hover:not(.today) {
+/* .days div:hover:not(.today) {
   background-color: #262626;
   border: 0.2em solid #777;
-}
+} */
 .prev-date,
 .next-date {
   opacity: 0.5;
