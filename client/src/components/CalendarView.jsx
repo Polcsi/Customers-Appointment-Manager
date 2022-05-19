@@ -61,6 +61,7 @@ const CalendarView = () => {
         activeDay.classList.remove("selected");
       }
       setActiveDay(e.target);
+      console.log(activeDay);
       e.target.classList.add("selected");
     },
     [activeDay]
@@ -138,7 +139,10 @@ const CalendarView = () => {
   }, [removeSelectedDiv]);
 
   const renderCalendar = useCallback(() => {
-    const currentMonth = date.toLocaleDateString("en-us", { month: "long" });
+    const currentMonth = date.toLocaleDateString("en-us", {
+      year: "numeric",
+      month: "long",
+    });
     const currentDate = today.toLocaleDateString("en-us", options);
 
     currentMonthRef.current.textContent = `${currentMonth}`;
@@ -184,6 +188,7 @@ const CalendarView = () => {
     addDoubleClickToRemoveSelectedDiv();
     addListenerPrev();
     addListenerNext();
+    console.log("render");
 
     return (_) => {
       removeDayListeners();
