@@ -21,6 +21,10 @@ const CalendarView = () => {
     day: "numeric",
   });
 
+  const firstWeekDayInMonth = (month, year) => {
+    return new Date(year, month, 1).getDay();
+  };
+
   const daysInMonth = (month, year) => {
     return new Date(year, month, 0).getDate();
   };
@@ -142,9 +146,13 @@ const CalendarView = () => {
 
     let days = "";
 
-    for (let i = date.getDay(); i > 0; i--) {
+    for (
+      let i = firstWeekDayInMonth(date.getMonth(), date.getFullYear());
+      i > 0;
+      --i
+    ) {
       days += `<div class="prev-date">${
-        daysInMonth(date.getMonth() + 1, date.getFullYear()) - i + 1
+        daysInMonth(date.getMonth(), date.getFullYear()) - i + 1
       }</div>`;
     }
     for (
