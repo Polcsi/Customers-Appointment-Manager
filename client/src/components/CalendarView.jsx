@@ -55,28 +55,23 @@ const CalendarView = () => {
     [stepNextMonth, stepPreviousMonth]
   );
 
-  const addSelect = useCallback(
-    (e) => {
-      if (activeDay !== null) {
-        activeDay.classList.remove("selected");
+  const addSelect = useCallback((e) => {
+    setActiveDay((prev) => {
+      if (prev !== null) {
+        prev.classList.remove("selected");
       }
-      setActiveDay(e.target);
-      console.log(activeDay);
       e.target.classList.add("selected");
-    },
-    [activeDay]
-  );
-  const removeSelectedDiv = useCallback(
-    (e) => {
-      e.target.classList.forEach((classes) => {
-        if (classes === "selected") {
-          activeDay.classList.remove("selected");
-          setActiveDay(null);
-        }
-      });
-    },
-    [activeDay]
-  );
+      return e.target;
+    });
+  }, []);
+  const removeSelectedDiv = useCallback((e) => {
+    e.target.classList.forEach((classes) => {
+      if (classes === "selected") {
+        e.target.classList.remove("selected");
+        setActiveDay(null);
+      }
+    });
+  }, []);
 
   const addListenerNext = useCallback(() => {
     nextBtnRef.current.addEventListener("click", stepNextMonth, false);
@@ -104,38 +99,39 @@ const CalendarView = () => {
   }, [selectStep]);
 
   const removeDayListeners = useCallback(() => {
-    const daysInCalendar = document.querySelectorAll(".days div");
-    daysInCalendar.forEach((item) => {
-      item.removeEventListener("click", selectStep, false);
-    });
+    if (daysContainerRef.current) {
+      daysContainerRef.current.childNodes.forEach((item) => {
+        item.removeEventListener("click", selectStep, false);
+      });
+    }
   }, [selectStep]);
 
   const addSelectedDay = useCallback(() => {
-    const daysInCalendar = document.querySelectorAll(".days div");
-    daysInCalendar.forEach((item) => {
+    daysContainerRef.current.childNodes.forEach((item) => {
       item.addEventListener("click", addSelect, false);
     });
   }, [addSelect]);
 
   const removeSelectedDay = useCallback(() => {
-    const daysInCalendar = document.querySelectorAll(".days div");
-    daysInCalendar.forEach((item) => {
-      item.removeEventListener("click", addSelect, false);
-    });
+    if (daysContainerRef.current) {
+      daysContainerRef.current.childNodes.forEach((item) => {
+        item.removeEventListener("click", addSelect, false);
+      });
+    }
   }, [addSelect]);
 
   const addDoubleClickToRemoveSelectedDiv = useCallback(() => {
-    const daysInCalendar = document.querySelectorAll(".days div");
-    daysInCalendar.forEach((item) => {
+    daysContainerRef.current.childNodes.forEach((item) => {
       item.addEventListener("dblclick", removeSelectedDiv, false);
     });
   }, [removeSelectedDiv]);
 
   const removeDoubleClickToRemoveSelectedDiv = useCallback(() => {
-    const daysInCalendar = document.querySelectorAll(".days div");
-    daysInCalendar.forEach((item) => {
-      item.removeEventListener("dblclick", removeSelectedDiv, false);
-    });
+    if (daysContainerRef.current) {
+      daysContainerRef.current.childNodes.forEach((item) => {
+        item.removeEventListener("dblclick", removeSelectedDiv, false);
+      });
+    }
   }, [removeSelectedDiv]);
 
   const renderCalendar = useCallback(() => {
@@ -164,8 +160,12 @@ const CalendarView = () => {
       i <= daysInMonth(date.getMonth() + 1, date.getFullYear());
       ++i
     ) {
-      if (i === today.getDate() && date.getMonth() === today.getMonth()) {
-        days += `<div class="calendar-today">${i}</div>`;
+      if (
+        i === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      ) {
+        days += `<div class="calendar-today selected">${i}</div>`;
       } else {
         days += `<div>${i}</div>`;
       }
@@ -183,34 +183,44 @@ const CalendarView = () => {
 
   useEffect(() => {
     renderCalendar();
+    setActiveDay((prev) => {
+      let selectedItem = null;
+      daysContainerRef.current.childNodes.forEach((divs) => {
+        divs.classList.forEach((classes) => {
+          if (classes === "selected") {
+            selectedItem = divs;
+          }
+        });
+      });
+      return selectedItem;
+    });
     renderDayListeners();
-    addSelectedDay();
     addDoubleClickToRemoveSelectedDiv();
     addListenerPrev();
     addListenerNext();
-    console.log("render");
+    addSelectedDay();
 
     return (_) => {
       removeDayListeners();
-      removeSelectedDay();
       removeDoubleClickToRemoveSelectedDiv();
       removeListenerPrev();
       removeListenerNext();
+      removeSelectedDay();
     };
   }, [
+    addSelectedDay,
     stepNextMonth,
     stepPreviousMonth,
     renderCalendar,
     renderDayListeners,
-    addSelectedDay,
     addDoubleClickToRemoveSelectedDiv,
     removeDayListeners,
-    removeSelectedDay,
     removeDoubleClickToRemoveSelectedDiv,
     addListenerPrev,
     addListenerNext,
     removeListenerPrev,
     removeListenerNext,
+    removeSelectedDay,
   ]);
 
   return (
