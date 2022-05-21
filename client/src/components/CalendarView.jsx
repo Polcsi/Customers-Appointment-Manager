@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 // icons
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 
 const CalendarView = () => {
   // refs
@@ -64,6 +64,7 @@ const CalendarView = () => {
       return e.target;
     });
   }, []);
+
   const removeSelectedDiv = useCallback((e) => {
     e.target.classList.forEach((classes) => {
       if (classes === "selected") {
@@ -228,17 +229,18 @@ const CalendarView = () => {
       <div className="calendar-container">
         <div className="calendar">
           <div className="month">
-            <button className="prev" type="button" ref={prevBtnRef}>
-              <MdKeyboardArrowLeft />
-            </button>
-
             <div className="date">
-              <h1 ref={currentMonthRef}>Unknown</h1>
               <p ref={currentFullDateRef} onClick={() => jumpCurrent()}></p>
+              <h1 ref={currentMonthRef}>Unknown</h1>
             </div>
-            <button className="next" type="button" ref={nextBtnRef}>
-              <MdKeyboardArrowRight />
-            </button>
+            <div className="action-btns">
+              <button className="prev" type="button" ref={prevBtnRef}>
+                <RiArrowUpSLine />
+              </button>
+              <button className="next" type="button" ref={nextBtnRef}>
+                <RiArrowDownSLine />
+              </button>
+            </div>
           </div>
           <div className="weekdays">
             <div>Sun</div>
@@ -251,6 +253,9 @@ const CalendarView = () => {
           </div>
           <div className="days" ref={daysContainerRef}></div>
         </div>
+      </div>
+      <div className="calendar-appointments">
+        <p className="no-event">no events</p>
       </div>
     </>
   );
