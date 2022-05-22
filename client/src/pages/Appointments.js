@@ -8,11 +8,11 @@ import AppointmentItem from "../components/AppointmentItem";
 import AddAppointmentModal from "../components/AddAppointmentModal";
 import PullToRefresh from "../components/PullToRefresh";
 import CalendarView from "../components/CalendarView";
+import AppointmentList from "../components/AppointmentList";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import {
   getAppointments,
-  reset,
   resetAppointmentDelete,
   resetAppointments,
 } from "../features/appointments/appointmentSlice";
@@ -25,21 +25,18 @@ import "../css/calendar.css";
 
 const Appointments = () => {
   const [showModal, setShowModal] = useState(false);
-  const [isChangeView, setIsChangeView] = useState(false);
+  const [isChangeView, setIsChangeView] = useState(true);
   const page = useRef(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { admin } = useSelector((state) => state.auth);
   const {
-    appointments,
     isError,
-    isSuccess,
-    isLoading,
     message,
     isSuccessDelete,
     isErrorDelete,
     messageDelete,
+    queryObject,
   } = useSelector((state) => state.appointment);
 
   useEffect(() => {
@@ -59,8 +56,6 @@ const Appointments = () => {
       toast.error(message);
     }
 
-    dispatch(getAppointments());
-
     const validateSession = setInterval(() => {
       console.log("check Appointment Page");
       if (!checkCookieExists()) {
@@ -71,92 +66,57 @@ const Appointments = () => {
 
     return (_) => {
       clearInterval(validateSession);
-      dispatch(resetAppointments());
-      dispatch(reset());
       dispatch(resetAppointmentDelete());
     };
   }, [navigate, dispatch, isError, message]);
 
-  if (isSuccess) {
-    return (
-      <>
+  return (
+    <>
+      {isChangeView ? (
+        <PullToRefresh
+          page={page}
+          queryObject={queryObject}
+          updatedArray={getAppointments}
+          resetArray={resetAppointments}
+        />
+      ) : (
         <PullToRefresh
           page={page}
           updatedArray={getAppointments}
           resetArray={resetAppointments}
         />
-        <div className="dashboard" ref={page}>
-          {showModal ? (
-            <AddAppointmentModal
-              showModal={showModal}
-              setShowModal={setShowModal}
-            />
-          ) : (
-            ""
-          )}
-          <div className="header">
-            <h1>Appointments</h1>
-            <div className="btns">
-              <button
-                type="button"
-                onClick={() => setIsChangeView(!isChangeView)}
-              >
-                {isChangeView ? <MdOutlineViewAgenda /> : <BsCalendarWeek />}
-              </button>
-              <button className="add">
-                <IoIosAdd onClick={() => setShowModal(!showModal)} />
-              </button>
-            </div>
-          </div>
-          <div className="underline"></div>
-          <div className="appointments-container">
-            {isLoading && <Spinner color="white" top={0} position="relative" />}
-            {isChangeView ? (
-              <CalendarView />
-            ) : (
-              <div className="today day-section">
-                {appointments.map((appointment) => {
-                  return (
-                    <AppointmentItem
-                      key={appointment._id}
-                      showDate={true}
-                      {...appointment}
-                    />
-                  );
-                })}
-              </div>
-            )}
+      )}
+
+      <div className="dashboard" ref={page}>
+        {showModal ? (
+          <AddAppointmentModal
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
+        ) : (
+          ""
+        )}
+        <div className="header">
+          <h1>Appointments</h1>
+          <div className="btns">
+            <button
+              type="button"
+              onClick={() => setIsChangeView(!isChangeView)}
+            >
+              {isChangeView ? <MdOutlineViewAgenda /> : <BsCalendarWeek />}
+            </button>
+            <button className="add">
+              <IoIosAdd onClick={() => setShowModal(!showModal)} />
+            </button>
           </div>
         </div>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <PullToRefresh page={page} />
-        <div className="dashboard" ref={page}>
-          <div className="header">
-            <h1>Appointments</h1>
-            <div className="btns">
-              <button
-                type="button"
-                onClick={() => setIsChangeView(!isChangeView)}
-              >
-                {isChangeView ? <MdOutlineViewAgenda /> : <BsCalendarWeek />}
-              </button>
-              <button className="add">
-                <IoIosAdd />
-              </button>
-            </div>
-          </div>
-          <div className="underline"></div>
-          <div className="appointments-container">
-            {isLoading && <Spinner color="white" top={0} position="relative" />}
-          </div>
+        <div className="underline"></div>
+        <div className="appointments-container">
+          {isChangeView ? <CalendarView /> : <AppointmentList />}
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 };
 
 export default Appointments;

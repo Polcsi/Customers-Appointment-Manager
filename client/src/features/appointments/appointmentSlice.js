@@ -7,6 +7,7 @@ const initialState = {
   todayAppointments: [],
   tomorrowAppointments: [],
   dayAfterTomorrowAppointments: [],
+  queryObject: {},
   singleAppointment: null,
   // Get All States
   isError: false,
@@ -28,9 +29,9 @@ const initialState = {
 // Get Appointments
 export const getAppointments = createAsyncThunk(
   "appointment/getAppointments",
-  async (_, thunkAPI) => {
+  async (queryObject, thunkAPI) => {
     try {
-      const queryObject = { sort: "time", sortdesc: "date" };
+      queryObject = { ...queryObject, sort: "time", sortdesc: "date" };
       const token = thunkAPI.getState().auth.admin.token;
       return await appointmentService.getAllAppointments(queryObject, token);
     } catch (error) {
@@ -135,6 +136,9 @@ export const appointmentSlice = createSlice({
       state.isSuccessAdd = false;
       state.messageAdd = "";
     },
+    setQueryObject: (state, action) => {
+      state.queryObject = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -190,6 +194,11 @@ export const appointmentSlice = createSlice({
   },
 });
 
-export const { reset, resetAppointments, resetAppointmentDelete, resetAdd } =
-  appointmentSlice.actions;
+export const {
+  reset,
+  resetAppointments,
+  resetAppointmentDelete,
+  resetAdd,
+  setQueryObject,
+} = appointmentSlice.actions;
 export default appointmentSlice.reducer;

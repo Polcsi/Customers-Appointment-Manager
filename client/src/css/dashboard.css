@@ -69,6 +69,7 @@
 }
 .appointments-container {
   display: grid;
+  padding-bottom: 0.7rem;
 }
 .day-section {
   margin: 1.4rem 0;

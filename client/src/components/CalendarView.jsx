@@ -1,6 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { formatDate } from "../utils";
+// components
+import Spinner from "./Spinner";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getAppointments,
+  reset,
+  resetAppointments,
+  setQueryObject,
+} from "../features/appointments/appointmentSlice";
 // icons
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
+import AppointmentItem from "./AppointmentItem";
 
 const CalendarView = () => {
   // refs
@@ -224,11 +236,32 @@ const CalendarView = () => {
     removeSelectedDay,
   ]);
 
+  const dispatch = useDispatch();
+  const { appointments, isLoading } = useSelector((state) => state.appointment);
+
+  useEffect(() => {
+    try {
+      const selectedDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        activeDay.textContent
+      );
+      dispatch(setQueryObject({ date: formatDate(selectedDate) }));
+      dispatch(getAppointments({ date: formatDate(selectedDate) }));
+    } catch {}
+
+    return (_) => {
+      dispatch(resetAppointments());
+      dispatch(reset());
+      dispatch(setQueryObject({}));
+    };
+  }, [activeDay, dispatch, date]);
+
   return (
     <>
       <div className="calendar-container">
         <div className="calendar">
-          <div className="month">
+          <div className="calendar-month">
             <div className="date">
               <p ref={currentFullDateRef} onClick={() => jumpCurrent()}></p>
               <h1 ref={currentMonthRef}>Unknown</h1>
@@ -255,7 +288,17 @@ const CalendarView = () => {
         </div>
       </div>
       <div className="calendar-appointments">
-        <p className="no-event">no events</p>
+        {isLoading && <Spinner color="white" top={0} position="relative" />}
+        {appointments.map((appointment) => {
+          return (
+            <AppointmentItem
+              key={appointment._id}
+              showDate={false}
+              {...appointment}
+            />
+          );
+        })}
+        {appointments.length === 0 ? <p className="no-event">no events</p> : ""}
       </div>
     </>
   );

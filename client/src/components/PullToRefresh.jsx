@@ -2,7 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { TiArrowDown } from "react-icons/ti";
 import { useDispatch } from "react-redux";
 
-const PullToRefresh = ({ page, updatedArray = null, resetArray = null }) => {
+const PullToRefresh = ({
+  page,
+  updatedArray = null,
+  resetArray = null,
+  queryObject = null,
+}) => {
   const [isRefresh, setIsRefresh] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const refReshContainerRef = useRef(null);
@@ -42,7 +47,7 @@ const PullToRefresh = ({ page, updatedArray = null, resetArray = null }) => {
             dispatch(array());
           });
         } else {
-          updatedArray && dispatch(updatedArray());
+          updatedArray && dispatch(updatedArray(queryObject));
           resetArray && dispatch(resetArray());
         }
 

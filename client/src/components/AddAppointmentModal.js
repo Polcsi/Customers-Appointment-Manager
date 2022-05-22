@@ -48,9 +48,8 @@ const AddAppointmentModal = ({
   };
 
   const dispatch = useDispatch();
-  const { isErrorAdd, isLoadingAdd, isSuccessAdd, messageAdd } = useSelector(
-    (state) => state.appointment
-  );
+  const { isErrorAdd, isLoadingAdd, isSuccessAdd, messageAdd, queryObject } =
+    useSelector((state) => state.appointment);
 
   const createAppointment = () => {
     dispatch(addAppointment(appointment));
@@ -69,7 +68,7 @@ const AddAppointmentModal = ({
       dispatch(resetAdd());
       if (updatedArray === null) {
         dispatch(resetAppointments());
-        dispatch(getAppointments());
+        dispatch(getAppointments(queryObject));
       } else {
         updatedArray.forEach((array) => {
           dispatch(array());
@@ -84,6 +83,7 @@ const AddAppointmentModal = ({
     setShowModal,
     showModal,
     updatedArray,
+    queryObject,
   ]);
 
   useEffect(() => {
