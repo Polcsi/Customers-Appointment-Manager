@@ -121,3 +121,8 @@
   text-align: center;
   text-transform: capitalize;
 }
+.calendar-appointments {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

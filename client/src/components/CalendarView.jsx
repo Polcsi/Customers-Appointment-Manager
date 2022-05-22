@@ -298,7 +298,11 @@ const CalendarView = () => {
             />
           );
         })}
-        {appointments.length === 0 ? <p className="no-event">no events</p> : ""}
+        {appointments.length === 0 && !isLoading ? (
+          <p className="no-event">no events</p>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );
