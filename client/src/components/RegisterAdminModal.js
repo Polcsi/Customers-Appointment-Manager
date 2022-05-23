@@ -77,6 +77,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
       {openFullname ? (
         <InputModal
           type={"fullname"}
+          inputPlaceHolder="Full Name"
           close={setOpenFullName}
           handleChange={handleChange}
           placeholderValue={adminData.fullname}
@@ -88,6 +89,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
       {openUsername ? (
         <InputModal
           type={"username"}
+          inputPlaceHolder="Username"
           close={setOpenUsername}
           handleChange={handleChange}
           placeholderValue={adminData.username}
@@ -99,6 +101,7 @@ const RegisterAdminModal = ({ openModal, setOpenModal }) => {
       {openPassword ? (
         <InputModal
           type={"password"}
+          inputPlaceHolder="•••••••••••"
           close={setOpenPassword}
           handleChange={handleChange}
           placeholderValue={adminData.password}

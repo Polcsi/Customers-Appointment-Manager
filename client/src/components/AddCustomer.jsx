@@ -92,6 +92,7 @@ const AddCustomer = ({ openModal, setOpenModal }) => {
         {openFirstname && (
           <InputModal
             type={"firstname"}
+            inputPlaceHolder="Noah, Emma..."
             close={setOpenFirstname}
             handleChange={changeCustomerData}
             changePlaceholder={changePlacehoderData}
@@ -101,6 +102,7 @@ const AddCustomer = ({ openModal, setOpenModal }) => {
         {openLastname && (
           <InputModal
             type={"lastname"}
+            inputPlaceHolder="Johnson, Brown..."
             close={setOpenLastname}
             handleChange={changeCustomerData}
             changePlaceholder={changePlacehoderData}
@@ -110,6 +112,7 @@ const AddCustomer = ({ openModal, setOpenModal }) => {
         {openTown && (
           <InputModal
             type={"town"}
+            inputPlaceHolder="Budapest, Berlin, Madrid..."
             close={setOpenTown}
             handleChange={changeCustomerData}
             changePlaceholder={changePlacehoderData}
@@ -119,6 +122,7 @@ const AddCustomer = ({ openModal, setOpenModal }) => {
         {openEmail && (
           <InputModal
             type={"email"}
+            inputPlaceHolder="emmabrown@onlinemail.com"
             close={setOpenEmail}
             handleChange={changeCustomerData}
             changePlaceholder={changePlacehoderData}

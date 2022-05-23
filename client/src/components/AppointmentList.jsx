@@ -7,15 +7,12 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getAppointments,
   reset,
-  resetAppointmentDelete,
   resetAppointments,
 } from "../features/appointments/appointmentSlice";
 
 const AppointmentList = () => {
   const dispatch = useDispatch();
-  const { appointments, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.appointment
-  );
+  const { appointments, isLoading } = useSelector((state) => state.appointment);
 
   useEffect(() => {
     dispatch(getAppointments());

@@ -38,10 +38,10 @@ const CustomersSchema = new mongoose.Schema(
     phone: {
       type: String,
       required: [true, "Please Provide Phone Number"],
-      match: [
+      /* match: [
         /^\+36\s[0-9]{2}\s[0-9]{3}\s[0-9]{4}$/,
         "Please Provide Valid Hungarian Phone Number",
-      ],
+      ], */
     },
   },
   { timestamps: true }

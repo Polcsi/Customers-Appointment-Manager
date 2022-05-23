@@ -158,6 +158,7 @@ const UpdateCustomer = ({
           {openFirstname && (
             <InputModal
               type={"firstname"}
+              inputPlaceHolder="Noah, Emma..."
               close={setOpenFirstname}
               handleChange={changeCustomerData}
               changePlaceholder={changePlacehoderData}
@@ -167,6 +168,7 @@ const UpdateCustomer = ({
           {openLastname && (
             <InputModal
               type={"lastname"}
+              inputPlaceHolder="Johnson, Brown..."
               close={setOpenLastname}
               handleChange={changeCustomerData}
               changePlaceholder={changePlacehoderData}
@@ -176,6 +178,7 @@ const UpdateCustomer = ({
           {openTown && (
             <InputModal
               type={"town"}
+              inputPlaceHolder="Budapest, Berlin, Madrid..."
               close={setOpenTown}
               handleChange={changeCustomerData}
               changePlaceholder={changePlacehoderData}
@@ -185,6 +188,7 @@ const UpdateCustomer = ({
           {openEmail && (
             <InputModal
               type={"email"}
+              inputPlaceHolder="emmabrown@onlinemail.com"
               close={setOpenEmail}
               handleChange={changeCustomerData}
               changePlaceholder={changePlacehoderData}

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+// icons
 import times from "../assets/times.svg";
 
 const InputModal = ({
@@ -7,7 +8,12 @@ const InputModal = ({
   handleChange,
   changePlaceholder,
   placeholderValue,
+  inputPlaceHolder = "type here...",
 }) => {
+  const [countryCode, setCountryCode] = useState("+36");
+  const [areaCode, setAreaCode] = useState("");
+  const [firstPart, setFirstPart] = useState("");
+  const [secondPart, setSecondPart] = useState("");
   const [input, setInput] = useState(placeholderValue);
   const inputRef = useRef(null);
 
@@ -45,7 +51,7 @@ const InputModal = ({
             <img src={times} alt="close" />
           </button>
           <div className="header">
-            <h2>add {type}</h2>
+            <h2>select {type}</h2>
           </div>
           <div className="overlay-body radio-container" ref={inputRef}>
             <div className="input-radio">
@@ -97,6 +103,75 @@ const InputModal = ({
         </form>
       </div>
     );
+  } else if (type === "phone") {
+    return (
+      <div className="overlay">
+        <div className="overlay-container overlay-input overlay-input-phone">
+          <button className="close-overlay" onClick={() => close(false)}>
+            <img src={times} alt="close" />
+          </button>
+          <div className="header">
+            <h2>add {type} number</h2>
+          </div>
+          <div className="overlay-body phone-overlay-body">
+            <select
+              name="country"
+              className="country-selector"
+              onChange={(e) => setCountryCode(e.target.value)}
+            >
+              <option value="+36">HUN</option>
+              <option value="+49">GER</option>
+            </select>
+            <p className="country-code">{countryCode}</p>
+            <input
+              style={
+                countryCode === "+36" ? { width: "45px" } : { width: "55px" }
+              }
+              maxLength={countryCode === "+36" ? 2 : 4}
+              className="phone-field"
+              type="text"
+              name={type}
+              onChange={(e) => setAreaCode(e.target.value)}
+              ref={inputRef}
+              value={areaCode}
+              autoComplete="off"
+            />
+            <input
+              style={
+                countryCode === "+36" ? { width: "45px" } : { width: "81px" }
+              }
+              maxLength={countryCode === "+36" ? 3 : 7}
+              type="text"
+              name="firstpart"
+              className="phone-field"
+              onChange={(e) => setFirstPart(e.target.value)}
+              value={firstPart}
+              autoComplete="off"
+            />
+            {countryCode === "+36" && (
+              <input
+                style={{ width: "55px" }}
+                maxLength="4"
+                type="text"
+                name="secondpart"
+                className="phone-field"
+                onChange={(e) => setSecondPart(e.target.value)}
+                value={secondPart}
+                autoComplete="off"
+              />
+            )}
+          </div>
+          <div className="overlay-footer">
+            <button className="btn-overlay" onClick={() => close(false)}>
+              cancel
+            </button>
+            <button className="btn-overlay" onClick={() => saveData()}>
+              save
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   } else {
     return (
       <div className="overlay">
@@ -113,7 +188,7 @@ const InputModal = ({
               type={type === "password" ? "password" : "text"}
               name={type}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Type here..."
+              placeholder={inputPlaceHolder}
               ref={inputRef}
               value={input}
               autoComplete="off"

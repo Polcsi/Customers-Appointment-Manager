@@ -69,6 +69,7 @@
 }
 .appointments-container {
   display: grid;
+  padding-top: 0.5rem;
   padding-bottom: 0.7rem;
 }
 .day-section {
@@ -257,12 +258,38 @@
 .overlay-input {
   height: 170px;
 }
+.overlay-input-phone {
+  height: 190px;
+}
+.phone-overlay-body {
+  gap: 0.2rem;
+}
 .text-field {
   width: 100%;
   padding: 0.3rem 0.2rem;
   border: none;
   border-bottom: 1px solid var(--light-gray-2);
   outline: none;
+}
+.phone-field {
+  font-size: 1rem;
+  padding: 0.6rem 0.5rem;
+  outline: none;
+  border: 1px solid var(--dark-blue);
+  border-radius: 4px;
+  height: auto;
+}
+.country-code {
+  font-size: 1rem;
+  padding: 0.6rem 0.5rem;
+  background: var(--light-gray-4);
+  border-radius: 4px;
+}
+.country-selector {
+  font-size: 1rem;
+  padding: 0.6rem 0.5rem;
+  outline: none;
+  border-radius: 4px;
 }
 .datetime-overlay {
   gap: 2rem;
