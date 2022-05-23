@@ -51,8 +51,8 @@ const AddCustomer = ({ openModal, setOpenModal }) => {
     if (value.length === 0) {
       value = "REQUIRED";
     }
-    if (value.length > 15) {
-      let str = value.substring(0, 15);
+    if (value.length > 17) {
+      let str = value.substring(0, 16);
       value = `${str}...`;
     }
     setPlaceholders({ ...placeholders, [name]: value });

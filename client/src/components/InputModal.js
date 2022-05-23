@@ -10,10 +10,18 @@ const InputModal = ({
   placeholderValue,
   inputPlaceHolder = "type here...",
 }) => {
-  const [countryCode, setCountryCode] = useState("+36");
-  const [areaCode, setAreaCode] = useState("");
-  const [firstPart, setFirstPart] = useState("");
-  const [secondPart, setSecondPart] = useState("");
+  const [countryCode, setCountryCode] = useState(
+    placeholderValue.split(" ")[0] || "+36"
+  );
+  const [areaCode, setAreaCode] = useState(
+    placeholderValue.split(" ")[1] || ""
+  );
+  const [firstPart, setFirstPart] = useState(
+    placeholderValue.split(" ")[2] || ""
+  );
+  const [secondPart, setSecondPart] = useState(
+    placeholderValue.split(" ")[3] || ""
+  );
   const [input, setInput] = useState(placeholderValue);
   const inputRef = useRef(null);
 
@@ -28,7 +36,23 @@ const InputModal = ({
     close(false);
   };
 
+  const handleSelectChange = (e) => {
+    setCountryCode(e.target.value);
+    setAreaCode("");
+    setFirstPart("");
+    setSecondPart("");
+  };
+
   const saveData = () => {
+    if (type === "phone") {
+      const pNumber = `${countryCode} ${areaCode} ${firstPart} ${secondPart}`;
+
+      handleChange(type, pNumber.length < 7 ? "" : pNumber);
+      changePlaceholder(type, pNumber.length < 7 ? "" : pNumber);
+      close(false);
+      return;
+    }
+
     handleChange(type, input);
     changePlaceholder(type, input);
     close(false);
@@ -117,10 +141,12 @@ const InputModal = ({
             <select
               name="country"
               className="country-selector"
-              onChange={(e) => setCountryCode(e.target.value)}
+              onChange={handleSelectChange}
+              value={countryCode}
             >
               <option value="+36">HUN</option>
               <option value="+49">GER</option>
+              <option value="+44">UK</option>
             </select>
             <p className="country-code">{countryCode}</p>
             <input
@@ -138,9 +164,15 @@ const InputModal = ({
             />
             <input
               style={
-                countryCode === "+36" ? { width: "45px" } : { width: "81px" }
+                countryCode === "+36"
+                  ? { width: "45px" }
+                  : countryCode === "+44"
+                  ? { width: "71px" }
+                  : { width: "81px" }
               }
-              maxLength={countryCode === "+36" ? 3 : 7}
+              maxLength={
+                countryCode === "+36" ? 3 : countryCode === "+44" ? 6 : 7
+              }
               type="text"
               name="firstpart"
               className="phone-field"
