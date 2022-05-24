@@ -405,7 +405,9 @@
 }
 .input-time {
   position: relative;
+  z-index: 1000;
   width: 100px;
+  height: 80px;
 }
 .time-slider {
   transform: rotate(-90deg) translateX(-20px);

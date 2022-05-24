@@ -33,6 +33,44 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
     setOpenTime(false);
   };
 
+  const onPointerEvent = (e) => {
+    let isTouchEvent = e.type === "touchstart" ? true : false;
+    let offset = 0;
+    let initalY = isTouchEvent ? e.touches[0].clientY : e.clientY;
+    let start = 0;
+
+    if (isTouchEvent) {
+      hourRef.current.ontouchstart = startTouch;
+      hourRef.current.ontouchmove = onPointerMove;
+      hourRef.current.ontouchend = onPointerEnd;
+    } else {
+      hourRef.current.onmousemove = onPointerMove;
+      hourRef.current.onmouseup = onPointerEnd;
+    }
+
+    function startTouch() {
+      let value = hourRef.current.style.marginTop;
+      start = parseFloat(value.split("p")[0]);
+    }
+
+    function onPointerMove(e) {
+      offset =
+        start + ((isTouchEvent ? e.touches[0].clientY : e.clientY) - initalY);
+
+      hourRef.current.style.marginTop = offset + "px";
+    }
+
+    function onPointerEnd() {
+      if (isTouchEvent) {
+        hourRef.current.ontouchmove = null;
+        hourRef.current.ontouchend = null;
+      } else {
+        hourRef.current.onmousemove = null;
+        hourRef.current.onmouseup = null;
+      }
+    }
+  };
+
   useEffect(() => {
     const time = appointment.time.split(":");
     hourRef.current.style.marginTop = `${(time[0] / 1) * -35}px`;
@@ -69,7 +107,7 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
         </div>
         <div className="overlay-body">
           <div className="hour input-time">
-            <input
+            {/* <input
               className="hour-slider time-slider"
               type="range"
               min="0"
@@ -77,16 +115,20 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
               step="1"
               onChange={handleSliderChange}
               value={hour}
-            />
+            /> */}
             <div className="hour-slider-value slider-value">
-              <div ref={hourRef}></div>
+              <div
+                ref={hourRef}
+                onTouchStart={onPointerEvent}
+                onMouseDown={onPointerEvent}
+              ></div>
             </div>
           </div>
           <div className="divider">:</div>
           <div className="box"></div>
           <div className="fade-selector"></div>
           <div className="minute input-time">
-            <input
+            {/* <input
               className="minute-slider time-slider"
               type="range"
               min="0"
@@ -94,7 +136,7 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
               step="1"
               onChange={handleSliderChange}
               value={minute}
-            />
+            /> */}
             <div className="minute-slider-value slider-value">
               <div ref={minuteRef}></div>
             </div>
