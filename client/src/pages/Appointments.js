@@ -3,8 +3,6 @@ import { checkCookieExists } from "../vaidateSession";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 // Components
-import Spinner from "../components/Spinner";
-import AppointmentItem from "../components/AppointmentItem";
 import AddAppointmentModal from "../components/AddAppointmentModal";
 import PullToRefresh from "../components/PullToRefresh";
 import CalendarView from "../components/CalendarView";

@@ -38,9 +38,9 @@ body {
   --spacing: 0.1rem;
   /* switch */
   --active: #fff;
-  --active-inner: #090c02;
+  --active-inner: #020202;
   --focus: 2px rgba(39, 94, 254, 0.3);
-  --border: #bbc1e1;
+  --border: #c7c8ce;
   --border-hover: #275efe;
   --background: #fff;
   --disabled: #f6f8ff;
