@@ -3,6 +3,7 @@ import times from "../assets/times.svg";
 
 const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
   const hourRef = useRef(null);
+  const hourTouchRef = useRef(null);
   const minuteRef = useRef(null);
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
@@ -40,33 +41,44 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
     let start = 0;
 
     if (isTouchEvent) {
-      hourRef.current.ontouchstart = startTouch;
-      hourRef.current.ontouchmove = onPointerMove;
-      hourRef.current.ontouchend = onPointerEnd;
+      document.ontouchstart = startTouch;
+      document.ontouchmove = onPointerMove;
+      document.ontouchend = onPointerEnd;
     } else {
-      hourRef.current.onmousemove = onPointerMove;
-      hourRef.current.onmouseup = onPointerEnd;
+      document.onmousemove = onPointerMove;
+      document.onmouseup = onPointerEnd;
     }
 
     function startTouch() {
       let value = hourRef.current.style.marginTop;
       start = parseFloat(value.split("p")[0]);
+      console.log(start);
     }
 
     function onPointerMove(e) {
+      console.log(e);
+      console.log("move " + initalY);
       offset =
         start + ((isTouchEvent ? e.touches[0].clientY : e.clientY) - initalY);
 
+      /* console.log(start);
+      console.log(offset); */
+      if (offset >= 32) {
+        offset = 32;
+      }
+      if (offset <= -775) {
+        offset = -775;
+      }
       hourRef.current.style.marginTop = offset + "px";
     }
 
     function onPointerEnd() {
       if (isTouchEvent) {
-        hourRef.current.ontouchmove = null;
-        hourRef.current.ontouchend = null;
+        document.ontouchmove = null;
+        document.ontouchend = null;
       } else {
-        hourRef.current.onmousemove = null;
-        hourRef.current.onmouseup = null;
+        document.onmousemove = null;
+        document.onmouseup = null;
       }
     }
   };
@@ -106,7 +118,12 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
           <h2>select time</h2>
         </div>
         <div className="overlay-body">
-          <div className="hour input-time">
+          <div
+            ref={hourTouchRef}
+            className="hour input-time"
+            onTouchStart={onPointerEvent}
+            onMouseDown={onPointerEvent}
+          >
             {/* <input
               className="hour-slider time-slider"
               type="range"
@@ -117,11 +134,7 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
               value={hour}
             /> */}
             <div className="hour-slider-value slider-value">
-              <div
-                ref={hourRef}
-                onTouchStart={onPointerEvent}
-                onMouseDown={onPointerEvent}
-              ></div>
+              <div ref={hourRef}></div>
             </div>
           </div>
           <div className="divider">:</div>
