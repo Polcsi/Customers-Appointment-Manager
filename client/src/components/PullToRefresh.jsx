@@ -18,6 +18,7 @@ const PullToRefresh = ({
   useEffect(() => {
     var pStart = { x: 0, y: 0 };
     var pCurrent = { x: 0, y: 0 };
+
     function swipeStart(e) {
       if (typeof e["targetTouches"] !== "undefined") {
         var touch = e.targetTouches[0];
@@ -97,6 +98,7 @@ const PullToRefresh = ({
       document.removeEventListener("touchend", swipeEnd, false);
     };
   }, [
+    queryObject,
     setIsRefresh,
     isRefresh,
     setIsRefreshing,

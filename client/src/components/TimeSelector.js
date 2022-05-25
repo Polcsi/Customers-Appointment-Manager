@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { padTo2Digits } from "../utils";
 import times from "../assets/times.svg";
 
 const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
@@ -56,7 +57,6 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
     }
 
     function onPointerMove(e) {
-      console.log(e);
       console.log("move " + initalY);
       offset =
         start + ((isTouchEvent ? e.touches[0].clientY : e.clientY) - initalY);
@@ -69,10 +69,16 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
       if (offset <= -775) {
         offset = -775;
       }
+
       hourRef.current.style.marginTop = offset + "px";
     }
 
     function onPointerEnd() {
+      setHour(
+        Math.round(
+          Math.floor(parseFloat(hourRef.current.style.marginTop)) / -35
+        ) + 1
+      );
       if (isTouchEvent) {
         document.ontouchmove = null;
         document.ontouchend = null;
@@ -85,25 +91,17 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
 
   useEffect(() => {
     const time = appointment.time.split(":");
-    hourRef.current.style.marginTop = `${(time[0] / 1) * -35}px`;
+    hourRef.current.style.marginTop = `${(time[0] / 1) * -33}px`;
     minuteRef.current.style.marginTop = `${(time[1] / 1) * -36}px`;
     setHour(time[0]);
     setMinute(time[1]);
     if (fill) {
       setFill(false);
       for (let i = 0; i < 24; i++) {
-        if (i < 10) {
-          hourRef.current.innerHTML += `<div>0${i}</div>`;
-        } else {
-          hourRef.current.innerHTML += `<div>${i}</div>`;
-        }
+        hourRef.current.innerHTML += `<div>${padTo2Digits(i)}</div>`;
       }
       for (let i = 0; i < 60; i++) {
-        if (i < 10) {
-          minuteRef.current.innerHTML += `<div>0${i}</div>`;
-        } else {
-          minuteRef.current.innerHTML += `<div>${i}</div>`;
-        }
+        minuteRef.current.innerHTML += `<div>${padTo2Digits(i)}</div>`;
       }
     }
   }, [fill, appointment.time]);
@@ -141,7 +139,7 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
           <div className="box"></div>
           <div className="fade-selector"></div>
           <div className="minute input-time">
-            {/* <input
+            <input
               className="minute-slider time-slider"
               type="range"
               min="0"
@@ -149,7 +147,7 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
               step="1"
               onChange={handleSliderChange}
               value={minute}
-            /> */}
+            />
             <div className="minute-slider-value slider-value">
               <div ref={minuteRef}></div>
             </div>
