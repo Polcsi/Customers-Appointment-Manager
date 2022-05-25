@@ -35,7 +35,66 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
     setOpenTime(false);
   };
 
-  const onPointerEvent = (e) => {
+  const onPointerEventMinute = (e) => {
+    let isTouchEvent = e.type === "touchstart" ? true : false;
+    let offset = 0;
+    let initalY = isTouchEvent ? e.touches[0].clientY : e.clientY;
+    let start = 0;
+
+    if (isTouchEvent) {
+      document.ontouchstart = startTouch;
+      document.ontouchmove = onPointerMove;
+      document.ontouchend = onPointerEnd;
+    } else {
+      document.onmousemove = onPointerMove;
+      document.onmouseup = onPointerEnd;
+    }
+
+    function startTouch() {
+      let value = minuteRef.current.style.marginTop;
+      start = parseFloat(value.split("p")[0]);
+      console.log(start);
+    }
+
+    function onPointerMove(e) {
+      console.log("move " + initalY);
+      offset =
+        start + ((isTouchEvent ? e.touches[0].clientY : e.clientY) - initalY);
+
+      /* console.log(start);
+      console.log(offset); */
+      if (offset >= 33.5) {
+        offset = 33.5;
+      }
+      if (offset <= -775) {
+        offset = -2090;
+      }
+
+      minuteRef.current.style.marginTop = offset + "px";
+    }
+
+    function onPointerEnd() {
+      console.log(
+        Math.round(
+          Math.floor(parseFloat(minuteRef.current.style.marginTop)) / -35
+        )
+      );
+      setMinute(
+        Math.round(
+          Math.floor(parseFloat(minuteRef.current.style.marginTop)) / -35
+        )
+      );
+      if (isTouchEvent) {
+        document.ontouchmove = null;
+        document.ontouchend = null;
+      } else {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      }
+    }
+  };
+
+  const onPointerEventHour = (e) => {
     let isTouchEvent = e.type === "touchstart" ? true : false;
     let offset = 0;
     let initalY = isTouchEvent ? e.touches[0].clientY : e.clientY;
@@ -63,8 +122,8 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
 
       /* console.log(start);
       console.log(offset); */
-      if (offset >= 32) {
-        offset = 32;
+      if (offset >= 33.5) {
+        offset = 33.5;
       }
       if (offset <= -775) {
         offset = -775;
@@ -91,8 +150,8 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
 
   useEffect(() => {
     const time = appointment.time.split(":");
-    hourRef.current.style.marginTop = `${(time[0] / 1) * -33}px`;
-    minuteRef.current.style.marginTop = `${(time[1] / 1) * -36}px`;
+    hourRef.current.style.marginTop = `${(time[0] / 1) * -33.5}px`;
+    minuteRef.current.style.marginTop = `${(time[1] / 1) * -35.1}px`;
     setHour(time[0]);
     setMinute(time[1]);
     if (fill) {
@@ -116,12 +175,7 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
           <h2>select time</h2>
         </div>
         <div className="overlay-body">
-          <div
-            ref={hourTouchRef}
-            className="hour input-time"
-            onTouchStart={onPointerEvent}
-            onMouseDown={onPointerEvent}
-          >
+          <div ref={hourTouchRef} className="hour input-time">
             {/* <input
               className="hour-slider time-slider"
               type="range"
@@ -131,7 +185,11 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
               onChange={handleSliderChange}
               value={hour}
             /> */}
-            <div className="hour-slider-value slider-value">
+            <div
+              className="hour-slider-value slider-value"
+              /* onTouchStart={onPointerEventHour}
+              onMouseDown={onPointerEventHour} */
+            >
               <div ref={hourRef}></div>
             </div>
           </div>
@@ -139,7 +197,7 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
           <div className="box"></div>
           <div className="fade-selector"></div>
           <div className="minute input-time">
-            <input
+            {/* <input
               className="minute-slider time-slider"
               type="range"
               min="0"
@@ -147,8 +205,12 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
               step="1"
               onChange={handleSliderChange}
               value={minute}
-            />
-            <div className="minute-slider-value slider-value">
+            /> */}
+            <div
+              className="minute-slider-value slider-value"
+              onTouchStart={onPointerEventMinute}
+              onMouseDown={onPointerEventMinute}
+            >
               <div ref={minuteRef}></div>
             </div>
           </div>

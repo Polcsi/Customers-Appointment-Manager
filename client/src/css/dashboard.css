@@ -403,11 +403,14 @@
 .input-radio input {
   vertical-align: middle;
 }
+.divider {
+  position: relative;
+  top: 5px;
+}
 .input-time {
   position: relative;
-  z-index: 1000;
   width: 100px;
-  height: 60px;
+  height: 10px;
 }
 .time-slider {
   transform: rotate(-90deg) translateX(-20px);
@@ -435,10 +438,12 @@
 .slider-value {
   overflow: hidden;
   line-height: 35px;
-  height: 90px;
+  height: 100px;
+  width: 100px;
   position: absolute;
-  top: -10px;
-  left: 45%;
+  z-index: 5000;
+  top: -40px;
+  left: 5%;
 }
 .minute-slider-value,
 .day-slider-value {
@@ -448,6 +453,7 @@
   left: 25%;
 }
 .slider-value div {
+  text-align: center;
   font-size: 1.2rem;
   transition: all 300ms ease-in-out;
 }
