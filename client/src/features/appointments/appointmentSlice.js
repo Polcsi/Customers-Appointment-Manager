@@ -4,6 +4,7 @@ import { formatDate } from "../../utils";
 
 const initialState = {
   appointments: [],
+  allAppointments: [],
   todayAppointments: [],
   tomorrowAppointments: [],
   dayAfterTomorrowAppointments: [],
@@ -29,6 +30,21 @@ const initialState = {
 // Get Appointments
 export const getAppointments = createAsyncThunk(
   "appointment/getAppointments",
+  async (queryObject, thunkAPI) => {
+    try {
+      queryObject = { ...queryObject, sort: "time", sortdesc: "date" };
+      const token = thunkAPI.getState().auth.admin.token;
+      return await appointmentService.getAllAppointments(queryObject, token);
+    } catch (error) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Get All appontments for calendar
+export const getAllAppointments = createAsyncThunk(
+  "appointment/getAll",
   async (queryObject, thunkAPI) => {
     try {
       queryObject = { ...queryObject, sort: "time", sortdesc: "date" };
@@ -190,6 +206,9 @@ export const appointmentSlice = createSlice({
       })
       .addCase(getDayAfterTomorrow.fulfilled, (state, action) => {
         state.dayAfterTomorrowAppointments = action.payload;
+      })
+      .addCase(getAllAppointments.fulfilled, (state, action) => {
+        state.allAppointments = action.payload;
       });
   },
 });

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { formatDate } from "../utils";
+import { formatDate, padTo2Digits } from "../utils";
 // components
 import Spinner from "./Spinner";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import {
   getAppointments,
+  getAllAppointments,
   reset,
   resetAppointments,
   setQueryObject,
@@ -15,6 +16,10 @@ import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 import AppointmentItem from "./AppointmentItem";
 
 const CalendarView = () => {
+  const dispatch = useDispatch();
+  const { appointments, allAppointments, isLoading } = useSelector(
+    (state) => state.appointment
+  );
   // refs
   const currentMonthRef = useRef(null);
   const currentFullDateRef = useRef(null);
@@ -25,6 +30,7 @@ const CalendarView = () => {
   const [activeDay, setActiveDay] = useState(null);
   const [date, setDate] = useState(new Date());
   const [today, setToday] = useState(new Date());
+  const [eventDays, setEventDays] = useState([]);
 
   const [options, setOptions] = useState({
     weekday: "short",
@@ -147,11 +153,12 @@ const CalendarView = () => {
     }
   }, [removeSelectedDiv]);
 
-  const renderCalendar = useCallback(() => {
+  const renderCalendar = useCallback(async () => {
     const currentMonth = date.toLocaleDateString("en-us", {
       year: "numeric",
       month: "long",
     });
+
     const currentDate = today.toLocaleDateString("en-us", options);
 
     currentMonthRef.current.textContent = `${currentMonth}`;
@@ -159,6 +166,7 @@ const CalendarView = () => {
 
     let days = "";
 
+    console.table(eventDays);
     for (
       let i = firstWeekDayInMonth(date.getMonth(), date.getFullYear());
       i > 0;
@@ -179,6 +187,15 @@ const CalendarView = () => {
         date.getFullYear() === today.getFullYear()
       ) {
         days += `<div class="calendar-today selected">${i}</div>`;
+      } else if (
+        i === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear() &&
+        eventDays.includes(i)
+      ) {
+        days += `<div class="calendar-today event selected">${i}</div>`;
+      } else if (eventDays.includes(i)) {
+        days += `<div class="event">${i}</div>`;
       } else {
         days += `<div>${i}</div>`;
       }
@@ -195,6 +212,14 @@ const CalendarView = () => {
   }, [date, options, today]);
 
   useEffect(() => {
+    dispatch(
+      getAllAppointments({
+        date: `${date.getFullYear()}-${padTo2Digits(date.getMonth() + 1)}`,
+      })
+    );
+    allAppointments.forEach((appointment) => {
+      eventDays.push(parseInt(appointment.date.split("-")[2]));
+    });
     renderCalendar();
     setActiveDay((prev) => {
       let selectedItem = null;
@@ -234,10 +259,9 @@ const CalendarView = () => {
     removeListenerPrev,
     removeListenerNext,
     removeSelectedDay,
+    dispatch,
+    date,
   ]);
-
-  const dispatch = useDispatch();
-  const { appointments, isLoading } = useSelector((state) => state.appointment);
 
   useEffect(() => {
     try {
