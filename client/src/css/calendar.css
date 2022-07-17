@@ -4,6 +4,7 @@
   --weekdays-padding: 0.2em;
   --days-margin: 0.3em;
   --days-padding: 0.2em;
+  --event-color: rgb(26, 170, 228);
 }
 .calendar-container {
   font-size: 62.5%;
@@ -125,4 +126,22 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.days div[class="event selected"]::after {
+  bottom: 0em;
+}
+.days div[class="calendar-today event selected"]::after {
+  bottom: 0.05em;
+}
+.event {
+  position: relative;
+}
+.event::after {
+  content: "";
+  position: absolute;
+  bottom: 0.1em;
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+  background: var(--event-color);
 }
