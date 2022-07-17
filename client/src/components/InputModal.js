@@ -36,11 +36,31 @@ const InputModal = ({
     close(false);
   };
 
+  const handlePhoneNumberChange = (e) => {
+    const { maxLength, value, name } = e.target;
+    const [fieldName, fieldIndex] = name.split("-");
+
+    let fieldIntIndex = parseInt(fieldIndex, 10);
+
+    if (value.length >= maxLength) {
+      if (fieldIntIndex < 3) {
+        const nextField = document.querySelector(
+          `input[name=field-${fieldIntIndex + 1}]`
+        );
+
+        if (nextField !== null) {
+          nextField.focus();
+        }
+      }
+    }
+  };
+
   const handleSelectChange = (e) => {
     setCountryCode(e.target.value);
     setAreaCode("");
     setFirstPart("");
     setSecondPart("");
+    inputRef.current.focus();
   };
 
   const saveData = () => {
@@ -156,8 +176,11 @@ const InputModal = ({
               maxLength={countryCode === "+36" ? 2 : 4}
               className="phone-field"
               type="text"
-              name={type}
-              onChange={(e) => setAreaCode(e.target.value)}
+              name="field-1"
+              onChange={(e) => {
+                setAreaCode(e.target.value);
+                handlePhoneNumberChange(e);
+              }}
               ref={inputRef}
               value={areaCode}
               autoComplete="off"
@@ -174,9 +197,12 @@ const InputModal = ({
                 countryCode === "+36" ? 3 : countryCode === "+44" ? 6 : 7
               }
               type="text"
-              name="firstpart"
+              name="field-2"
               className="phone-field"
-              onChange={(e) => setFirstPart(e.target.value)}
+              onChange={(e) => {
+                setFirstPart(e.target.value);
+                handlePhoneNumberChange(e);
+              }}
               value={firstPart}
               autoComplete="off"
             />
@@ -185,9 +211,12 @@ const InputModal = ({
                 style={{ width: "55px" }}
                 maxLength="4"
                 type="text"
-                name="secondpart"
+                name="field-3"
                 className="phone-field"
-                onChange={(e) => setSecondPart(e.target.value)}
+                onChange={(e) => {
+                  setSecondPart(e.target.value);
+                  handlePhoneNumberChange(e);
+                }}
                 value={secondPart}
                 autoComplete="off"
               />
