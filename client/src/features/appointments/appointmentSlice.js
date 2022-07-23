@@ -25,6 +25,11 @@ const initialState = {
   isSuccessAdd: false,
   isLoadingAdd: false,
   messageAdd: "",
+  // All appointment
+  isLoadingAll: false,
+  isSuccessAll: false,
+  isErrorAll: false,
+  messageAll: "",
 };
 
 // Get Appointments
@@ -207,8 +212,18 @@ export const appointmentSlice = createSlice({
       .addCase(getDayAfterTomorrow.fulfilled, (state, action) => {
         state.dayAfterTomorrowAppointments = action.payload;
       })
+      .addCase(getAllAppointments.pending, (state) => {
+        state.isLoadingAll = true;
+      })
       .addCase(getAllAppointments.fulfilled, (state, action) => {
+        state.isSuccessAll = true;
+        state.isLoadingAll = false;
         state.allAppointments = action.payload;
+      })
+      .addCase(getAllAppointments.rejected, (state, action) => {
+        state.isLoadingAll = false;
+        state.isErrorAll = true;
+        state.messageAll = action.payload;
       });
   },
 });
