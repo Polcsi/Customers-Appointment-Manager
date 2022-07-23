@@ -150,16 +150,16 @@ const Calendar = ({
       if (
         i === today.getDate() &&
         date.getMonth() === today.getMonth() &&
-        date.getFullYear() === today.getFullYear()
-      ) {
-        days += `<div class="calendar-today selected">${i}</div>`;
-      } else if (
-        i === today.getDate() &&
-        date.getMonth() === today.getMonth() &&
         date.getFullYear() === today.getFullYear() &&
         eventDays.includes(i)
       ) {
         days += `<div class="calendar-today event selected">${i}</div>`;
+      } else if (
+        i === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      ) {
+        days += `<div class="calendar-today selected">${i}</div>`;
       } else if (eventDays.includes(i)) {
         days += `<div class="event">${i}</div>`;
       } else {
@@ -175,7 +175,7 @@ const Calendar = ({
     }
 
     daysContainerRef.current.innerHTML = days;
-  }, [date, options, today, eventDays]);
+  }, [date, today, eventDays]);
 
   useEffect(() => {
     dispatch(
