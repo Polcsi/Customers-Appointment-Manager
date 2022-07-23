@@ -160,6 +160,12 @@ export const appointmentSlice = createSlice({
     setQueryObject: (state, action) => {
       state.queryObject = action.payload;
     },
+    resetAll: (state) => {
+      state.isLoadingAll = false;
+      state.isErrorAll = false;
+      state.isSuccessAll = false;
+      state.messageAll = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -234,5 +240,6 @@ export const {
   resetAppointmentDelete,
   resetAdd,
   setQueryObject,
+  resetAll,
 } = appointmentSlice.actions;
 export default appointmentSlice.reducer;

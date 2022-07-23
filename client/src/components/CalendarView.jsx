@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { formatDate, padTo2Digits } from "../utils";
 // components
 import Spinner from "./Spinner";
@@ -11,10 +11,12 @@ import {
   reset,
   resetAppointments,
   setQueryObject,
+  resetAll,
 } from "../features/appointments/appointmentSlice";
 // icons
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 import AppointmentItem from "./AppointmentItem";
+import { MdOutlineToday } from "react-icons/md";
 
 const CalendarView = () => {
   const dispatch = useDispatch();
@@ -35,10 +37,29 @@ const CalendarView = () => {
   // states
   const [activeDay, setActiveDay] = useState(null);
   const [date, setDate] = useState(new Date());
+  const [today, setToday] = useState(new Date());
+  const [options, setOptions] = useState({
+    weekday: "short",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   function jumpCurrent() {
     setDate(new Date());
   }
+
+  useEffect(() => {
+    const currentMonth = date.toLocaleDateString("en-us", {
+      year: "numeric",
+      month: "long",
+    });
+
+    const currentDate = today.toLocaleDateString("en-us", options);
+
+    currentMonthRef.current.textContent = `${currentMonth}`;
+    currentFullDateRef.current.textContent = `${currentDate}`;
+  }, [date, today, options]);
 
   useEffect(() => {
     dispatch(
@@ -46,6 +67,10 @@ const CalendarView = () => {
         date: `${date.getFullYear()}-${padTo2Digits(date.getMonth() + 1)}`,
       })
     );
+
+    return (_) => {
+      dispatch(resetAll());
+    };
   }, [date, dispatch]);
 
   useEffect(() => {
@@ -99,10 +124,10 @@ const CalendarView = () => {
               setActiveDay={setActiveDay}
               date={date}
               setDate={setDate}
-              currentMonthRef={currentMonthRef}
-              currentFullDateRef={currentFullDateRef}
               prevBtnRef={prevBtnRef}
               nextBtnRef={nextBtnRef}
+              options={options}
+              today={today}
             />
           </div>
         </div>
@@ -129,7 +154,32 @@ const CalendarView = () => {
     return (
       <>
         <div className="calendar-container">
-          <Spinner color="white" top={0} position="relative" />
+          <div className="calendar">
+            <div className="calendar-month">
+              <div className="date">
+                <p ref={currentFullDateRef} onClick={() => jumpCurrent()}></p>
+                <h1 ref={currentMonthRef}>Unknown</h1>
+              </div>
+              <div className="action-btns">
+                <button className="prev" type="button" ref={prevBtnRef}>
+                  <RiArrowUpSLine />
+                </button>
+                <button className="next" type="button" ref={nextBtnRef}>
+                  <RiArrowDownSLine />
+                </button>
+              </div>
+            </div>
+            <div className="weekdays">
+              <div>Sun</div>
+              <div>Mon</div>
+              <div>Tue</div>
+              <div>Wed</div>
+              <div>Thu</div>
+              <div>Fri</div>
+              <div>Sat</div>
+            </div>
+            <Spinner color="white" top={0} position="relative" />
+          </div>
         </div>
       </>
     );

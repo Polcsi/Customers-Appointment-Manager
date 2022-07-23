@@ -5,20 +5,13 @@ const Calendar = ({
   setActiveDay,
   date,
   setDate,
-  currentMonthRef,
-  currentFullDateRef,
   prevBtnRef,
   nextBtnRef,
+  options,
+  today,
 }) => {
   // states
 
-  const [options, setOptions] = useState({
-    weekday: "short",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-  const [today, setToday] = useState(new Date());
   const [eventDays, setEventDays] = useState([]);
   // refs
   const daysContainerRef = useRef(null);
@@ -134,19 +127,8 @@ const Calendar = ({
   };
 
   const renderCalendar = useCallback(async () => {
-    const currentMonth = date.toLocaleDateString("en-us", {
-      year: "numeric",
-      month: "long",
-    });
-
-    const currentDate = today.toLocaleDateString("en-us", options);
-
-    currentMonthRef.current.textContent = `${currentMonth}`;
-    currentFullDateRef.current.textContent = `${currentDate}`;
-
     let days = "";
 
-    console.table(eventDays);
     for (
       let i = firstWeekDayInMonth(date.getMonth(), date.getFullYear());
       i > 0;
@@ -192,6 +174,9 @@ const Calendar = ({
   }, [date, options, today, eventDays]);
 
   useEffect(() => {
+    setEventDays((prev) => {
+      return [];
+    });
     allAppointments.forEach((appointment) => {
       eventDays.push(parseInt(appointment.date.split("-")[2]));
     });
