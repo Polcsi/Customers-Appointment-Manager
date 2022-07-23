@@ -9,6 +9,7 @@ const initialState = {
   tomorrowAppointments: [],
   dayAfterTomorrowAppointments: [],
   queryObject: {},
+  currentDate: null,
   singleAppointment: null,
   // Get All States
   isError: false,
@@ -157,6 +158,9 @@ export const appointmentSlice = createSlice({
       state.isSuccessAdd = false;
       state.messageAdd = "";
     },
+    setCurrentDate: (state, action) => {
+      state.currentDate = action.payload;
+    },
     setQueryObject: (state, action) => {
       state.queryObject = action.payload;
     },
@@ -240,6 +244,7 @@ export const {
   resetAppointmentDelete,
   resetAdd,
   setQueryObject,
+  setCurrentDate,
   resetAll,
 } = appointmentSlice.actions;
 export default appointmentSlice.reducer;

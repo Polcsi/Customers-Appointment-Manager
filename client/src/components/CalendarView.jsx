@@ -16,7 +16,6 @@ import {
 // icons
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 import AppointmentItem from "./AppointmentItem";
-import { MdOutlineToday } from "react-icons/md";
 
 const CalendarView = () => {
   const dispatch = useDispatch();

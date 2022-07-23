@@ -10,6 +10,8 @@ import AppointmentList from "../components/AppointmentList";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import {
+  getAllAppointments,
+  resetAll,
   getAppointments,
   resetAppointmentDelete,
   resetAppointments,
@@ -34,7 +36,7 @@ const Appointments = () => {
     isSuccessDelete,
     isErrorDelete,
     messageDelete,
-    queryObject,
+    currentDate,
   } = useSelector((state) => state.appointment);
 
   useEffect(() => {
@@ -73,9 +75,9 @@ const Appointments = () => {
       {isChangeView ? (
         <PullToRefresh
           page={page}
-          queryObject={queryObject}
-          updatedArray={getAppointments}
-          resetArray={resetAppointments}
+          queryObject={{ date: currentDate }}
+          updatedArray={getAllAppointments}
+          resetArray={resetAll}
         />
       ) : (
         <PullToRefresh

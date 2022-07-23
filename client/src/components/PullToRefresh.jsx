@@ -42,14 +42,13 @@ const PullToRefresh = ({
           setIsRefreshing(false);
         }, 1000);
         refreshTextRef.current.textContent = "Refreshing";
-        //console.log("%cUPDATE", "color: yellow;");
         if (updatedArray.length > 1) {
           updatedArray.forEach((array) => {
             dispatch(array());
           });
         } else {
-          updatedArray && dispatch(updatedArray(queryObject));
           resetArray && dispatch(resetArray());
+          updatedArray && dispatch(updatedArray(queryObject));
         }
 
         pCurrent = { x: 0, y: 0 };
@@ -92,7 +91,6 @@ const PullToRefresh = ({
     document.addEventListener("touchmove", swipe, false);
     document.addEventListener("touchend", swipeEnd, false);
     return (_) => {
-      //console.log("%c CLEAR pull to refresh component", "color: cyan;");
       document.removeEventListener("touchstart", swipeStart, false);
       document.removeEventListener("touchmove", swipe, false);
       document.removeEventListener("touchend", swipeEnd, false);

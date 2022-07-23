@@ -1,4 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { setCurrentDate } from "../features/appointments/appointmentSlice";
+import { padTo2Digits } from "../utils";
 
 const Calendar = ({
   allAppointments,
@@ -11,10 +14,11 @@ const Calendar = ({
   today,
 }) => {
   // states
-
   const [eventDays, setEventDays] = useState([]);
   // refs
   const daysContainerRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   const stepNextMonth = useCallback(() => {
     setDate(new Date(date.setMonth(date.getMonth() + 1)));
@@ -174,6 +178,11 @@ const Calendar = ({
   }, [date, options, today, eventDays]);
 
   useEffect(() => {
+    dispatch(
+      setCurrentDate(
+        `${date.getFullYear()}-${padTo2Digits(date.getMonth() + 1)}`
+      )
+    );
     setEventDays((prev) => {
       return [];
     });
