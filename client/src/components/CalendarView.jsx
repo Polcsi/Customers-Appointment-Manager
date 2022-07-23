@@ -150,14 +150,14 @@ const CalendarView = () => {
         </div>
       </>
     );
-  } else {
+  } else if (isLoadingAll || !isSuccessAll) {
     return (
       <>
         <div className="calendar-container">
           <div className="calendar">
             <div className="calendar-month">
               <div className="date">
-                <p ref={currentFullDateRef} onClick={() => jumpCurrent()}></p>
+                <p ref={currentFullDateRef}></p>
                 <h1 ref={currentMonthRef}>Unknown</h1>
               </div>
               <div className="action-btns">
@@ -178,7 +178,46 @@ const CalendarView = () => {
               <div>Fri</div>
               <div>Sat</div>
             </div>
-            <Spinner color="white" top={0} position="relative" />
+            <Spinner
+              color="white"
+              top={20}
+              left={"50%"}
+              position="relative"
+              transform={"translate(-50%, -50%)"}
+            />
+          </div>
+        </div>
+      </>
+    );
+  } else if (isErrorAll) {
+    return (
+      <>
+        <div className="calendar-container">
+          <div className="calendar">
+            <div className="calendar-month">
+              <div className="date">
+                <p ref={currentFullDateRef}></p>
+                <h1 ref={currentMonthRef}>Unknown</h1>
+              </div>
+              <div className="action-btns">
+                <button className="prev" type="button" ref={prevBtnRef}>
+                  <RiArrowUpSLine />
+                </button>
+                <button className="next" type="button" ref={nextBtnRef}>
+                  <RiArrowDownSLine />
+                </button>
+              </div>
+            </div>
+            <div className="weekdays">
+              <div>Sun</div>
+              <div>Mon</div>
+              <div>Tue</div>
+              <div>Wed</div>
+              <div>Thu</div>
+              <div>Fri</div>
+              <div>Sat</div>
+            </div>
+            <p>Couldn't load the calendar!</p>
           </div>
         </div>
       </>
