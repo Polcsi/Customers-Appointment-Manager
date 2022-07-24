@@ -21,30 +21,32 @@ const Calendar = ({
   const dispatch = useDispatch();
 
   const stepNextMonth = useCallback(() => {
-    setDate(new Date(date.setMonth(date.getMonth() + 1)));
-  }, [date]);
+    setDate((prev) => {
+      return new Date(date.setMonth(date.getMonth() + 1));
+    });
+  }, [date, setDate]);
 
   const stepPreviousMonth = useCallback(() => {
     setDate(new Date(date.setMonth(date.getMonth() - 1)));
-  }, [date]);
+  }, [date, setDate]);
 
   const addListenerNext = useCallback(() => {
     nextBtnRef.current.addEventListener("click", stepNextMonth, false);
-  }, [stepNextMonth]);
+  }, [stepNextMonth, nextBtnRef]);
 
   const removeListenerNext = useCallback(() => {
     if (nextBtnRef.current)
       nextBtnRef.current.removeEventListener("click", stepNextMonth, false);
-  }, [stepNextMonth]);
+  }, [stepNextMonth, nextBtnRef]);
 
   const addListenerPrev = useCallback(() => {
     prevBtnRef.current.addEventListener("click", stepPreviousMonth, false);
-  }, [stepPreviousMonth]);
+  }, [stepPreviousMonth, prevBtnRef]);
 
   const removeListenerPrev = useCallback(() => {
     if (prevBtnRef.current)
       prevBtnRef.current.removeEventListener("click", stepPreviousMonth, false);
-  }, [stepPreviousMonth]);
+  }, [stepPreviousMonth, prevBtnRef]);
 
   const selectStep = useCallback(
     (e) => {
