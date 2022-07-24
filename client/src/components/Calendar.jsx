@@ -21,9 +21,7 @@ const Calendar = ({
   const dispatch = useDispatch();
 
   const stepNextMonth = useCallback(() => {
-    setDate((prev) => {
-      return new Date(date.setMonth(date.getMonth() + 1));
-    });
+    setDate(new Date(date.setMonth(date.getMonth() + 1)));
   }, [date, setDate]);
 
   const stepPreviousMonth = useCallback(() => {
@@ -58,15 +56,18 @@ const Calendar = ({
     [stepNextMonth, stepPreviousMonth]
   );
 
-  const addSelect = useCallback((e) => {
-    setActiveDay((prev) => {
-      if (prev !== null) {
-        prev.classList.remove("selected");
-      }
-      e.target.classList.add("selected");
-      return e.target;
-    });
-  }, []);
+  const addSelect = useCallback(
+    (e) => {
+      setActiveDay((prev) => {
+        if (prev !== null) {
+          prev.classList.remove("selected");
+        }
+        e.target.classList.add("selected");
+        return e.target;
+      });
+    },
+    [setActiveDay]
+  );
 
   const renderDayListeners = useCallback(() => {
     const daysInCalendar = document.querySelectorAll(".days div");
@@ -97,14 +98,17 @@ const Calendar = ({
     }
   }, [addSelect]);
 
-  const removeSelectedDiv = useCallback((e) => {
-    e.target.classList.forEach((classes) => {
-      if (classes === "selected") {
-        e.target.classList.remove("selected");
-        setActiveDay(null);
-      }
-    });
-  }, []);
+  const removeSelectedDiv = useCallback(
+    (e) => {
+      e.target.classList.forEach((classes) => {
+        if (classes === "selected") {
+          e.target.classList.remove("selected");
+          setActiveDay(null);
+        }
+      });
+    },
+    [setActiveDay]
+  );
 
   const addDoubleClickToRemoveSelectedDiv = useCallback(() => {
     daysContainerRef.current.childNodes.forEach((item) => {
@@ -134,6 +138,7 @@ const Calendar = ({
 
   const renderCalendar = useCallback(async () => {
     let days = "";
+    console.log(eventDays);
 
     for (
       let i = firstWeekDayInMonth(date.getMonth(), date.getFullYear());
@@ -191,6 +196,7 @@ const Calendar = ({
     allAppointments.forEach((appointment) => {
       eventDays.push(parseInt(appointment.date.split("-")[2]));
     });
+
     renderCalendar();
     setActiveDay((prev) => {
       let selectedItem = null;
@@ -208,6 +214,8 @@ const Calendar = ({
     addListenerPrev();
     addListenerNext();
     addSelectedDay();
+
+    console.log("render calendar");
 
     return (_) => {
       removeDayListeners();
@@ -227,6 +235,10 @@ const Calendar = ({
     removeListenerNext,
     removeListenerPrev,
     removeSelectedDay,
+    setActiveDay,
+    dispatch,
+    date,
+    allAppointments,
   ]);
 
   return (
