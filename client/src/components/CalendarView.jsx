@@ -61,6 +61,7 @@ const CalendarView = () => {
   }, [date, today, options]);
 
   useEffect(() => {
+    //console.log(date);
     dispatch(
       getAllAppointments({
         date: `${date.getFullYear()}-${padTo2Digits(date.getMonth() + 1)}`,
@@ -88,7 +89,7 @@ const CalendarView = () => {
       dispatch(reset());
       dispatch(setQueryObject({}));
     };
-  }, [activeDay, dispatch]);
+  }, [activeDay, dispatch, date]);
 
   if (isSuccessAll) {
     return (
@@ -125,10 +126,7 @@ const CalendarView = () => {
               setDate={setDate}
               prevBtnRef={prevBtnRef}
               nextBtnRef={nextBtnRef}
-              options={options}
               today={today}
-              /* eventDays={eventDays}
-              setEventDays={setEventDays} */
             />
           </div>
         </div>

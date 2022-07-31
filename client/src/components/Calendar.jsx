@@ -10,17 +10,11 @@ const Calendar = ({
   setDate,
   prevBtnRef,
   nextBtnRef,
-  options,
   today,
-  /* eventDays,
-  setEventDays, */
 }) => {
   // states
   const [eventDays, setEventDays] = useState(
-    allAppointments.map((appointment, index, array) => {
-      if (array.includes(parseInt(appointment.date.split("-")[2]))) {
-        return null;
-      }
+    allAppointments.map((appointment) => {
       return parseInt(appointment.date.split("-")[2]);
     })
   );
@@ -31,11 +25,12 @@ const Calendar = ({
 
   const stepNextMonth = useCallback(() => {
     setDate(new Date(date.setMonth(date.getMonth() + 1)));
-  }, [date, setDate]);
+  }, [setDate, date]);
 
   const stepPreviousMonth = useCallback(() => {
     setDate(new Date(date.setMonth(date.getMonth() - 1)));
-  }, [date, setDate]);
+    //setDate((current) => new Date(current.setMonth(current.getMonth() - 1)));
+  }, [setDate, date]);
 
   const addListenerNext = useCallback(() => {
     nextBtnRef.current.addEventListener("click", stepNextMonth, false);
@@ -199,27 +194,9 @@ const Calendar = ({
         `${date.getFullYear()}-${padTo2Digits(date.getMonth() + 1)}`
       )
     );
-    setEventDays((prev) => {
+    setEventDays((current) => {
       return [];
     });
-    console.log(allAppointments);
-    allAppointments.forEach((appointment) => {
-      setEventDays((current) => {
-        if (current.includes(parseInt(appointment.date.split("-")[2]))) {
-          return [...current];
-        }
-        return [...current, parseInt(appointment.date.split("-")[2])];
-      });
-    });
-
-    //console.log(eventDays);
-
-    /* setEventDays((prev) => {
-      return [];
-    });
-    allAppointments.forEach((appointment) => {
-      eventDays.push(parseInt(appointment.date.split("-")[2]));
-    }); */
 
     renderCalendar();
     setActiveDay((prev) => {
@@ -231,7 +208,16 @@ const Calendar = ({
           }
         });
       });
-      return selectedItem;
+      if (selectedItem) {
+        return selectedItem;
+      } else {
+        for (let i = 0; i < 7; ++i) {
+          if (daysContainerRef.current.childNodes[i].textContent === "1") {
+            daysContainerRef.current.childNodes[i].classList.add("selected");
+            return daysContainerRef.current.childNodes[i];
+          }
+        }
+      }
     });
     renderDayListeners();
     addDoubleClickToRemoveSelectedDiv();
@@ -239,7 +225,7 @@ const Calendar = ({
     addListenerNext();
     addSelectedDay();
 
-    console.log("render calendar");
+    console.log("render calendar " + date);
 
     return (_) => {
       removeDayListeners();
