@@ -12,9 +12,18 @@ const Calendar = ({
   nextBtnRef,
   options,
   today,
+  /* eventDays,
+  setEventDays, */
 }) => {
   // states
-  const [eventDays, setEventDays] = useState([]);
+  const [eventDays, setEventDays] = useState(
+    allAppointments.map((appointment, index, array) => {
+      if (array.includes(parseInt(appointment.date.split("-")[2]))) {
+        return null;
+      }
+      return parseInt(appointment.date.split("-")[2]);
+    })
+  );
   // refs
   const daysContainerRef = useRef(null);
 
@@ -193,9 +202,24 @@ const Calendar = ({
     setEventDays((prev) => {
       return [];
     });
+    console.log(allAppointments);
+    allAppointments.forEach((appointment) => {
+      setEventDays((current) => {
+        if (current.includes(parseInt(appointment.date.split("-")[2]))) {
+          return [...current];
+        }
+        return [...current, parseInt(appointment.date.split("-")[2])];
+      });
+    });
+
+    //console.log(eventDays);
+
+    /* setEventDays((prev) => {
+      return [];
+    });
     allAppointments.forEach((appointment) => {
       eventDays.push(parseInt(appointment.date.split("-")[2]));
-    });
+    }); */
 
     renderCalendar();
     setActiveDay((prev) => {
@@ -238,7 +262,6 @@ const Calendar = ({
     setActiveDay,
     dispatch,
     date,
-    allAppointments,
   ]);
 
   return (

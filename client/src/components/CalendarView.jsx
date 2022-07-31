@@ -70,7 +70,7 @@ const CalendarView = () => {
     return (_) => {
       dispatch(resetAll());
     };
-  }, [date, dispatch]);
+  }, [dispatch, date]);
 
   useEffect(() => {
     try {
@@ -88,7 +88,7 @@ const CalendarView = () => {
       dispatch(reset());
       dispatch(setQueryObject({}));
     };
-  }, [activeDay, dispatch, date]);
+  }, [activeDay, dispatch]);
 
   if (isSuccessAll) {
     return (
@@ -127,6 +127,8 @@ const CalendarView = () => {
               nextBtnRef={nextBtnRef}
               options={options}
               today={today}
+              /* eventDays={eventDays}
+              setEventDays={setEventDays} */
             />
           </div>
         </div>
