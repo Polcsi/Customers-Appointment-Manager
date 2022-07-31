@@ -29,7 +29,6 @@ const Calendar = ({
 
   const stepPreviousMonth = useCallback(() => {
     setDate(new Date(date.setMonth(date.getMonth() - 1)));
-    //setDate((current) => new Date(current.setMonth(current.getMonth() - 1)));
   }, [setDate, date]);
 
   const addListenerNext = useCallback(() => {

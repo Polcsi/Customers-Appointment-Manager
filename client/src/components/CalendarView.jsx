@@ -35,8 +35,10 @@ const CalendarView = () => {
   const nextBtnRef = useRef(null);
   // states
   const [activeDay, setActiveDay] = useState(null);
-  const [date, setDate] = useState(new Date());
   const [today, setToday] = useState(new Date());
+  const [date, setDate] = useState(
+    new Date(today.getFullYear(), today.getMonth(), 1)
+  );
   const [options, setOptions] = useState({
     weekday: "short",
     year: "numeric",
@@ -45,7 +47,7 @@ const CalendarView = () => {
   });
 
   function jumpCurrent() {
-    setDate(new Date());
+    setDate(new Date(today.getFullYear(), today.getMonth(), 1));
   }
 
   useEffect(() => {
