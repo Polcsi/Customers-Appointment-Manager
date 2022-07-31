@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { formatDate, padTo2Digits } from "../utils";
+import { useGlobalContext } from "../context";
 // components
 import Spinner from "./Spinner";
 import Calendar from "./Calendar";
@@ -30,15 +31,10 @@ const CalendarView = () => {
   // refs
   const currentMonthRef = useRef(null);
   const currentFullDateRef = useRef(null);
-
   const prevBtnRef = useRef(null);
   const nextBtnRef = useRef(null);
   // states
-  const [activeDay, setActiveDay] = useState(null);
-  const [today, setToday] = useState(new Date());
-  const [date, setDate] = useState(
-    new Date(today.getFullYear(), today.getMonth(), 1)
-  );
+  const { date, setDate, today, activeDay } = useGlobalContext();
   const [options, setOptions] = useState({
     weekday: "short",
     year: "numeric",
@@ -123,12 +119,8 @@ const CalendarView = () => {
             </div>
             <Calendar
               allAppointments={allAppointments}
-              setActiveDay={setActiveDay}
-              date={date}
-              setDate={setDate}
               prevBtnRef={prevBtnRef}
               nextBtnRef={nextBtnRef}
-              today={today}
             />
           </div>
         </div>

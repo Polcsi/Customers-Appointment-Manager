@@ -2,17 +2,11 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentDate } from "../features/appointments/appointmentSlice";
 import { padTo2Digits } from "../utils";
+import { useGlobalContext } from "../context";
 
-const Calendar = ({
-  allAppointments,
-  setActiveDay,
-  date,
-  setDate,
-  prevBtnRef,
-  nextBtnRef,
-  today,
-}) => {
+const Calendar = ({ allAppointments, prevBtnRef, nextBtnRef }) => {
   // states
+  const { date, today, setDate, setActiveDay } = useGlobalContext();
   const [eventDays, setEventDays] = useState(
     allAppointments.map((appointment) => {
       return parseInt(appointment.date.split("-")[2]);
@@ -141,7 +135,6 @@ const Calendar = ({
 
   const renderCalendar = useCallback(async () => {
     let days = "";
-    console.log(eventDays);
 
     for (
       let i = firstWeekDayInMonth(date.getMonth(), date.getFullYear());
@@ -224,7 +217,7 @@ const Calendar = ({
     addListenerNext();
     addSelectedDay();
 
-    console.log("render calendar " + date);
+    console.log("render calendar ");
 
     return (_) => {
       removeDayListeners();
