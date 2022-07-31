@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { monthsArr } from "../data";
 import { toast } from "react-toastify";
 import { padTo2Digits } from "../utils";
+import { useGlobalContext } from "../context";
 // Components
 import CustomerSelector from "./CustomerSelector";
 import DateSelector from "./DateSelector";
@@ -24,8 +25,10 @@ const AddAppointmentModal = ({
   showModal,
   setShowModal,
   updatedArray = null,
+  isCalendar = false,
 }) => {
-  const today = new Date();
+  const { getSelectedDate, date, daysContainerRef } = useGlobalContext();
+  const today = getSelectedDate();
   const [appointment, setAppointment] = useState({
     date: `${today.getFullYear()}-${padTo2Digits(
       today.getMonth() + 1
@@ -60,6 +63,18 @@ const AddAppointmentModal = ({
       toast.error(messageAdd);
     }
     if (isSuccessAdd) {
+      if (
+        isCalendar &&
+        parseInt(appointment.date.split("-")[0]) === date.getFullYear() &&
+        parseInt(appointment.date.split("-")[1]) === date.getMonth() + 1
+      ) {
+        const dayVal = parseInt(appointment.date.split("-")[2]);
+        daysContainerRef.current.childNodes.forEach((element) => {
+          if (parseInt(element.textContent) === dayVal) {
+            element.classList.add("event");
+          }
+        });
+      }
       toast.success("Appointment Added");
       setShowModal(!showModal);
     }

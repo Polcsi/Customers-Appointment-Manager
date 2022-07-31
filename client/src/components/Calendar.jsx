@@ -6,14 +6,13 @@ import { useGlobalContext } from "../context";
 
 const Calendar = ({ allAppointments, prevBtnRef, nextBtnRef }) => {
   // states
-  const { date, today, setDate, setActiveDay } = useGlobalContext();
+  const { date, today, setDate, setActiveDay, daysContainerRef } =
+    useGlobalContext();
   const [eventDays, setEventDays] = useState(
     allAppointments.map((appointment) => {
       return parseInt(appointment.date.split("-")[2]);
     })
   );
-  // refs
-  const daysContainerRef = useRef(null);
 
   const dispatch = useDispatch();
 

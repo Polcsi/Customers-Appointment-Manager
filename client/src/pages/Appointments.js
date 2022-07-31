@@ -89,10 +89,18 @@ const Appointments = () => {
 
       <div className="dashboard" ref={page}>
         {showModal ? (
-          <AddAppointmentModal
-            showModal={showModal}
-            setShowModal={setShowModal}
-          />
+          isChangeView ? (
+            <AddAppointmentModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+              isCalendar={isChangeView}
+            />
+          ) : (
+            <AddAppointmentModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+            />
+          )
         ) : (
           ""
         )}

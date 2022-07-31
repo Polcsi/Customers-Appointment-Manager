@@ -17,6 +17,7 @@ import {
 // icons
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 import AppointmentItem from "./AppointmentItem";
+import { IoIosAdd } from "react-icons/io";
 
 const CalendarView = () => {
   const dispatch = useDispatch();
