@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { checkCookieExists } from "../vaidateSession";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../context";
 // Components
 import AddAppointmentModal from "../components/AddAppointmentModal";
 import PullToRefresh from "../components/PullToRefresh";
@@ -27,6 +28,7 @@ const Appointments = () => {
   const [showModal, setShowModal] = useState(false);
   const [isChangeView, setIsChangeView] = useState(true);
   const page = useRef(null);
+  const { calendarAppointmentsRef, daysContainerRef } = useGlobalContext();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,14 +41,34 @@ const Appointments = () => {
     currentDate,
   } = useSelector((state) => state.appointment);
 
+  const handleDeletingLastOneInCalendar = useCallback(() => {
+    if (isChangeView) {
+      if (calendarAppointmentsRef.current.childNodes.length === 1) {
+        daysContainerRef.current.childNodes.forEach((element) => {
+          element.classList.forEach((className) => {
+            if (className === "selected") {
+              element.classList.remove("event");
+            }
+          });
+        });
+      }
+    }
+  }, [isChangeView, daysContainerRef, calendarAppointmentsRef]);
+
   useEffect(() => {
     if (isSuccessDelete) {
+      handleDeletingLastOneInCalendar();
       toast.success("Appointment Deleted");
     }
     if (isErrorDelete) {
       toast.error(messageDelete);
     }
-  }, [isSuccessDelete, isErrorDelete, messageDelete]);
+  }, [
+    isSuccessDelete,
+    isErrorDelete,
+    messageDelete,
+    handleDeletingLastOneInCalendar,
+  ]);
 
   useEffect(() => {
     if (!checkCookieExists()) {

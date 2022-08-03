@@ -11,6 +11,7 @@ const AppProvider = ({ children }) => {
   );
   // refs
   const daysContainerRef = useRef(null);
+  const calendarAppointmentsRef = useRef(null);
 
   const getSelectedDate = () => {
     if (activeDay) {
@@ -34,6 +35,7 @@ const AppProvider = ({ children }) => {
         setDate,
         getSelectedDate,
         daysContainerRef,
+        calendarAppointmentsRef,
       }}
     >
       {children}

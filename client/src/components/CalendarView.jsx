@@ -17,7 +17,6 @@ import {
 // icons
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 import AppointmentItem from "./AppointmentItem";
-import { IoIosAdd } from "react-icons/io";
 
 const CalendarView = () => {
   const dispatch = useDispatch();
@@ -35,7 +34,8 @@ const CalendarView = () => {
   const prevBtnRef = useRef(null);
   const nextBtnRef = useRef(null);
   // states
-  const { date, setDate, today, activeDay } = useGlobalContext();
+  const { date, setDate, today, activeDay, calendarAppointmentsRef } =
+    useGlobalContext();
   const [options, setOptions] = useState({
     weekday: "short",
     year: "numeric",
@@ -125,7 +125,7 @@ const CalendarView = () => {
             />
           </div>
         </div>
-        <div className="calendar-appointments">
+        <div className="calendar-appointments" ref={calendarAppointmentsRef}>
           {isLoading && <Spinner color="white" top={0} position="relative" />}
           {appointments.map((appointment) => {
             return (
