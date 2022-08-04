@@ -21,8 +21,6 @@ const getAdmins = async (queryObject, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log(queryString);
-  console.log(response.data);
   return response.data.admins;
 };
 

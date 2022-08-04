@@ -124,7 +124,6 @@ export const adminSlice = createSlice({
       })
       .addCase(getAdmins.fulfilled, (state, action) => {
         state.isLoadingGetAll = false;
-        console.log(action.payload);
         state.admins = action.payload;
       })
       .addCase(getAdmins.rejected, (state, action) => {
