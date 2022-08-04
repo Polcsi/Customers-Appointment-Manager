@@ -8,6 +8,7 @@ const initialState = {
   isSuccess: false,
   isSuccessUpdate: false,
   isLoadingGetAll: false,
+  isSuccessGetAll: false,
   isLoading: false,
   message: "",
 };
@@ -96,6 +97,7 @@ export const adminSlice = createSlice({
       state.isSuccess = false;
       state.isSuccessUpdate = false;
       state.isLoadingGetAll = false;
+      state.isSuccessGetAll = false;
       state.isError = false;
       state.isLoading = false;
       state.singleAdmin = null;
@@ -129,6 +131,8 @@ export const adminSlice = createSlice({
       })
       .addCase(getAdmins.fulfilled, (state, action) => {
         state.isLoadingGetAll = false;
+        state.isSuccessGetAll = true;
+        console.log(action.payload);
         state.admins = action.payload;
       })
       .addCase(getAdmins.rejected, (state, action) => {

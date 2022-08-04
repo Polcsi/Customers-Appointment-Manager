@@ -215,7 +215,7 @@ const Calendar = ({ allAppointments, prevBtnRef, nextBtnRef }) => {
     addListenerNext();
     addSelectedDay();
 
-    console.log("render calendar ");
+    //console.log("render calendar ");
 
     return (_) => {
       removeDayListeners();
