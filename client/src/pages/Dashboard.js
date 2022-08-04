@@ -12,6 +12,7 @@ import {
   getToday,
   getTomorrow,
   getDayAfterTomorrow,
+  resetAppointmentDelete,
 } from "../features/appointments/appointmentSlice";
 // Icons
 import { IoIosAdd, IoIosHourglass } from "react-icons/io";
@@ -48,6 +49,7 @@ const Dashboard = () => {
 
     return (_) => {
       clearInterval(validateSession);
+      dispatch(resetAppointmentDelete());
     };
   }, [navigate, dispatch]);
 

@@ -59,6 +59,7 @@ const Appointments = () => {
     if (isSuccessDelete) {
       handleDeletingLastOneInCalendar();
       toast.success("Appointment Deleted");
+      //dispatch(resetAppointmentDelete);
     }
     if (isErrorDelete) {
       toast.error(messageDelete);
