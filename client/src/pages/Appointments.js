@@ -59,7 +59,7 @@ const Appointments = () => {
     if (isSuccessDelete) {
       handleDeletingLastOneInCalendar();
       toast.success("Appointment Deleted");
-      //dispatch(resetAppointmentDelete);
+      dispatch(resetAppointmentDelete());
     }
     if (isErrorDelete) {
       toast.error(messageDelete);
@@ -69,6 +69,7 @@ const Appointments = () => {
     isErrorDelete,
     messageDelete,
     handleDeletingLastOneInCalendar,
+    dispatch,
   ]);
 
   useEffect(() => {

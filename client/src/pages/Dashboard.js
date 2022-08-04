@@ -23,7 +23,6 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { admin } = useSelector((state) => state.auth);
   const {
     todayAppointments,
     tomorrowAppointments,

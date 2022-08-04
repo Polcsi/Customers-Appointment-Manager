@@ -1,11 +1,10 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentDate } from "../features/appointments/appointmentSlice";
 import { padTo2Digits } from "../utils";
 import { useGlobalContext } from "../context";
 
 const Calendar = ({ allAppointments, prevBtnRef, nextBtnRef }) => {
-  // states
   const { date, today, setDate, setActiveDay, daysContainerRef } =
     useGlobalContext();
   const [eventDays, setEventDays] = useState(
