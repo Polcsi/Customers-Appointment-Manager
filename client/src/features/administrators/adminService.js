@@ -16,7 +16,7 @@ const register = async (adminData, token) => {
 // Get all admins
 const getAdmins = async (queryObject, token) => {
   const queryString = convertQueryObjectToString(queryObject);
-  const response = await axios.get(`${API_URL}/administrators?${queryString}`, {
+  const response = await axios.get(`${API_URL}administrators?${queryString}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
