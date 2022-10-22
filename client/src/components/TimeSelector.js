@@ -4,170 +4,141 @@ import times from "../assets/times.svg";
 
 const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
   const hourRef = useRef(null);
-  const hourTouchRef = useRef(null);
   const minuteRef = useRef(null);
-  const [hour, setHour] = useState("");
-  const [minute, setMinute] = useState("");
   const [fill, setFill] = useState(true);
+  const [activePos, setActivePos] = useState(0);
+  const [currentTime, setCurrentTime] = useState({
+    hour: appointment.time.split(":")[0],
+    minute: appointment.time.split(":")[1],
+  });
+  var hourTimer = null;
+  var minuteTimer = null;
 
-  const handleSliderChange = (e) => {
-    let classes = e.target.className;
-    let className = classes.split(" ")[0].split("-")[0];
-    let value = e.target.value;
+  function fillNumericContainer(length, destinationContainer) {
+    destinationContainer.innerHTML += `<div></div><div></div>`;
+    for (let i = 0; i < length; ++i) {
+      destinationContainer.innerHTML += `<div index="${i}">${padTo2Digits(
+        i
+      )}</div>`;
+    }
+    destinationContainer.innerHTML += `<div></div><div></div>`;
+  }
 
-    if (className === "hour") {
-      hourRef.current.style.marginTop = `${(value / 1) * -35}px`;
-      setHour(value);
+  function calculateActive(node) {
+    const divs = Array.from(node.childNodes);
+    let hasActive = false;
+    divs.forEach(function (element) {
+      try {
+        /* console.log(
+        Math.round(element.getBoundingClientRect().y) +
+          " " +
+          element.textContent
+      ); */
+        if (
+          Math.round(element.getBoundingClientRect().y) === activePos ||
+          Math.round(element.getBoundingClientRect().y) === activePos + 1
+        ) {
+          element.classList.add("active");
+          /* console.log("set active"); */
+        } else {
+          element.classList.remove("active");
+        }
+        if (element.classList.value === "active") {
+          hasActive = true;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+    if (!hasActive) {
+      divs.forEach(function (element) {
+        /* console.log(
+        Math.round(element.getBoundingClientRect().y) +
+          " " +
+          element.textContent +
+          " " +
+          activePos +
+          " " +
+          hourContainer.scrollTop
+      ); */
+        let elementPos = Math.round(element.getBoundingClientRect().y);
+        if (elementPos >= activePos - 25 && elementPos <= activePos + 25) {
+          element.classList.add("active");
+          node.scrollTop = element.getAttribute("index") * 50;
+        }
+      });
     }
-    if (className === "minute") {
-      minuteRef.current.style.marginTop = `${(value / 1) * -36}px`;
-      setMinute(value);
-    }
-  };
+  }
+
+  function setTimeScrollbarsPosition() {
+    const setMinScrollPos = 50 * currentTime.minute;
+    const setHourScrollPos = 50 * currentTime.hour;
+
+    minuteRef.current.scrollTop = setMinScrollPos;
+    hourRef.current.scrollTop = setHourScrollPos;
+  }
+
+  function getActive(parentNode) {
+    let activeElement = null;
+    Array.from(parentNode.childNodes).forEach((element) => {
+      if (element.classList.value === "active") {
+        activeElement = element;
+      }
+    });
+    return activeElement;
+  }
 
   const saveTime = () => {
-    handleChange(
-      "time",
-      `${parseInt(hour) < 10 ? `0${parseInt(hour)}` : parseInt(hour)}:${
-        parseInt(minute) < 10 ? `0${parseInt(minute)}` : parseInt(minute)
-      }`
-    );
+    const hour = getActive(hourRef.current).textContent;
+    const minute = getActive(minuteRef.current).textContent;
+
+    handleChange("time", `${padTo2Digits(hour)}:${padTo2Digits(minute)}`);
     setOpenTime(false);
   };
 
-  const onPointerEventMinute = (e) => {
-    let isTouchEvent = e.type === "touchstart" ? true : false;
-    let offset = 0;
-    let initalY = isTouchEvent ? e.touches[0].clientY : e.clientY;
-    let start = 0;
+  const hourScrollEventListener = () => {
+    clearTimeout(hourTimer);
 
-    if (isTouchEvent) {
-      document.ontouchstart = startTouch;
-      document.ontouchmove = onPointerMove;
-      document.ontouchend = onPointerEnd;
-    } else {
-      document.onmousemove = onPointerMove;
-      document.onmouseup = onPointerEnd;
-    }
-
-    function startTouch() {
-      let value = minuteRef.current.style.marginTop;
-      start = parseFloat(value.split("p")[0]);
-      console.log(start);
-    }
-
-    function onPointerMove(e) {
-      console.log("move " + initalY);
-      offset =
-        start + ((isTouchEvent ? e.touches[0].clientY : e.clientY) - initalY);
-
-      /* console.log(start);
-      console.log(offset); */
-      if (offset >= 33.5) {
-        offset = 33.5;
-      }
-      if (offset <= -775) {
-        offset = -2090;
-      }
-
-      minuteRef.current.style.marginTop = offset + "px";
-    }
-
-    function onPointerEnd() {
-      console.log(
-        Math.round(
-          Math.floor(parseFloat(minuteRef.current.style.marginTop)) / -35
-        )
-      );
-      setMinute(
-        Math.round(
-          Math.floor(parseFloat(minuteRef.current.style.marginTop)) / -35
-        )
-      );
-      if (isTouchEvent) {
-        document.ontouchmove = null;
-        document.ontouchend = null;
-      } else {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      }
-    }
+    hourTimer = setTimeout(function () {
+      calculateActive(hourRef.current);
+    }, 100);
   };
+  const minuteScrollEventListener = () => {
+    clearTimeout(minuteTimer);
 
-  const onPointerEventHour = (e) => {
-    let isTouchEvent = e.type === "touchstart" ? true : false;
-    let offset = 0;
-    let initalY = isTouchEvent ? e.touches[0].clientY : e.clientY;
-    let start = 0;
-
-    if (isTouchEvent) {
-      document.ontouchstart = startTouch;
-      document.ontouchmove = onPointerMove;
-      document.ontouchend = onPointerEnd;
-    } else {
-      document.onmousemove = onPointerMove;
-      document.onmouseup = onPointerEnd;
-    }
-
-    function startTouch() {
-      let value = hourRef.current.style.marginTop;
-      start = parseFloat(value.split("p")[0]);
-      console.log(start);
-    }
-
-    function onPointerMove(e) {
-      console.log("move " + initalY);
-      offset =
-        start + ((isTouchEvent ? e.touches[0].clientY : e.clientY) - initalY);
-
-      /* console.log(start);
-      console.log(offset); */
-      if (offset >= 33.5) {
-        offset = 33.5;
-      }
-      if (offset <= -775) {
-        offset = -775;
-      }
-
-      hourRef.current.style.marginTop = offset + "px";
-    }
-
-    function onPointerEnd() {
-      setHour(
-        Math.round(
-          Math.floor(parseFloat(hourRef.current.style.marginTop)) / -35
-        ) + 1
-      );
-      if (isTouchEvent) {
-        document.ontouchmove = null;
-        document.ontouchend = null;
-      } else {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      }
-    }
+    minuteTimer = setTimeout(function () {
+      calculateActive(minuteRef.current);
+    }, 100);
   };
 
   useEffect(() => {
     const time = appointment.time.split(":");
-    hourRef.current.style.marginTop = `${(time[0] / 1) * -33.5}px`;
-    minuteRef.current.style.marginTop = `${(time[1] / 1) * -35.1}px`;
-    setHour(time[0]);
-    setMinute(time[1]);
+    const hourContainer = hourRef.current;
+    const minuteContainer = minuteRef.current;
+    setActivePos(
+      Math.round(minuteContainer.getBoundingClientRect().top) + 2 * 50 - 1
+    );
     if (fill) {
       setFill(false);
-      for (let i = 0; i < 24; i++) {
-        hourRef.current.innerHTML += `<div>${padTo2Digits(i)}</div>`;
-      }
-      for (let i = 0; i < 60; i++) {
-        minuteRef.current.innerHTML += `<div>${padTo2Digits(i)}</div>`;
-      }
+      fillNumericContainer(24, hourContainer);
+      fillNumericContainer(60, minuteContainer);
     }
+    calculateActive(hourContainer);
+    calculateActive(minuteContainer);
+    setTimeScrollbarsPosition();
+
+    hourContainer.addEventListener("scroll", hourScrollEventListener);
+    minuteContainer.addEventListener("scroll", minuteScrollEventListener);
+
+    return (_) => {
+      hourContainer.removeEventListener("scroll", hourScrollEventListener);
+      minuteContainer.removeEventListener("scroll", minuteScrollEventListener);
+    };
   }, [fill, appointment.time]);
 
   return (
     <div className="overlay">
-      <div className="overlay-container datetime-overlay">
+      <div className="overlay-container datetime-overlay time-selector-overlay">
         <button className="close-overlay" onClick={() => setOpenTime(false)}>
           <img src={times} alt="close" />
         </button>
@@ -175,44 +146,14 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
           <h2>select time</h2>
         </div>
         <div className="overlay-body">
-          <div ref={hourTouchRef} className="hour input-time">
-            {/* <input
-              className="hour-slider time-slider"
-              type="range"
-              min="0"
-              max="23"
-              step="1"
-              onChange={handleSliderChange}
-              value={hour}
-            /> */}
-            <div
-              className="hour-slider-value slider-value"
-              /* onTouchStart={onPointerEventHour}
-              onMouseDown={onPointerEventHour} */
-            >
-              <div ref={hourRef}></div>
-            </div>
-          </div>
-          <div className="divider">:</div>
-          <div className="box"></div>
-          <div className="fade-selector"></div>
-          <div className="minute input-time">
-            {/* <input
-              className="minute-slider time-slider"
-              type="range"
-              min="0"
-              max="59"
-              step="1"
-              onChange={handleSliderChange}
-              value={minute}
-            /> */}
-            <div
-              className="minute-slider-value slider-value"
-              onTouchStart={onPointerEventMinute}
-              onMouseDown={onPointerEventMinute}
-            >
-              <div ref={minuteRef}></div>
-            </div>
+          <div className="inner-box">
+            <div className="fade-hour fade-top fade"></div>
+            <div className="fade-hour fade-bottom fade"></div>
+            <div className="hour-container scroll" ref={hourRef}></div>
+            <div className="minute-container scroll" ref={minuteRef}></div>
+            <div className="fade-minute fade-top fade"></div>
+            <div className="fade-minute fade-bottom fade"></div>
+            <div className="divider">:</div>
           </div>
         </div>
         <div className="overlay-footer">

@@ -33,8 +33,8 @@ const AddAppointmentModal = ({
     date: `${today.getFullYear()}-${padTo2Digits(
       today.getMonth() + 1
     )}-${padTo2Digits(today.getDate())}`,
-    time: `${padTo2Digits(today.getHours())}:${padTo2Digits(
-      today.getMinutes()
+    time: `${padTo2Digits(new Date().getHours())}:${padTo2Digits(
+      new Date().getMinutes()
     )}`,
     sendReminder: true,
     description: "",

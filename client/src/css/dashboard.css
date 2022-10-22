@@ -285,6 +285,9 @@
   background: var(--light-gray-4);
   border-radius: 4px;
 }
+.time-selector-overlay {
+  height: auto;
+}
 .country-selector {
   font-size: 1rem;
   padding: 0.6rem 0.5rem;
@@ -292,7 +295,7 @@
   border-radius: 4px;
 }
 .datetime-overlay {
-  gap: 2rem;
+  gap: 1rem;
 }
 .customer-selector {
   gap: 1rem;

@@ -16,6 +16,7 @@ import "./css/main.css";
 import "./css/nav.css";
 import "./css/dashboard.css";
 import "./css/login.css";
+import "./css/numericSelectors.css";
 
 function App() {
   return (

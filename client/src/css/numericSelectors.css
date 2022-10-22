@@ -1,0 +1,95 @@
+:root {
+  --element-height: 50px;
+  --element-width: 50px;
+  --wide-element-width: calc(var(--element-width) + var(--element-width) / 2);
+  --wider-element-width: calc(2 * var(--element-width) + var(--element-width));
+  --default-color: #fff;
+  --default-color-transparent: rgba(255, 255, 255, 0.253);
+}
+.inner-box {
+  margin: 4rem 3rem 3rem 3rem;
+  height: var(--element-height);
+  width: 150px;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  display: flex;
+  position: relative;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+.scroll {
+  cursor: grab;
+  height: 250px;
+  width: var(--element-width);
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  position: absolute;
+  top: -210%;
+  user-select: none;
+  scroll-behavior: smooth;
+  transition: all ease 0.3s;
+}
+.scroll > div {
+  height: var(--element-height);
+  width: var(--element-width);
+  scroll-snap-align: center;
+  font-size: 1.4rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.minute-container {
+  right: 0;
+}
+.active {
+  font-weight: bold;
+  font-size: 1.8rem !important;
+}
+.grabbing {
+  cursor: grabbing;
+}
+.divider {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  height: var(--element-height);
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fade {
+  position: absolute;
+  z-index: 1;
+  width: var(--element-width);
+  height: calc(1 * var(--element-height));
+}
+.fade-top {
+  background: linear-gradient(
+    to bottom,
+    var(--default-color),
+    var(--default-color-transparent)
+  );
+  top: -103px;
+}
+.fade-bottom {
+  background: linear-gradient(
+    to top,
+    var(--default-color),
+    var(--default-color-transparent)
+  );
+  bottom: -103px;
+}
+.fade-hour {
+  left: 0;
+}
+.fade-minute {
+  right: 0;
+}
