@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { padTo2Digits } from "../utils";
+import { padTo2Digits, getActive } from "../utils";
 import times from "../assets/times.svg";
 
 const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
@@ -34,11 +34,11 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
             Math.round(element.getBoundingClientRect().y) === activePos ||
             Math.round(element.getBoundingClientRect().y) === activePos + 1
           ) {
-            element.classList.add("active");
+            element.classList.add("active-selector");
           } else {
-            element.classList.remove("active");
+            element.classList.remove("active-selector");
           }
-          if (element.classList.value === "active") {
+          if (element.classList.value === "active-selector") {
             hasActive = true;
           }
         } catch (err) {
@@ -49,7 +49,7 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
         divs.forEach(function (element) {
           let elementPos = Math.round(element.getBoundingClientRect().y);
           if (elementPos >= activePos - 25 && elementPos <= activePos + 25) {
-            element.classList.add("active");
+            element.classList.add("active-selector");
             node.scrollTop = element.getAttribute("index") * 50;
           }
         });
@@ -65,16 +65,6 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
     minuteRef.current.scrollTop = setMinScrollPos;
     hourRef.current.scrollTop = setHourScrollPos;
   }, [currentTime]);
-
-  function getActive(parentNode) {
-    let activeElement = null;
-    Array.from(parentNode.childNodes).forEach((element) => {
-      if (element.classList.value === "active") {
-        activeElement = element;
-      }
-    });
-    return activeElement;
-  }
 
   const saveTime = () => {
     const hour = getActive(hourRef.current).textContent;

@@ -28,7 +28,9 @@ const AddAppointmentModal = ({
   isCalendar = false,
 }) => {
   const { getSelectedDate, date, daysContainerRef } = useGlobalContext();
-  const today = isCalendar ? getSelectedDate() : new Date();
+  const [today, setToday] = useState(
+    isCalendar ? getSelectedDate() : new Date()
+  );
   const [appointment, setAppointment] = useState({
     date: `${today.getFullYear()}-${padTo2Digits(
       today.getMonth() + 1
@@ -124,6 +126,7 @@ const AddAppointmentModal = ({
           handleChange={handleChange}
           appointment={appointment}
           today={today}
+          setToday={setToday}
         />
       ) : (
         ""

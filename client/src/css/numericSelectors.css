@@ -6,6 +6,7 @@
   --default-color: #fff;
   --default-color-transparent: rgba(255, 255, 255, 0.253);
 }
+/* Time Modal */
 .inner-box {
   margin: 4rem 3rem 3rem 3rem;
   height: var(--element-height);
@@ -45,7 +46,7 @@
 .minute-container {
   right: 0;
 }
-.active {
+.active-selector {
   font-weight: bold;
   font-size: 1.8rem !important;
 }
@@ -92,4 +93,47 @@
 }
 .fade-minute {
   right: 0;
+}
+/* Date modal */
+.date-inner-box {
+  margin: 4rem 1rem 3rem 1rem;
+  height: var(--element-height);
+  width: 285px;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  display: flex;
+  position: relative;
+}
+.day-container {
+  right: -1%;
+}
+.year-container {
+  left: 0;
+  width: var(--wide-element-width);
+}
+.year-container > div {
+  width: var(--wide-element-width);
+}
+.month-container {
+  left: 30%;
+}
+.scroll-month {
+  width: var(--wider-element-width);
+}
+.scroll-month > div {
+  width: var(--wider-element-width);
+  text-align: left;
+  justify-content: start;
+  text-transform: capitalize;
+}
+.fade-year {
+  left: 0;
+  width: var(--wide-element-width);
+}
+.fade-day {
+  right: -1%;
+}
+.fade-month {
+  width: var(--wider-element-width);
+  left: 30%;
 }

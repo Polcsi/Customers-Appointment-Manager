@@ -30,3 +30,17 @@ export function formatFullDate(date) {
   };
   return date.toLocaleDateString("en-US", options);
 }
+
+export function daysInMonth(year, month) {
+  return new Date(year, month, 0).getDate();
+}
+
+export function getActive(parentNode) {
+  let activeElement = null;
+  Array.from(parentNode.childNodes).forEach((element) => {
+    if (element.classList.value === "active-selector") {
+      activeElement = element;
+    }
+  });
+  return activeElement;
+}
