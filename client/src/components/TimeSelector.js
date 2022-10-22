@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { padTo2Digits } from "../utils";
 import times from "../assets/times.svg";
 
@@ -11,8 +11,8 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
     hour: appointment.time.split(":")[0],
     minute: appointment.time.split(":")[1],
   });
-  var hourTimer = null;
-  var minuteTimer = null;
+  const hourTimer = useRef(null);
+  const minuteTimer = useRef(null);
 
   function fillNumericContainer(length, destinationContainer) {
     destinationContainer.innerHTML += `<div></div><div></div>`;
@@ -24,59 +24,47 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
     destinationContainer.innerHTML += `<div></div><div></div>`;
   }
 
-  function calculateActive(node) {
-    const divs = Array.from(node.childNodes);
-    let hasActive = false;
-    divs.forEach(function (element) {
-      try {
-        /* console.log(
-        Math.round(element.getBoundingClientRect().y) +
-          " " +
-          element.textContent
-      ); */
-        if (
-          Math.round(element.getBoundingClientRect().y) === activePos ||
-          Math.round(element.getBoundingClientRect().y) === activePos + 1
-        ) {
-          element.classList.add("active");
-          /* console.log("set active"); */
-        } else {
-          element.classList.remove("active");
-        }
-        if (element.classList.value === "active") {
-          hasActive = true;
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    });
-    if (!hasActive) {
+  const calculateActive = useCallback(
+    (node) => {
+      const divs = Array.from(node.childNodes);
+      let hasActive = false;
       divs.forEach(function (element) {
-        /* console.log(
-        Math.round(element.getBoundingClientRect().y) +
-          " " +
-          element.textContent +
-          " " +
-          activePos +
-          " " +
-          hourContainer.scrollTop
-      ); */
-        let elementPos = Math.round(element.getBoundingClientRect().y);
-        if (elementPos >= activePos - 25 && elementPos <= activePos + 25) {
-          element.classList.add("active");
-          node.scrollTop = element.getAttribute("index") * 50;
+        try {
+          if (
+            Math.round(element.getBoundingClientRect().y) === activePos ||
+            Math.round(element.getBoundingClientRect().y) === activePos + 1
+          ) {
+            element.classList.add("active");
+          } else {
+            element.classList.remove("active");
+          }
+          if (element.classList.value === "active") {
+            hasActive = true;
+          }
+        } catch (err) {
+          console.log(err);
         }
       });
-    }
-  }
+      if (!hasActive) {
+        divs.forEach(function (element) {
+          let elementPos = Math.round(element.getBoundingClientRect().y);
+          if (elementPos >= activePos - 25 && elementPos <= activePos + 25) {
+            element.classList.add("active");
+            node.scrollTop = element.getAttribute("index") * 50;
+          }
+        });
+      }
+    },
+    [activePos]
+  );
 
-  function setTimeScrollbarsPosition() {
+  const setTimeScrollbarsPosition = useCallback(() => {
     const setMinScrollPos = 50 * currentTime.minute;
     const setHourScrollPos = 50 * currentTime.hour;
 
     minuteRef.current.scrollTop = setMinScrollPos;
     hourRef.current.scrollTop = setHourScrollPos;
-  }
+  }, [currentTime]);
 
   function getActive(parentNode) {
     let activeElement = null;
@@ -96,23 +84,22 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
     setOpenTime(false);
   };
 
-  const hourScrollEventListener = () => {
-    clearTimeout(hourTimer);
+  const hourScrollEventListener = useCallback(() => {
+    clearTimeout(hourTimer.current);
 
-    hourTimer = setTimeout(function () {
+    hourTimer.current = setTimeout(function () {
       calculateActive(hourRef.current);
     }, 100);
-  };
-  const minuteScrollEventListener = () => {
-    clearTimeout(minuteTimer);
+  }, [calculateActive]);
+  const minuteScrollEventListener = useCallback(() => {
+    clearTimeout(minuteTimer.current);
 
-    minuteTimer = setTimeout(function () {
+    minuteTimer.current = setTimeout(function () {
       calculateActive(minuteRef.current);
     }, 100);
-  };
+  }, [calculateActive]);
 
   useEffect(() => {
-    const time = appointment.time.split(":");
     const hourContainer = hourRef.current;
     const minuteContainer = minuteRef.current;
     setActivePos(
@@ -134,7 +121,14 @@ const TimeSelector = ({ setOpenTime, handleChange, appointment }) => {
       hourContainer.removeEventListener("scroll", hourScrollEventListener);
       minuteContainer.removeEventListener("scroll", minuteScrollEventListener);
     };
-  }, [fill, appointment.time]);
+  }, [
+    fill,
+    appointment.time,
+    calculateActive,
+    setTimeScrollbarsPosition,
+    hourScrollEventListener,
+    minuteScrollEventListener,
+  ]);
 
   return (
     <div className="overlay">
